@@ -1,7 +1,8 @@
 export interface Post {
   _id: string // post id
-  author_id : string
-  post_title: string,
+  user_id: string
+  group_id: string
+  post_title: string
   post_content: string 
   timeStamp: Date
   // status: "draft" | "sent" | "deleted" // post status
@@ -19,6 +20,11 @@ export interface Comment {
   // comment: string[]
   upvote: number
   downvote: number
+}
+
+export interface Group {
+  _id: string // group id
+  name: string // group name
 }
 
 export interface User {
