@@ -12,7 +12,7 @@ const posts: Post[] = [
     group_id: 'g1',
     post_title: 'Hello World!',
     post_content: 'Hello World! Hello World!' ,
-    timeStamp: Date, 
+    timeStamp: '2022-11-19 12:00:00', 
     comment: [], // comment
     upvote: 0,
     downvote: 0 
@@ -23,7 +23,7 @@ const posts: Post[] = [
     group_id: 'g2',
     post_title: 'Second post!',
     post_content: 'This is the second post' ,
-    timeStamp: Date,
+    timeStamp: '2022-11-19 12:00:01',
     comment: [], // comment
     upvote: 10,
     downvote: 100, 
@@ -34,7 +34,7 @@ const comments: Comment[] = [
     {
       _id: 'c1', 
       comment_content: 'this is the first comment', 
-      timeStamp: Date, 
+      timeStamp: '2022-11-19 12:00:02', 
       upvote: 0,
       downvote: 0 
     },

@@ -4,7 +4,7 @@ export interface Post {
   group_id: string
   post_title: string
   post_content: string 
-  timeStamp: Date
+  timeStamp: string
   // status: "draft" | "sent" | "deleted" // post status
   comment: Comment[] // comment
   upvote: number // upvote number, default 0.
@@ -15,7 +15,7 @@ export interface Comment {
   _id: string
   // name: string
   comment_content: string 
-  timeStamp: Date
+  timeStamp: string
   // status: "draft" | "sent" | "deleted"
   // comment: string[]
   upvote: number
