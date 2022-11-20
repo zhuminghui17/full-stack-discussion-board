@@ -6,7 +6,7 @@ export interface Post {
   post_content: string 
   timeStamp: string
   // status: "draft" | "sent" | "deleted" // post status
-  comment: Comment[] // comment
+  comments: Comment[] // comment
   upvote: number // upvote number, default 0.
   downvote: number // downvote number, default 0.
 }
