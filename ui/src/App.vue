@@ -1,3 +1,11 @@
+<!-- Todo:
+1. complete the group functionality 
+2. componentize each section of UI
+3. beautify UI
+-->
+
+
+
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="primary">
@@ -8,16 +16,11 @@
       <b-row>
         <b-col xs="12" sm="3">
           <b-button> New Posts</b-button>
-          <b-list-group-item 
-          button 
-          v-for="post, i in posts" 
-          :key="i" 
-          @click="alert"
-          class = "my-4">
-              <span>Group {{i}}</span>
+          <b-list-group-item button v-for="post, i in posts" :key="i" @click="alert" class="my-4">
+            <span>Group {{ i }}</span>
 
-            </b-list-group-item>
-       
+          </b-list-group-item>
+
         </b-col>
         <b-col xs="12" sm="3">
 
@@ -57,23 +60,17 @@
             </b-row>
             <b-row>
               <b-col>
-                <b-icon
-                v-if = "thumbUp"
-                icon="hand-thumbs-up-fill"  @click="cancelThumbUp" class="clickable-icon"></b-icon>
+                <b-icon v-if="thumbUp" icon="hand-thumbs-up-fill" @click="cancelThumbUp" class="clickable-icon">
+                </b-icon>
 
-                <b-icon 
-                v-else
-                icon="hand-thumbs-up" @click="clickThumbUp" class="clickable-icon"></b-icon>
+                <b-icon v-else icon="hand-thumbs-up" @click="clickThumbUp" class="clickable-icon"></b-icon>
 
               </b-col>
               <b-col>
-                <b-icon
-                v-if = "thumbDown"
-                icon="hand-thumbs-down-fill"  @click="cancelThumbDown" class="clickable-icon"></b-icon>
+                <b-icon v-if="thumbDown" icon="hand-thumbs-down-fill" @click="cancelThumbDown" class="clickable-icon">
+                </b-icon>
 
-                <b-icon 
-                v-else
-                icon="hand-thumbs-down" @click="clickThumbDown" class="clickable-icon"></b-icon>
+                <b-icon v-else icon="hand-thumbs-down" @click="clickThumbDown" class="clickable-icon"></b-icon>
 
               </b-col>
             </b-row>
@@ -137,13 +134,9 @@ function alert() {
 
 const selectedPost: Ref<Post | null> = ref(null)
 const posts = [post1, post2]
-// TODO:
-// 1. 调整页面样式，固定比例
-// 2. 显示相应内容
-// 3. 完成按钮操作
 
-const thumbUp:Ref<Boolean> = ref(false)
-const thumbDown:Ref<Boolean> = ref(false)
+const thumbUp: Ref<Boolean> = ref(false)
+const thumbDown: Ref<Boolean> = ref(false)
 
 
 function selectPost(post: any) {
@@ -151,19 +144,19 @@ function selectPost(post: any) {
 
 }
 
-function clickThumbUp(){
+function clickThumbUp() {
   thumbUp.value = true
 }
 
-function cancelThumbUp(){
+function cancelThumbUp() {
   thumbUp.value = false
 }
 
-function clickThumbDown(){
+function clickThumbDown() {
   thumbDown.value = true
 }
 
-function cancelThumbDown(){
+function cancelThumbDown() {
   thumbDown.value = false
 }
 
