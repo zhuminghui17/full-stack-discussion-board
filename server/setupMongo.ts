@@ -8,10 +8,10 @@ const client = new MongoClient(url)
 const posts: Post[] = [
   {
     _id: 'p1', // post id
-    author_id: 'u1',
-    group_id: 'g1',
-    post_title: 'Hello World!',
-    post_content: 'Hello World! Hello World!' ,
+    authorId: 'u1',
+    groupId: 'g1',
+    postTitle: 'Hello World!',
+    postContent: 'Hello World! Hello World!' ,
     timeStamp: '2022-11-19 12:00:00', 
     comments: [], // comment
     upvote: 0,
@@ -19,10 +19,10 @@ const posts: Post[] = [
   },
   {
     _id: "p2",
-    author_id : 'u2',
-    group_id: 'g2',
-    post_title: 'Second post!',
-    post_content: 'This is the second post' ,
+    authorId : 'u2',
+    groupId: 'g2',
+    postTitle: 'Second post!',
+    postContent: 'This is the second post' ,
     timeStamp: '2022-11-19 12:00:01',
     comments: [], // comment
     upvote: 10,
@@ -33,7 +33,7 @@ const posts: Post[] = [
 const comments: Comment[] = [
     {
       _id: 'c1', 
-      comment_content: 'this is the first comment', 
+      commentContent: 'this is the first comment', 
       timeStamp: '2022-11-19 12:00:02', 
       upvote: 0,
       downvote: 0 

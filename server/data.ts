@@ -1,9 +1,12 @@
-export interface Post {
+export interface PostInfo {
   _id: string // post id
-  author_id: string
-  group_id: string
-  post_title: string
-  post_content: string 
+  postTitle: string // post name
+}
+
+export interface Post extends PostInfo {
+  authorId: string
+  groupId: string
+  postContent: string 
   timeStamp: string
   // status: "draft" | "sent" | "deleted" // post status
   comments: Comment[] // comment
@@ -11,10 +14,12 @@ export interface Post {
   downvote: number // downvote number, default 0.
 }
 
+
+
 export interface Comment {
   _id: string
   // name: string
-  comment_content: string 
+  commentContent: string 
   timeStamp: string
   // status: "draft" | "sent" | "deleted"
   // comment: string[]
@@ -22,23 +27,16 @@ export interface Comment {
   downvote: number
 }
 
-export interface Group {
+export interface GroupsInfo {
   _id: string // group id
   name: string // group name
+}
+
+export interface Group extends GroupsInfo {
   postIds: string[]
 }
 
 export interface User {
   _id: string // user id
   name: string // user name
-}
-
-export interface GroupInfo {
-  _id: string // group id
-  name: string // group name
-}
-
-export interface PostInfo {
-  _id: string // post id
-  name: string // post name
 }
