@@ -25,9 +25,20 @@ export interface Comment {
 export interface Group {
   _id: string // group id
   name: string // group name
+  postIds: string[]
 }
 
 export interface User {
   _id: string // user id
   name: string // user name
+}
+
+export interface GroupInfo {
+  _id: string // group id
+  name: string // group name
+}
+
+export interface PostInfo {
+  _id: string // post id
+  name: string // post name
 }

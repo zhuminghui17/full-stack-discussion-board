@@ -50,7 +50,8 @@ const users: User[] = [
 const groups: Group[] = [
     {
       _id: 'g1', 
-      name: 'Example Group'
+      name: 'Example Group',
+      postIds: ['p1']
     },
   ]
 
@@ -62,14 +63,14 @@ async function main() {
   const db = client.db("test")
 
   // set up unique index for upsert -- to make sure a customer cannot have more than one draft order
-  db.collection("orders").createIndex(
-    { customerId: 1 }, 
-    { unique: true, partialFilterExpression: { state: "draft" } }
-  )
+  // db.collection("orders").createIndex(
+  //   { customerId: 1 }, 
+  //   { unique: true, partialFilterExpression: { state: "draft" } }
+  // )
 
   // add data
   console.log("inserting posts", await db.collection("posts").insertMany(posts as any))
-  console.log("inserting comments", await db.collection("posts").insertMany(comments as any))
+  console.log("inserting comments", await db.collection("comments").insertMany(comments as any))
   console.log("inserting users", await db.collection("users").insertMany(users as any))
   console.log("inserting groups", await db.collection("groups").insertMany(groups as any))
   process.exit(0)
