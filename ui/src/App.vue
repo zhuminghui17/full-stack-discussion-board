@@ -13,20 +13,26 @@
     </b-navbar>
 
     <b-container fluid class="my-4">
+
       <b-row>
+        <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
           <b-button> New Posts</b-button>
-          <b-list-group-item button v-for="post, i in posts" :key="i" @click="alert" class="my-4">
-            <span>Group {{ i }}</span>
+          <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)" class="my-4">
+            <span>Group {{ group.name }}</span>
 
           </b-list-group-item>
 
         </b-col>
+
+        <!-- The second column consists of info of all posts  -->
+
         <b-col xs="12" sm="3">
 
-          <b-list-group flush>
-            <b-list-group-item button v-for="post, i in posts" :key="i" @click="selectPost(post)">
-              <span>{{ post.post_title }}</span>
+          <b-list-group flush
+          v-if = "selectedGroupId">
+            <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i" @click="selectPost(postInfo._id)">
+              <span>{{ postInfo.postTitle }}</span>
 
             </b-list-group-item>
 
@@ -36,6 +42,9 @@
 
 
         </b-col>
+
+
+        <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
           <b-card v-if="selectedPost != null">
             <h1>
@@ -54,7 +63,7 @@
               {{ selectedPost.post_content }}
             </b-row>
             <h2>Comments</h2>
-            <b-row v-for="comment, i in selectedPost.comments">
+            <b-row v-for="comment, i in selectedPost.comments" :key="i">
               {{ comment.comment_content }}
 
             </b-row>
@@ -77,7 +86,9 @@
 
 
           </b-card>
-          <div class="form-group">
+          <div 
+          class="form-group"
+          v-if="selectedGroupId && selectedPost">
             <label for="exampleFormControlTextarea1">Example textarea</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             <b-button class="my-3">Post</b-button>
@@ -120,10 +131,16 @@ export interface Comment {
   downvote: number
 }
 
+export interface Group {
+  _id: string // group id
+  name: string // group name
+  postIds: string[]
+}
 
-
-
-
+export interface postInfo {
+  _id: string
+  postTitle: string 
+}
 
 
 function alert() {
@@ -131,17 +148,54 @@ function alert() {
 }
 
 
-
+const selectedGroupId: Ref<string | null> = ref(null)
+const selectedGroupPostInfos: Ref<postInfo[]|null> = ref(null)
 const selectedPost: Ref<Post | null> = ref(null)
 const posts = [post1, post2]
+
+
+
+
+
+
+const groupsInfo = [
+  {
+    _id:"g1",
+    name: "exampleGroup1"
+  },
+  {
+    _id:"g2",
+    name: "exampleGroup2"
+  }
+]
+
+
+const post1Info:postInfo = {
+  _id:"MCC",
+  postTitle: "Congcong MA"
+}
+
+const post2Info:postInfo = {
+  _id:"ZMH",
+  postTitle: "Minghui ZHu"
+}
+
 
 const thumbUp: Ref<Boolean> = ref(false)
 const thumbDown: Ref<Boolean> = ref(false)
 
 
-function selectPost(post: any) {
-  return selectedPost.value = post
+function selectPost(postId: string) {
+  //  selectedPost.value = post
+  selectedPost.value = post1
+}
 
+function selectGroup(group_id:string){
+
+  console.log(group_id)
+  selectedGroupId.value = group_id
+  selectedGroupPostInfos.value = [post1Info,post2Info]
+  
 }
 
 function clickThumbUp() {
