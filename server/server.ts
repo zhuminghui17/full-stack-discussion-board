@@ -116,67 +116,113 @@ app.get("/api/:postId/post", async (req, res) => {
 
 // Api/user/:userId/post/:postId/post-comment
 
+app.post("/api/user/:userId/add-a-post", async (req, res) => {
+  // const lastPost = posts.find({ _id: 1 }).sort({$natural: -1}).limit(1)
+  // const lastPostId = lastPost._Id
+  // // const idField = 'p'
 
-// app.post("/api/user/:userId/add-a-post", async (req, res) => {
-//   const _id = req.params.userId
-//   const post = await posts.findOne({ _id })
-//   if (post == null) {
-//     res.status(404).json({ _id })
+  const _id = req.params.userId
+  const user = await users.findOne({ _id })
+  if (user == null) {
+    res.status(404).json({ _id })
+    return
+  }
+
+  const newPost = await posts.insertOne(
+    {
+      authorId: req.params.userId,
+      groupId: req.body.groupId,
+      postTitle: req.body.postTitle,
+      postContent: req.body.postContent,
+      timeStamp: '2022-11-19 12:00:00', // fixed now
+      comments: [], // comment
+      upvote: 0,
+      downvote: 0,
+    }
+  )
+  // if (newPost.modifiedCount === 0) {
+  //   res.status(400).json({ error: "no draft order" })
+  //   return
+  // }
+  res.status(200).json({ status: "ok" })
+})
+
+
+
+// app.post("/api/customer/:customerId/submit-draft-order", async (req, res) => {
+//   const result = await orders.updateOne(
+//     {
+//       customerId: req.params.customerId,
+//       state: "draft",
+//     },
+//     {
+//       $set: {
+//         state: "queued",
+//       }
+//     }
+//   )
+//   if (result.modifiedCount === 0) {
+//     res.status(400).json({ error: "no draft order" })
 //     return
 //   }
-//   res.status(200).json(post)
+//   res.status(200).json({ status: "ok" })
 // })
 
-// export function nextId(): string {
 
+
+
+// export function nextId(id: string): string {
+//   const field = id.slice(0,0)
+//   let idNumber = parseInt(id.slice(1))
+//   return Idfield + String(idNumber++)
 // }
 
-// export function addPost(name: string): Id {
-// 	const newPost: Post = { _id: nextId(), authorId, name, }
-// 	todoLists.push(newList)
+// export function addPost(name: string): string {
+// 	const newPost: Post = {_id, authorId, name }
+// 	posts.push(newPost)
 // 	save()
-// 	return newList.id
+// 	return newPost._id
 // }
 
 
 
 
-// app.get("/api/customer/:customerId/draft-order", async (req, res) => {
-//   const { customerId } = req.params
+// // app.get("/api/customer/:customerId/draft-order", async (req, res) => {
+// //   const { customerId } = req.params
 
-//   // TODO: validate customerId (Done)
+// //   // TODO: validate customerId (Done)
 
-//   const draftOrder = await orders.findOne({ state: "draft", customerId })
-//   // if (draftOrder == null) {
-//   //   res.status(404).json({ customerId})
-//   //   return
-//   // }
-//   res.status(200).json(draftOrder || { customerId, ingredientIds: [] })
-// })
-
-// // app.put("/api/customer/:customerId/draft-order", async (req, res) => {
-// //   const order: DraftOrder = req.body
-
-// //   // TODO: validate customerId 
-
-// //   const result = await orders.updateOne(
-// //     {
-// //       customerId: req.params.customerId,
-// //       state: "draft",
-// //     },
-// //     {
-// //       $set: {
-// //         ingredientIds: order.ingredientIds
-// //       }
-// //     },
-// //     {
-// //       upsert: true
-// //     }
-// //   )
-// //   // if (result == null) {
-// //   //   res.status(404).json({ result})
+// //   const draftOrder = await orders.findOne({ state: "draft", customerId })
+// //   // if (draftOrder == null) {
+// //   //   res.status(404).json({ customerId})
 // //   //   return
 // //   // }
+// //   res.status(200).json(draftOrder || { customerId, ingredientIds: [] })
+// // })
+
+// // // app.put("/api/customer/:customerId/draft-order", async (req, res) => {
+// // //   const order: DraftOrder = req.body
+
+// // //   // TODO: validate customerId 
+
+// // //   const result = await orders.updateOne(
+// // //     {
+// // //       customerId: req.params.customerId,
+// // //       state: "draft",
+// // //     },
+// // //     {
+// // //       $set: {
+// // //         ingredientIds: order.ingredientIds
+// // //       }
+// // //     },
+// // //     {
+// // //       upsert: true
+// // //     }
+// // //   )
+// // //   // if (result == null) {
+// // //   //   res.status(404).json({ result})
+// // //   //   return
+// // //   // }
 
 // //   res.status(200).json({ status: "ok" })
 // // })
