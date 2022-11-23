@@ -38,7 +38,7 @@ app.get("/api/all-posts", async (req, res) => {
 
 // get all comments
 app.get("/api/all-comments", async (req, res) => {
-  res.status(200).json(await comments.find({ state: { $ne: "draft" }}).toArray())
+  res.status(200).json(await comments.find({ state: { $ne: "draft" } }).toArray())
 })
 
 // TODO
@@ -64,24 +64,24 @@ app.get("/api/:groupId/postsInfo", async (req, res) => {
   const _id = req.params.groupId
   const group = await groups.findOne({ _id })
   if (group == null) {
-    res.status(404).json({ _id })
+    res.status(404).json({ _id }) // why have a 404 case like this? 
     return
   }
+
   const _postIds = group.postIds
-  console.log(_postIds)
-  const postInfoLists:Object[] = []
-  for (let id of _postIds){
+  const postInfoLists: Object[] = []
+  for (let id of _postIds) {
     console.log("here")
-    const _post= await posts.findOne({ _id:id})
-    if (_post == null){
+    const _post = await posts.findOne({ _id: id })
+    if (_post == null) {
       continue
     }
     console.log(_post)
-    const postInfo = {_id:_post._id, postTitle:_post.postTitle } //could improve 
+    const postInfo = { _id: _post._id, postTitle: _post.postTitle } //could improve 
     postInfoLists.push(postInfo)
-    
+
   }
-  
+
 
   // group.posts = await posts.find({ postId: _postIds }).toArray()
   res.status(200).json(postInfoLists)
@@ -189,7 +189,7 @@ app.get("/api/:postId/post", async (req, res) => {
 //       res.status(400).json({ error: "invalid state" })
 //       return
 //   }
-  
+
 //   const result = await orders.updateOne(
 //     condition,
 //     {

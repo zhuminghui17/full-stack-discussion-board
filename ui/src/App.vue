@@ -48,7 +48,7 @@
         <b-col xs="12" sm="6">
           <b-card v-if="selectedPost != null">
             <h1>
-              {{ selectedPost.post_title }}
+              {{ selectedPost.postTitle }}
             </h1>
             <b-row>
               <b-col>
@@ -56,15 +56,15 @@
               </b-col>
 
               <b-col>
-                Author: {{ selectedPost.author_id }}
+                Author: {{ selectedPost.authorId }}
               </b-col>
             </b-row>
             <b-row>
-              {{ selectedPost.post_content }}
+              {{ selectedPost.postContent }}
             </b-row>
             <h2>Comments</h2>
             <b-row v-for="comment, i in selectedPost.comments" :key="i">
-              {{ comment.comment_content }}
+              {{ comment.commentContent }}
 
             </b-row>
             <b-row>
@@ -104,43 +104,12 @@
 import { onMounted, ref, computed, Ref } from 'vue'
 import { post1, post2 } from "./fake_data"
 
+import {Post, User, Comment, Group, PostInfo} from "../../server/data"
 
 
-export interface User {
-  _id: string,
-  name: string
-}
 
-export interface Post {
-  _id: string // post id
-  author_id: string
-  group_id: string
-  post_title: string
-  post_content: string
-  timeStamp: string
-  comments: Comment[] // comment
-  upvote: number // upvote number, default 0.
-  downvote: number // downvote number, default 0.
-}
 
-export interface Comment {
-  _id: string
-  comment_content: string
-  timeStamp: string
-  upvote: number
-  downvote: number
-}
 
-export interface Group {
-  _id: string // group id
-  name: string // group name
-  postIds: string[]
-}
-
-export interface postInfo {
-  _id: string
-  postTitle: string 
-}
 
 
 function alert() {
@@ -149,7 +118,7 @@ function alert() {
 
 
 const selectedGroupId: Ref<string | null> = ref(null)
-const selectedGroupPostInfos: Ref<postInfo[]|null> = ref(null)
+const selectedGroupPostInfos: Ref<PostInfo[]|null> = ref(null)
 const selectedPost: Ref<Post | null> = ref(null)
 const posts = [post1, post2]
 
@@ -170,12 +139,12 @@ const groupsInfo = [
 ]
 
 
-const post1Info:postInfo = {
+const post1Info:PostInfo = {
   _id:"MCC",
   postTitle: "Congcong MA"
 }
 
-const post2Info:postInfo = {
+const post2Info:PostInfo = {
   _id:"ZMH",
   postTitle: "Minghui ZHu"
 }
@@ -185,9 +154,15 @@ const thumbUp: Ref<Boolean> = ref(false)
 const thumbDown: Ref<Boolean> = ref(false)
 
 
+
+
+
+
+
+  
 function selectPost(postId: string) {
   //  selectedPost.value = post
-  selectedPost.value = post1
+  // selectedPost.value = post1
 }
 
 function selectGroup(group_id:string){
