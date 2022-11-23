@@ -4,7 +4,15 @@ import { Post, Comment, User, Group } from './data'
 // Connection URL
 const url = 'mongodb://localhost:27017'
 const client = new MongoClient(url)
-
+const comments: Comment[] = [
+  {
+    _id: 'c1', 
+    commentContent: 'this is the first comment', 
+    timeStamp: '2022-11-19 12:00:02', 
+    upvote: 0,
+    downvote: 0 
+  },
+]
 const posts: Post[] = [
   {
     _id: 'p1', // post id
@@ -13,7 +21,7 @@ const posts: Post[] = [
     postTitle: 'Hello World!',
     postContent: 'Hello World! Hello World!' ,
     timeStamp: '2022-11-19 12:00:00', 
-    comments: [], // comment
+    comments: comments, // comment
     upvote: 0,
     downvote: 0 
   },
@@ -24,21 +32,12 @@ const posts: Post[] = [
     postTitle: 'Second post!',
     postContent: 'This is the second post' ,
     timeStamp: '2022-11-19 12:00:01',
-    comments: [], // comment
+    comments: comments, // comment
     upvote: 10,
     downvote: 100, 
   },
 ]
 
-const comments: Comment[] = [
-    {
-      _id: 'c1', 
-      commentContent: 'this is the first comment', 
-      timeStamp: '2022-11-19 12:00:02', 
-      upvote: 0,
-      downvote: 0 
-    },
-  ]
 
 const users: User[] = [
     {
@@ -62,7 +61,7 @@ const groups: Group[] = [
     {
       _id: 'g2', 
       name: 'Example Group 2',
-      postIds: ['p1']
+      postIds: ['p1',"p2"]
     }
   ]
 
