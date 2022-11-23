@@ -27,12 +27,12 @@ export interface Comment {
   downvote: number
 }
 
-export interface GroupsInfo {
+export interface GroupInfo {
   _id: string // group id
   name: string // group name
 }
 
-export interface Group extends GroupsInfo {
+export interface Group extends GroupInfo {
   postIds: string[]
 }
 

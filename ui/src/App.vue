@@ -104,7 +104,7 @@
 import { onMounted, ref, computed, Ref } from 'vue'
 import { post1, post2 } from "./fake_data"
 
-import {Post, User, Comment, Group, PostInfo} from "../../server/data"
+import {Post, User, Comment, Group, PostInfo, GroupInfo} from "../../server/data"
 
 
 
@@ -116,27 +116,23 @@ function alert() {
   console.log("10086")
 }
 
-
+const userId = "u1"
+const groupsInfo: Ref<GroupInfo[]|null> = ref(null)
 const selectedGroupId: Ref<string | null> = ref(null)
 const selectedGroupPostInfos: Ref<PostInfo[]|null> = ref(null)
 const selectedPost: Ref<Post | null> = ref(null)
 const posts = [post1, post2]
 
 
+async function refresh() {
+
+  groupsInfo.value = await (await (fetch("/api/user/" + encodeURIComponent(userId) + "/groupsInfo"))).json()
+
+}
+onMounted(refresh)
 
 
 
-
-const groupsInfo = [
-  {
-    _id:"g1",
-    name: "exampleGroup1"
-  },
-  {
-    _id:"g2",
-    name: "exampleGroup2"
-  }
-]
 
 
 const post1Info:PostInfo = {
@@ -160,16 +156,15 @@ const thumbDown: Ref<Boolean> = ref(false)
 
 
   
-function selectPost(postId: string) {
-  //  selectedPost.value = post
+async function selectPost(postId: string) {
   // selectedPost.value = post1
+  selectedPost.value = await (await fetch("/api/" + encodeURI(postId) + "/post")).json()
 }
 
-function selectGroup(group_id:string){
+async function selectGroup(group_id:string){
 
-  console.log(group_id)
   selectedGroupId.value = group_id
-  selectedGroupPostInfos.value = [post1Info,post2Info]
+  selectedGroupPostInfos.value = await (await fetch("/api/" + encodeURI(group_id) + "/postsInfo")).json()
   
 }
 
