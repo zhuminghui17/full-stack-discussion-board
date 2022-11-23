@@ -49,16 +49,28 @@ app.get("/api/all-comments", async (req, res) => {
 // Api/:postId/posts
 
 
-// app.get("/api/:userId/groupsInfo", async (req, res) => {
-//   const _id = req.params.userId
-//   const user = await users.findOne({ _id })
-//   if (user == null) {
-//     res.status(404).json({ _id })
-//     return
-//   }
-//   user.groupsInfo = await orders.find({ userId: _id, state: { $ne: "draft" } }).toArray()
-//   res.status(200).json(customer)
-// })
+app.get("/api/:userId/groupsInfo", async (req, res) => {
+  const _id = req.params.userId
+  const user = await users.findOne({ _id })
+  if (user == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  const _groupIds = user.groupIds
+  console.log(_groupIds)
+  const groupInfoLists:Object[] = []
+  for (let id of _groupIds){
+    console.log("here")
+    const _group= await groups.findOne({ _id:id})
+    if (_group == null){
+      continue
+    }
+    console.log(_group)
+    const groupInfo = {_id:_group._id, name:_group.name } //could improve 
+    groupInfoLists.push(groupInfo) 
+  }
+  res.status(200).json(groupInfoLists)
+})
 
 app.get("/api/:groupId/postsInfo", async (req, res) => {
   const _id = req.params.groupId
@@ -97,6 +109,10 @@ app.get("/api/:postId/post", async (req, res) => {
   }
   res.status(200).json(post)
 })
+
+
+
+
 
 // app.get("/api/customer/:customerId/draft-order", async (req, res) => {
 //   const { customerId } = req.params

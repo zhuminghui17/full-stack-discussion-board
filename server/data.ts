@@ -39,4 +39,5 @@ export interface Group extends GroupsInfo {
 export interface User {
   _id: string // user id
   name: string // user name
+  groupIds: string[]
 }

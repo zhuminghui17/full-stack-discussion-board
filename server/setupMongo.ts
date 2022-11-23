@@ -42,9 +42,15 @@ const comments: Comment[] = [
 
 const users: User[] = [
     {
-      _id: 'c1', 
-      name: 'ccdd'
+      _id: 'u1', 
+      name: 'ccdd',
+      groupIds: ['g1']
     },
+    {
+      _id: 'u2', 
+      name: 'ddcc',
+      groupIds: ['g2']
+    }
   ]
 
 const groups: Group[] = [
@@ -53,6 +59,11 @@ const groups: Group[] = [
       name: 'Example Group',
       postIds: ['p1']
     },
+    {
+      _id: 'g2', 
+      name: 'Example Group 2',
+      postIds: ['p1']
+    }
   ]
 
 
