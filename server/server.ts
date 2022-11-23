@@ -49,7 +49,7 @@ app.get("/api/all-comments", async (req, res) => {
 // Api/:postId/posts
 
 
-app.get("/api/:userId/groupsInfo", async (req, res) => {
+app.get("/api/user/:userId/groupsInfo", async (req, res) => {
   const _id = req.params.userId
   const user = await users.findOne({ _id })
   if (user == null) {
@@ -110,6 +110,33 @@ app.get("/api/:postId/post", async (req, res) => {
   res.status(200).json(post)
 })
 
+// Post 
+
+// Api/user/:userId/post-question
+
+// Api/user/:userId/post/:postId/post-comment
+
+
+// app.post("/api/user/:userId/add-a-post", async (req, res) => {
+//   const _id = req.params.userId
+//   const post = await posts.findOne({ _id })
+//   if (post == null) {
+//     res.status(404).json({ _id })
+//     return
+//   }
+//   res.status(200).json(post)
+// })
+
+// export function nextId(): string {
+
+// }
+
+// export function addPost(name: string): Id {
+// 	const newPost: Post = { _id: nextId(), authorId, name, }
+// 	todoLists.push(newList)
+// 	save()
+// 	return newList.id
+// }
 
 
 
