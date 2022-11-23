@@ -17,6 +17,7 @@ const posts: Post[] = [
   {
     _id: 'p1', // post id
     authorId: 'u1',
+    groupId: 'g1',
     postTitle: 'Hello World!',
     postContent: 'Hello World! Hello World!' ,
     timeStamp: '2022-11-19 12:00:00', 
@@ -27,6 +28,7 @@ const posts: Post[] = [
   {
     _id: "p2",
     authorId : 'u2',
+    groupId: 'g2',
     postTitle: 'Second post!',
     postContent: 'This is the second post' ,
     timeStamp: '2022-11-19 12:00:01',
@@ -37,6 +39,7 @@ const posts: Post[] = [
   {
     _id: "p3",
     authorId : 'u2',
+    groupId: 'g3',
     postTitle: 'third post!',
     postContent: 'This is the third post' ,
     timeStamp: '2022-11-19 12:00:01',

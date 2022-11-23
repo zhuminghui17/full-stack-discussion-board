@@ -4,6 +4,7 @@ import pino from 'pino'
 import expressPinoLogger from 'express-pino-logger'
 import { Collection, Db, MongoClient, ObjectId } from 'mongodb'
 import { Post, PostInfo } from './data'
+import { generateKey } from 'crypto'
 // import { DraftOrder, Order } from './data'
 
 // set up Mongo
@@ -127,25 +128,39 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
     res.status(404).json({ _id })
     return
   }
-
-  const newPost = await posts.insertOne(
+  // To do newId = generateKey()
+  await posts.insertOne(
     {
       authorId: req.params.userId,
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
       timeStamp: '2022-11-19 12:00:00', // fixed now
-      comments: [], // comment
+      commentIds: [], // comment
       upvote: 0,
       downvote: 0,
     }
   )
-  // if (newPost.modifiedCount === 0) {
-  //   res.status(400).json({ error: "no draft order" })
-  //   return
-  // }
+
+  const result = await groups.updateOne(
+    {
+      groupId: req.body.groupId,
+    },
+    {
+      $push: {
+        postIds: 1// TODO: where is the postId
+      }
+    }
+  )
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "no draft order" })
+    return
+  }
   res.status(200).json({ status: "ok" })
-})
+  })
+
+  
+
 
 
 
