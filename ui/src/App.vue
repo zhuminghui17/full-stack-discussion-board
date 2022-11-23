@@ -63,8 +63,8 @@
               {{ selectedPost.postContent }}
             </b-row>
             <h2>Comments</h2>
-            <b-row v-for="comment, i in selectedPost.comments" :key="i">
-              {{ comment.commentContent }}
+            <b-row v-for="commentId, i in selectedPost.commentIds" :key="i">
+              {{ commentId }}
 
             </b-row>
             <b-row>

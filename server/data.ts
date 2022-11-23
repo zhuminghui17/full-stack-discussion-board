@@ -5,11 +5,10 @@ export interface PostInfo {
 
 export interface Post extends PostInfo {
   authorId: string
-  groupId: string
   postContent: string 
   timeStamp: string
   // status: "draft" | "sent" | "deleted" // post status
-  comments: Comment[] // comment
+  commentIds: string[] // comment
   upvote: number // upvote number, default 0.
   downvote: number // downvote number, default 0.
 }
