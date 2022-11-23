@@ -1,5 +1,5 @@
 <!-- Todo:
-1. complete the group functionality 
+1. complete the button of adding posts by modality 
 2. componentize each section of UI
 3. beautify UI
 -->
