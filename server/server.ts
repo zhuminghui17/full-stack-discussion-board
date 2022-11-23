@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import pino from 'pino'
 import expressPinoLogger from 'express-pino-logger'
 import { Collection, Db, MongoClient, ObjectId } from 'mongodb'
+import { Post, PostInfo } from './data'
 // import { DraftOrder, Order } from './data'
 
 // set up Mongo
@@ -67,8 +68,23 @@ app.get("/api/:groupId/postsInfo", async (req, res) => {
     return
   }
   const _postIds = group.postIds
-  group.posts = await posts.find({ postId: _postIds }).toArray()
-  res.status(200).json(group.posts)
+  console.log(_postIds)
+  const postInfoLists:Object[] = []
+  for (let id of _postIds){
+    console.log("here")
+    const _post= await posts.findOne({ _id:id})
+    if (_post == null){
+      continue
+    }
+    console.log(_post)
+    const postInfo = {_id:_post._id, postTitle:_post.postTitle } //could improve 
+    postInfoLists.push(postInfo)
+    
+  }
+  
+
+  // group.posts = await posts.find({ postId: _postIds }).toArray()
+  res.status(200).json(postInfoLists)
   // TODO: return postInfo
 })
 
