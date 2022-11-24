@@ -75,41 +75,43 @@
 
         <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
-          <b-card v-if="selectedPost != null" :title="selectedPost.postTitle" :sub-title="selectedPost.timeStamp">
-            <b-avatar variant="primary" :text="selectedPost.authorId"></b-avatar>
-            <b-row>
-              <b-col>
-                Author: {{ selectedPost.authorId }}
+          <b-card no-body class="overflow-hidden">
+            <b-row no-gutters>
+              <b-col md="1">
+                <b-card class="row justify-content-md-center border-0 mx-auto">
+                  <b-avatar class="row mr-3" variant="primary" :text="selectedPost?.authorId"></b-avatar>
+                  <div class="row mx-auto">{{ selectedPost?.authorId }}</div>
+                </b-card>
+              </b-col>
+              <b-col md="10">
+                <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle" :sub-title="selectedPost.timeStamp">
+                  
+                  <b-card-text>
+                    {{ selectedPost.postContent }}
+                  </b-card-text>
+
+                </b-card-body>
               </b-col>
             </b-row>
-            <b-card-text>
-              {{ selectedPost.postContent }}
-            </b-card-text>
-            
             <template #footer>
-              <h3>Comments</h3>
-              <b-card-text v-for="commentId, i in selectedPost.commentIds" :key="i">
-                {{ commentId }}
+                    <h4>Comments</h4>
+                    <b-card-text v-for="commentId, i in selectedPost?.commentIds" :key="i">
+                      {{ commentId }}
 
-              </b-card-text>
-              <b-row>
-                <b-col>
-                  <b-icon v-if="thumbUp" icon="hand-thumbs-up-fill" @click="cancelThumbUp" class="clickable-icon">
-                  </b-icon>
+                    </b-card-text>
+                    <b-row>
+                      <b-col>
+                        <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon" style="font-size: 30px">
+                        </b-icon>
 
-                  <b-icon v-else icon="hand-thumbs-up" @click="clickThumbUp" class="clickable-icon"></b-icon>
+                        <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px"></b-icon>
 
-                </b-col>
-                <b-col>
-                  <b-icon v-if="thumbDown" icon="hand-thumbs-down-fill" @click="cancelThumbDown" class="clickable-icon">
-                  </b-icon>
-
-                  <b-icon v-else icon="hand-thumbs-down" @click="clickThumbDown" class="clickable-icon"></b-icon>
-
-                </b-col>
-              </b-row>
-            </template>
-
+                        <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon" style="font-size: 30px">
+                        </b-icon>
+                        <b-icon v-else icon="caret-down" @click="clickThumbDown" class="clickable-icon" style="font-size: 30px"></b-icon>
+                      </b-col>
+                    </b-row>
+                  </template>
           </b-card>
           <div class="form-group" v-if="selectedGroupId && selectedPost">
             <label for="exampleFormControlTextarea1">Your Answer</label>
@@ -119,7 +121,6 @@
         </b-col>
       </b-row>
     </b-container>
-
   </div>
 </template>
 
