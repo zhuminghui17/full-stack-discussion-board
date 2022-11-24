@@ -5,7 +5,7 @@ export interface PostInfo {
 
 export interface Post extends PostInfo {
   authorId: string
-  postContent: string 
+  postContent: string
   timeStamp: string
   // status: "draft" | "sent" | "deleted" // post status
   commentIds: string[] // comment
@@ -18,7 +18,7 @@ export interface Post extends PostInfo {
 export interface Comment {
   _id: string
   // name: string
-  commentContent: string 
+  commentContent: string
   timeStamp: string
   // status: "draft" | "sent" | "deleted"
   // comment: string[]

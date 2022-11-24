@@ -18,7 +18,8 @@
         <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
           <b-button> New Posts</b-button>
-          <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)" class="my-4">
+          <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)"
+            class="my-4">
             <span>Group {{ group.name }}</span>
 
           </b-list-group-item>
@@ -29,9 +30,9 @@
 
         <b-col xs="12" sm="3">
 
-          <b-list-group flush
-          v-if = "selectedGroupId">
-            <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i" @click="selectPost(postInfo._id)">
+          <b-list-group flush v-if="selectedGroupId">
+            <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
+              @click="selectPost(postInfo._id)">
               <span>{{ postInfo.postTitle }}</span>
 
             </b-list-group-item>
@@ -86,9 +87,7 @@
 
 
           </b-card>
-          <div 
-          class="form-group"
-          v-if="selectedGroupId && selectedPost">
+          <div class="form-group" v-if="selectedGroupId && selectedPost">
             <label for="exampleFormControlTextarea1">Example textarea</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             <b-button class="my-3">Post</b-button>
@@ -104,7 +103,7 @@
 import { onMounted, ref, computed, Ref } from 'vue'
 import { post1, post2 } from "./fake_data"
 
-import {Post, User, Comment, Group, PostInfo, GroupInfo} from "../../server/data"
+import { Post, User, Comment, Group, PostInfo, GroupInfo } from "../../server/data"
 
 
 
@@ -117,9 +116,9 @@ function alert() {
 }
 
 const userId = "u1"
-const groupsInfo: Ref<GroupInfo[]|null> = ref(null)
+const groupsInfo: Ref<GroupInfo[] | null> = ref(null)
 const selectedGroupId: Ref<string | null> = ref(null)
-const selectedGroupPostInfos: Ref<PostInfo[]|null> = ref(null)
+const selectedGroupPostInfos: Ref<PostInfo[] | null> = ref(null)
 const selectedPost: Ref<Post | null> = ref(null)
 const posts = [post1, post2]
 
@@ -135,13 +134,13 @@ onMounted(refresh)
 
 
 
-const post1Info:PostInfo = {
-  _id:"MCC",
+const post1Info: PostInfo = {
+  _id: "MCC",
   postTitle: "Congcong MA"
 }
 
-const post2Info:PostInfo = {
-  _id:"ZMH",
+const post2Info: PostInfo = {
+  _id: "ZMH",
   postTitle: "Minghui ZHu"
 }
 
@@ -155,17 +154,17 @@ const thumbDown: Ref<Boolean> = ref(false)
 
 
 
-  
+
 async function selectPost(postId: string) {
   // selectedPost.value = post1
   selectedPost.value = await (await fetch("/api/" + encodeURI(postId) + "/post")).json()
 }
 
-async function selectGroup(group_id:string){
+async function selectGroup(group_id: string) {
 
   selectedGroupId.value = group_id
   selectedGroupPostInfos.value = await (await fetch("/api/" + encodeURI(group_id) + "/postsInfo")).json()
-  
+
 }
 
 function clickThumbUp() {

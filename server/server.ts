@@ -59,16 +59,16 @@ app.get("/api/user/:userId/groupsInfo", async (req, res) => {
   }
   const _groupIds = user.groupIds
   console.log(_groupIds)
-  const groupInfoLists:Object[] = []
-  for (let id of _groupIds){
+  const groupInfoLists: Object[] = []
+  for (let id of _groupIds) {
     console.log("here")
-    const _group= await groups.findOne({ _id:id})
-    if (_group == null){
+    const _group = await groups.findOne({ _id: id })
+    if (_group == null) {
       continue
     }
     console.log(_group)
-    const groupInfo = {_id:_group._id, name:_group.name } //could improve 
-    groupInfoLists.push(groupInfo) 
+    const groupInfo = { _id: _group._id, name: _group.name } //could improve 
+    groupInfoLists.push(groupInfo)
   }
   res.status(200).json(groupInfoLists)
 })
@@ -157,9 +157,9 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
     return
   }
   res.status(200).json({ status: "ok" })
-  })
+})
 
-  
+
 
 
 
