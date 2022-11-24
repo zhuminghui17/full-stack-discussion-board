@@ -49,10 +49,10 @@
         <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
           <b-button variant="primary"> New Posts</b-button>
+          
           <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i"
-            @click="selectGroup(group._id)" class="my-4">
+            @click="selectGroup(group._id)" class="my-3">
             <span> Group: {{ group.name }}</span>
-
           </b-list-group-item>
 
         </b-col>
@@ -63,37 +63,31 @@
 
           <b-list-group flush v-if="selectedGroupId">
             <b-list-group-item variant="success" button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
-              @click="selectPost(postInfo._id)">
+              @click="selectPost(postInfo._id)" class="my-2">
               <span>{{ postInfo.postTitle }}</span>
 
             </b-list-group-item>
 
-
-
           </b-list-group>
-
 
         </b-col>
 
 
         <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
-          <b-card v-if="selectedPost != null" :title="selectedPost.postTitle" sub-title="Card subtitle">
+          <b-card v-if="selectedPost != null" :title="selectedPost.postTitle" :sub-title="selectedPost.timeStamp">
+            <b-avatar variant="primary" :text="selectedPost.authorId"></b-avatar>
             <b-row>
               <b-col>
-                Time: {{ selectedPost.timeStamp }}
-              </b-col>
-
-              <b-col>
                 Author: {{ selectedPost.authorId }}
-                <b-avatar variant="primary" :text="selectedPost.authorId"></b-avatar>
               </b-col>
             </b-row>
             <b-card-text>
               {{ selectedPost.postContent }}
             </b-card-text>
+            
             <template #footer>
-              <h2>Comments</h2>
+              <h3>Comments</h3>
               <b-card-text v-for="commentId, i in selectedPost.commentIds" :key="i">
                 {{ commentId }}
 
@@ -120,7 +114,7 @@
           <div class="form-group" v-if="selectedGroupId && selectedPost">
             <label for="exampleFormControlTextarea1">Your Answer</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <b-button class="my-3">Post</b-button>
+            <b-button variant="primary" class="my-3">Post</b-button>
           </div>
         </b-col>
       </b-row>
