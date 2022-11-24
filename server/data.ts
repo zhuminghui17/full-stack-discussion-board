@@ -5,6 +5,7 @@ export interface PostInfo {
 
 export interface Post extends PostInfo {
   authorId: string
+  groupId: string
   postContent: string
   timeStamp: string
   // status: "draft" | "sent" | "deleted" // post status
