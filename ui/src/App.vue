@@ -8,8 +8,39 @@
 
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="primary">
-      <b-navbar-brand href="#">This is my discussion board</b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand href="#">Discussion Board</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item href="#">Link1</b-nav-item>
+          <b-nav-item href="#">Link2</b-nav-item>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-form>
+            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          </b-nav-form>
+
+          <b-nav-item-dropdown text="Lang" right>
+            <b-dropdown-item href="#">EN</b-dropdown-item>
+            <b-dropdown-item href="#">CN</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item-dropdown right>
+            <!-- Using 'button-content' slot -->
+            <template #button-content>
+              <em>User</em>
+            </template>
+            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-collapse>
     </b-navbar>
 
     <b-container fluid class="my-4">
@@ -17,10 +48,10 @@
       <b-row>
         <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
-          <b-button> New Posts</b-button>
-          <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)"
-            class="my-4">
-            <span>Group {{ group.name }}</span>
+          <b-button variant="primary"> New Posts</b-button>
+          <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i"
+            @click="selectGroup(group._id)" class="my-4">
+            <span> Group: {{ group.name }}</span>
 
           </b-list-group-item>
 
@@ -31,7 +62,7 @@
         <b-col xs="12" sm="3">
 
           <b-list-group flush v-if="selectedGroupId">
-            <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
+            <b-list-group-item variant="success" button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
               @click="selectPost(postInfo._id)">
               <span>{{ postInfo.postTitle }}</span>
 
@@ -47,10 +78,7 @@
 
         <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
-          <b-card v-if="selectedPost != null">
-            <h1>
-              {{ selectedPost.postTitle }}
-            </h1>
+          <b-card v-if="selectedPost != null" :title="selectedPost.postTitle" sub-title="Card subtitle">
             <b-row>
               <b-col>
                 Time: {{ selectedPost.timeStamp }}
@@ -58,37 +86,39 @@
 
               <b-col>
                 Author: {{ selectedPost.authorId }}
+                <b-avatar variant="primary" :text="selectedPost.authorId"></b-avatar>
               </b-col>
             </b-row>
-            <b-row>
+            <b-card-text>
               {{ selectedPost.postContent }}
-            </b-row>
-            <h2>Comments</h2>
-            <b-row v-for="commentId, i in selectedPost.commentIds" :key="i">
-              {{ commentId }}
+            </b-card-text>
+            <template #footer>
+              <h2>Comments</h2>
+              <b-card-text v-for="commentId, i in selectedPost.commentIds" :key="i">
+                {{ commentId }}
 
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-icon v-if="thumbUp" icon="hand-thumbs-up-fill" @click="cancelThumbUp" class="clickable-icon">
-                </b-icon>
+              </b-card-text>
+              <b-row>
+                <b-col>
+                  <b-icon v-if="thumbUp" icon="hand-thumbs-up-fill" @click="cancelThumbUp" class="clickable-icon">
+                  </b-icon>
 
-                <b-icon v-else icon="hand-thumbs-up" @click="clickThumbUp" class="clickable-icon"></b-icon>
+                  <b-icon v-else icon="hand-thumbs-up" @click="clickThumbUp" class="clickable-icon"></b-icon>
 
-              </b-col>
-              <b-col>
-                <b-icon v-if="thumbDown" icon="hand-thumbs-down-fill" @click="cancelThumbDown" class="clickable-icon">
-                </b-icon>
+                </b-col>
+                <b-col>
+                  <b-icon v-if="thumbDown" icon="hand-thumbs-down-fill" @click="cancelThumbDown" class="clickable-icon">
+                  </b-icon>
 
-                <b-icon v-else icon="hand-thumbs-down" @click="clickThumbDown" class="clickable-icon"></b-icon>
+                  <b-icon v-else icon="hand-thumbs-down" @click="clickThumbDown" class="clickable-icon"></b-icon>
 
-              </b-col>
-            </b-row>
-
+                </b-col>
+              </b-row>
+            </template>
 
           </b-card>
           <div class="form-group" v-if="selectedGroupId && selectedPost">
-            <label for="exampleFormControlTextarea1">Example textarea</label>
+            <label for="exampleFormControlTextarea1">Your Answer</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             <b-button class="my-3">Post</b-button>
           </div>
@@ -189,4 +219,10 @@ function cancelThumbDown() {
 .clickable-icon {
   cursor: pointer;
 }
+</style>
+
+<style scoped>
+ .navbar.navbar-dark.bg-dark{
+    background-color: #00539B!important;
+ }
 </style>
