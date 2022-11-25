@@ -48,8 +48,19 @@
       <b-row>
         <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
-          <b-button variant="primary"> New Posts</b-button>
-          
+          <b-button v-b-modal.new-post variant="primary"> New Post</b-button>
+
+          <b-modal id="new-post" title="New Post">
+            <form ref="form">
+              <b-form-group label="Post Title" label-for="post-title" invalid-feedback="Title is required">
+                <b-form-input id="post-title" required></b-form-input>
+              </b-form-group>
+              <b-form-group label="Content" label-for="post-content" invalid-feedback="Content is required">
+                <b-form-input id="post-content" required></b-form-input>
+              </b-form-group>
+            </form>
+          </b-modal>
+
           <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i"
             @click="selectGroup(group._id)" class="my-3">
             <span> Group: {{ group.name }}</span>
@@ -84,8 +95,9 @@
                 </b-card>
               </b-col>
               <b-col md="10">
-                <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle" :sub-title="selectedPost.timeStamp">
-                  
+                <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle"
+                  :sub-title="selectedPost.timeStamp">
+
                   <b-card-text>
                     {{ selectedPost.postContent }}
                   </b-card-text>
@@ -94,24 +106,28 @@
               </b-col>
             </b-row>
             <template #footer>
-                    <h4>Comments</h4>
-                    <b-card-text v-for="commentId, i in selectedPost?.commentIds" :key="i">
-                      {{ commentId }}
+              <h4>Comments</h4>
+              <b-card-text v-for="commentId, i in selectedPost?.commentIds" :key="i">
+                {{ commentId }}
 
-                    </b-card-text>
-                    <b-row>
-                      <b-col>
-                        <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon" style="font-size: 30px">
-                        </b-icon>
+              </b-card-text>
+              <b-row>
+                <b-col>
+                  <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon"
+                    style="font-size: 30px">
+                  </b-icon>
 
-                        <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px"></b-icon>
+                  <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px">
+                  </b-icon>
 
-                        <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon" style="font-size: 30px">
-                        </b-icon>
-                        <b-icon v-else icon="caret-down" @click="clickThumbDown" class="clickable-icon" style="font-size: 30px"></b-icon>
-                      </b-col>
-                    </b-row>
-                  </template>
+                  <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon"
+                    style="font-size: 30px">
+                  </b-icon>
+                  <b-icon v-else icon="caret-down" @click="clickThumbDown" class="clickable-icon"
+                    style="font-size: 30px"></b-icon>
+                </b-col>
+              </b-row>
+            </template>
           </b-card>
           <div class="form-group" v-if="selectedGroupId && selectedPost">
             <label for="exampleFormControlTextarea1">Your Answer</label>
@@ -121,6 +137,7 @@
         </b-col>
       </b-row>
     </b-container>
+
   </div>
 </template>
 
@@ -217,7 +234,7 @@ function cancelThumbDown() {
 </style>
 
 <style scoped>
- .navbar.navbar-dark.bg-dark{
-    background-color: #00539B!important;
- }
+.navbar.navbar-dark.bg-dark {
+  background-color: #00539B !important;
+}
 </style>
