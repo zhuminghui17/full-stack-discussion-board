@@ -94,7 +94,7 @@
               </b-col>
               <b-col md="10">
                 <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle"
-                  :sub-title="selectedPost.timeStamp">
+                  :sub-title="selectedPost.timeStamp.toLocaleString()">
 
                   <b-card-text>
                     {{ selectedPost.postContent }}
@@ -124,8 +124,8 @@
             </b-row>
             <template #footer>
               <h4>Comments</h4>
-              <b-card-text v-for="commentId, i in selectedPost?.commentIds" :key="i">
-                {{ commentId }}
+              <b-card-text v-for="comment, i in selectedPostComments" :key="i">
+                {{ comment.commentContent }}
 
               </b-card-text>
 
@@ -169,6 +169,7 @@ const newPostTitle: Ref<String> = ref("")
 const newPostContent: Ref<String> = ref("")
 const newPostGroupId: Ref<String> = ref("")
 const newCommentContent: Ref<String> = ref("")
+const selectedPostComments: Ref<Comment[]> = ref([])
 
 async function refresh() {
 
@@ -176,8 +177,6 @@ async function refresh() {
 
 }
 onMounted(refresh)
-
-
 
 
 
@@ -238,6 +237,7 @@ async function postComment() {
     selectPost(selectedPost.value._id)
   }
   
+  newCommentContent.value = ""
 
 }
 
@@ -246,6 +246,15 @@ async function postComment() {
 async function selectPost(postId: string) {
   // selectedPost.value = post1
   selectedPost.value = await (await fetch("/api/post/" + encodeURI(postId) + "/post")).json()
+  if (selectedPost.value != null){
+    let commentIds = selectedPost.value.commentIds
+    let _selectedPostComments = []
+    for (let id of commentIds){
+      let theComment = await (await fetch("/api/comment/" + encodeURI(id) + "/comment")).json()
+      _selectedPostComments.push(theComment)
+    }
+    selectedPostComments.value = _selectedPostComments
+  }
 }
 
 async function selectGroup(group_id: string) {
