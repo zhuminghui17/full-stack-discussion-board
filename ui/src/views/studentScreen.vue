@@ -1,3 +1,5 @@
+<!-- TODO -->
+
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
@@ -207,7 +209,13 @@ async function newPost() {
       })
     }
     )
-  refresh()
+
+    // if there already has a selectedGroupId, select that group to ensure the selected 
+    // group gets refreshed 
+    if (selectedGroupId.value != null){
+      selectGroup(selectedGroupId.value)
+    }
+  
 }
 
 
