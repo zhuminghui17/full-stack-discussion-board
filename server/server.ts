@@ -38,12 +38,6 @@ app.get("/api/all-posts", async (req, res) => {
 
 // get all comments
 
-// TODO
-// Api/:userId/groupInfos
-
-// Api/:groupId/postInfos 
-
-// Api/:postId/posts
 
 
 app.get("/api/user/:userId/groupsInfo", async (req, res) => {
@@ -63,7 +57,7 @@ app.get("/api/user/:userId/groupsInfo", async (req, res) => {
       continue
     }
     console.log(_group)
-    const groupInfo = { _id: _group._id, name: _group.name } //could improve 
+    const groupInfo = { _id: _group._id, name: _group.name } 
     groupInfoLists.push(groupInfo)
   }
   res.status(200).json(groupInfoLists)
@@ -125,7 +119,7 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
     res.status(404).json({ _id })
     return
   }
-  // To do newId = 
+  
   const newPostId = new ObjectId()
   await posts.insertOne(
     {
@@ -169,14 +163,13 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
 
   let postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
-
   if (post == null) {
     res.status(404).json({ postId })
     return
   }
 
   const newCommentId = new ObjectId()
-  
+
   await comments.insertOne(
     {
       _id: newCommentId,
