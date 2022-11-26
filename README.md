@@ -1,9 +1,9 @@
 # Discussion Board 
 
 ## Primary roles
-Congcong Ma:  
-Minghui Zhu:  
-Quan Wang:  
+🐎Congcong Ma:  
+🐷Minghui Zhu:  
+🍄Quan Wang:  
 
 ## How to run the program
 1. Open Docker
