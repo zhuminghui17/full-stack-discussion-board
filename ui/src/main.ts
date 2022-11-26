@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import App from '@/views/App.vue'
+import App from '@/App.vue'
 
 import studentScreen from "@/views/studentScreen.vue"
 import professorScreen from "@/views/professorScreen.vue"
@@ -36,6 +36,7 @@ Vue.config.devtools = true
 
 /* eslint-disable no-new */
 new Vue({
+  router,
   el: '#app',
   render: h => h(App),
 })
