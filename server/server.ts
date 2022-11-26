@@ -110,6 +110,47 @@ app.get("/api/comment/:commentId/comment", async (req, res) => {
   res.status(200).json(comment)
 })
 
+app.get("/api/post/:postId/upvote", async (req, res) => {
+  const _id = new ObjectId(req.params.postId)
+  const post = await posts.findOne({ _id })
+  if (post == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  res.status(200).json(post.upvote)
+})
+
+app.get("/api/post/:postId/downvote", async (req, res) => {
+  const _id = new ObjectId(req.params.postId)
+  const post = await posts.findOne({ _id })
+  if (post == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  res.status(200).json(post.downvote)
+})
+
+app.get("/api/post/:postId/comment/:commentId/upvote", async (req, res) => {
+  const _id = new ObjectId(req.params.commentId)
+  const comment = await comments.findOne({ _id })
+  if (comment == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  res.status(200).json(comment.upvote)
+})
+
+app.get("/api/post/:postId/comment/:commentId/downvote", async (req, res) => {
+  const _id = new ObjectId(req.params.commentId)
+  const comment = await comments.findOne({ _id })
+  if (comment == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  res.status(200).json(comment.downvote)
+})
+
+
 
 // POST API
 app.post("/api/user/:userId/add-a-post", async (req, res) => {
