@@ -37,9 +37,6 @@ app.get("/api/all-posts", async (req, res) => {
 })
 
 // get all comments
-app.get("/api/all-comments", async (req, res) => {
-  res.status(200).json(await comments.find({ state: { $ne: "draft" } }).toArray())
-})
 
 // TODO
 // Api/:userId/groupInfos
@@ -209,6 +206,172 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
   res.status(200).json({ status: "ok" })
 })
 
+// PUT API
+
+// upthumb
+// TODO: 1. 修改点赞数值 2. 只能点一次
+
+app.put("/api/user/:userId/post/:postId/upvote", async (req, res) => {
+  const userId = req.params.userId
+  const user = await users.findOne({ _id: userId })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  const postId = req.params.postId.toString()
+  const post = await posts.findOne({ _id: postId })
+
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+  console.log(post)
+  const result = await posts.updateOne(
+    {
+      _id: postId,
+      authorId: userId,
+    },
+    {
+      $inc: {
+        upvote: 1
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "upvote error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
+
+app.put("/api/user/:userId/post/:postId/downvote", async (req, res) => {
+  const userId = req.params.userId
+  const user = await users.findOne({ _id: userId })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  const postId = req.params.postId
+  const post = await posts.findOne({ _id: postId })
+
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  const result = await posts.updateOne(
+    {
+      _id: postId,
+      authorId: userId,
+    },
+    {
+      $inc: {
+        downvote: 1
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "downvote error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
+
+
+app.put("/api/user/:userId/post/:postId/comment/:commentId/upvote", async (req, res) => {
+  const userId = req.params.userId
+  const user = await users.findOne({ _id: userId })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+  
+  const postId = req.params.postId
+  const post = await posts.findOne({ _id: postId })
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  let commentId = req.params.commentId
+  let _commentId = new ObjectId(commentId)
+  const comment = await comments.findOne({ _id: _commentId })
+  if (comment == null) {
+    res.status(404).json({ commentId })
+    return
+  }
+
+  const result = await comments.updateOne(
+    {
+      _id: _commentId,
+      authorId: userId,
+    },
+    {
+      $inc: {
+        upvote: 1
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "upvote error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
+
+app.put("/api/user/:userId/post/:postId/comment/:commentId/downvote", async (req, res) => {
+  const userId = req.params.userId
+  const user = await users.findOne({ _id: userId })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  const postId = req.params.postId
+  const post = await posts.findOne({ _id: postId })
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  const commentId = req.params.commentId
+  const comment = await comments.findOne({ _id: commentId })
+  if (comment == null) {
+    res.status(404).json({ commentId })
+    return
+  }
+
+  const result = await comments.updateOne(
+    {
+      _id: commentId,
+      authorId: userId,
+    },
+    {
+      $inc: {
+        downvote: 1
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "downvote error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
 
 
 // // // app.put("/api/customer/:customerId/draft-order", async (req, res) => {
