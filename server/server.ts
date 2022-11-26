@@ -31,7 +31,6 @@ app.use(expressPinoLogger({ logger }))
 
 // app routes
 
-
 // get all posts
 app.get("/api/all-posts", async (req, res) => {
   res.status(200).json(await posts.find({}).toArray())
@@ -73,7 +72,7 @@ app.get("/api/user/:userId/groupsInfo", async (req, res) => {
   res.status(200).json(groupInfoLists)
 })
 
-app.get("/api/:groupId/postsInfo", async (req, res) => {
+app.get("/api/group/:groupId/postsInfo", async (req, res) => {
   const _id = req.params.groupId
   const group = await groups.findOne({ _id })
   if (group == null) {
@@ -100,7 +99,7 @@ app.get("/api/:groupId/postsInfo", async (req, res) => {
   // TODO: return postInfo
 })
 
-app.get("/api/:postId/post", async (req, res) => {
+app.get("/api/post/:postId/post", async (req, res) => {
   const _id = req.params.postId
   const post = await posts.findOne({ _id })
   if (post == null) {
@@ -110,7 +109,7 @@ app.get("/api/:postId/post", async (req, res) => {
   res.status(200).json(post)
 })
 
-app.get("/api/:commentId/comment", async (req, res) => {
+app.get("/api/comment/:commentId/comment", async (req, res) => {
   const _id = req.params.commentId
   const comment = await comments.findOne({ _id })
   if (comment == null) {
@@ -121,12 +120,7 @@ app.get("/api/:commentId/comment", async (req, res) => {
 })
 
 
-// Post 
-
-// Api/user/:userId/post-question
-
-// Api/user/:userId/post/:postId/post-comment
-
+// POST API
 app.post("/api/user/:userId/add-a-post", async (req, res) => {
   const _id = req.params.userId
   const user = await users.findOne({ _id })
@@ -168,7 +162,6 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
 })
 
 
-
 app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
   let userId = req.params.userId
   const user = await users.findOne({ _id: userId })
@@ -191,9 +184,8 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
     {
       _id: newCommentId,
       authorId: req.params.userId,
-      // groupId: req.body.groupId,
       commentContent: req.body.commentContent,
-      timeStamp: new Date(), // fixed now
+      timeStamp: new Date(),
       upvote: 0,
       downvote: 0,
     }
@@ -211,28 +203,13 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
     }
   )
   if (result.modifiedCount === 0) {
-    res.status(400).json({ error: "post push eeror" })
+    res.status(400).json({ error: "post push error" })
     return
   }
   res.status(200).json({ status: "ok" })
 })
 
 
-
-
-
-// // app.get("/api/customer/:customerId/draft-order", async (req, res) => {
-// //   const { customerId } = req.params
-
-// //   // TODO: validate customerId (Done)
-
-// //   const draftOrder = await orders.findOne({ state: "draft", customerId })
-// //   // if (draftOrder == null) {
-// //   //   res.status(404).json({ customerId})
-// //   //   return
-// //   // }
-// //   res.status(200).json(draftOrder || { customerId, ingredientIds: [] })
-// // })
 
 // // // app.put("/api/customer/:customerId/draft-order", async (req, res) => {
 // // //   const order: DraftOrder = req.body
@@ -260,25 +237,6 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
 
 // //   res.status(200).json({ status: "ok" })
 // // })
-
-// app.post("/api/customer/:customerId/submit-draft-order", async (req, res) => {
-//   const result = await orders.updateOne(
-//     {
-//       customerId: req.params.customerId,
-//       state: "draft",
-//     },
-//     {
-//       $set: {
-//         state: "queued",
-//       }
-//     }
-//   )
-//   if (result.modifiedCount === 0) {
-//     res.status(400).json({ error: "no draft order" })
-//     return
-//   }
-//   res.status(200).json({ status: "ok" })
-// })
 
 // app.put("/api/order/:orderId", async (req, res) => {
 //   const order: Order = req.body
