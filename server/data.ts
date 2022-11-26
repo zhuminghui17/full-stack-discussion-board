@@ -19,6 +19,7 @@ export interface Post extends PostInfo {
 export interface Comment {
   _id: string
   // name: string
+  authorId: string
   commentContent: string
   timeStamp: string
   // status: "draft" | "sent" | "deleted"
