@@ -40,7 +40,7 @@
       <b-row>
         <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
-          <b-button v-b-modal.new-post variant="primary"> New Post</b-button>
+          <b-button v-b-modal.new-post variant="primary"> New Post </b-button>
 
           <b-modal id="new-post" title="New Post">
             <form ref="form">
@@ -223,9 +223,6 @@ function cancelThumbDown() {
 .clickable-icon {
   cursor: pointer;
 }
-</style>
-
-<style scoped>
 .navbar.navbar-dark.bg-dark {
   background-color: #00539B !important;
 }
