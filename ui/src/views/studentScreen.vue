@@ -44,26 +44,16 @@
         <b-col xs="12" sm="3">
           <b-button v-b-modal.new-post variant="primary"> New Post </b-button>
 
-          <b-modal 
-          id="new-post" 
-          title="New Post"
-          @ok = "newPost">
+          <b-modal id="new-post" title="New Post" @ok="newPost">
             <form ref="form">
               <b-form-group label="Post Title" label-for="post-title" invalid-feedback="Title is required">
-                <b-form-input 
-                id="post-title" 
-                v-model = "newPostTitle"
-                required
-              ></b-form-input>
+                <b-form-input id="post-title" v-model="newPostTitle" required></b-form-input>
               </b-form-group>
               <b-form-group label="Content" label-for="post-content" invalid-feedback="Content is required">
-                <b-form-input 
-                id="post-content" 
-                v-model = "newPostContent"
-                required></b-form-input>
+                <b-form-input id="post-content" v-model="newPostContent" required></b-form-input>
               </b-form-group>
               <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required">
-              <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
+                <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
 
               </b-form-group>
             </form>
@@ -113,34 +103,39 @@
                 </b-card-body>
               </b-col>
             </b-row>
+            <b-row>
+              <b-col>
+                <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon"
+                  style="font-size: 30px">
+                </b-icon>
+
+
+                <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px">
+                </b-icon>
+                {{ selectedPost.upvote }}
+
+                <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon"
+                  style="font-size: 30px">
+                </b-icon>
+                <b-icon v-else icon="caret-down" @click="clickThumbDown" class="clickable-icon" style="font-size: 30px">
+                </b-icon>
+                {{ selectedPost.downvote }}
+              </b-col>
+            </b-row>
             <template #footer>
               <h4>Comments</h4>
               <b-card-text v-for="commentId, i in selectedPost?.commentIds" :key="i">
                 {{ commentId }}
 
               </b-card-text>
-              <b-row>
-                <b-col>
-                  <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon"
-                    style="font-size: 30px">
-                  </b-icon>
 
-                  <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px">
-                  </b-icon>
-
-                  <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon"
-                    style="font-size: 30px">
-                  </b-icon>
-                  <b-icon v-else icon="caret-down" @click="clickThumbDown" class="clickable-icon"
-                    style="font-size: 30px"></b-icon>
-                </b-col>
-              </b-row>
             </template>
           </b-card>
           <div class="form-group" v-if="selectedGroupId && selectedPost">
             <label for="exampleFormControlTextarea1">Your Answer</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <b-button variant="primary" class="my-3">Post</b-button>
+            <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
+            </b-form-textarea>
+            <b-button variant="primary" class="my-3" @click="postComment">Post</b-button>
           </div>
         </b-col>
       </b-row>
@@ -173,6 +168,7 @@ const selectedPost: Ref<Post | null> = ref(null)
 const newPostTitle: Ref<String> = ref("")
 const newPostContent: Ref<String> = ref("")
 const newPostGroupId: Ref<String> = ref("")
+const newCommentContent: Ref<String> = ref("")
 
 async function refresh() {
 
@@ -201,21 +197,48 @@ async function newPost() {
       headers: {
         "Content-Type": "application/json",
       },
-      method:"Post",
+      method: "Post",
       body: JSON.stringify({
         groupId: newPostGroupId.value,
         postTitle: newPostTitle.value,
         postContent: newPostContent.value
       })
     }
-    )
+  )
+  newPostGroupId.value = ""
+  newPostTitle.value = ""
+  newPostContent.value = ""
 
-    // if there already has a selectedGroupId, select that group to ensure the selected 
-    // group gets refreshed 
-    if (selectedGroupId.value != null){
-      selectGroup(selectedGroupId.value)
+
+  // if there already has a selectedGroupId, select that group to ensure the selected 
+  // group gets refreshed 
+  if (selectedGroupId.value != null) {
+    selectGroup(selectedGroupId.value)
+  }
+
+}
+async function postComment() {
+  if (selectedPost.value == null) {
+    return
+  }
+
+  await fetch(
+    "/api/user/" + encodeURI(userId) + "/post/" + encodeURI(selectedPost.value?._id) + "/add-a-comment",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "Post",
+      body: JSON.stringify({
+        commentContent: newCommentContent.value
+      })
     }
+  )
+  if (selectedGroupId.value != null) {
+    selectPost(selectedPost.value._id)
+  }
   
+
 }
 
 
@@ -254,6 +277,7 @@ function cancelThumbDown() {
 .clickable-icon {
   cursor: pointer;
 }
+
 .navbar.navbar-dark.bg-dark {
   background-color: #00539B !important;
 }
