@@ -199,13 +199,13 @@ const thumbDown: Ref<Boolean> = ref(false)
 
 async function selectPost(postId: string) {
   // selectedPost.value = post1
-  selectedPost.value = await (await fetch("/api/" + encodeURI(postId) + "/post")).json()
+  selectedPost.value = await (await fetch("/api/post/" + encodeURI(postId) + "/post")).json()
 }
 
 async function selectGroup(group_id: string) {
 
   selectedGroupId.value = group_id
-  selectedGroupPostInfos.value = await (await fetch("/api/" + encodeURI(group_id) + "/postsInfo")).json()
+  selectedGroupPostInfos.value = await (await fetch("/api/group/" + encodeURI(group_id) + "/postsInfo")).json()
 
 }
 
