@@ -219,42 +219,6 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
 
 
 
-// app.post("/api/customer/:customerId/submit-draft-order", async (req, res) => {
-//   const result = await orders.updateOne(
-//     {
-//       customerId: req.params.customerId,
-//       state: "draft",
-//     },
-//     {
-//       $set: {
-//         state: "queued",
-//       }
-//     }
-//   )
-//   if (result.modifiedCount === 0) {
-//     res.status(400).json({ error: "no draft order" })
-//     return
-//   }
-//   res.status(200).json({ status: "ok" })
-// })
-
-
-
-
-// export function nextId(id: string): string {
-//   const field = id.slice(0,0)
-//   let idNumber = parseInt(id.slice(1))
-//   return Idfield + String(idNumber++)
-// }
-
-// export function addPost(name: string): string {
-// 	const newPost: Post = {_id, authorId, name }
-// 	posts.push(newPost)
-// 	save()
-// 	return newPost._id
-// }
-
-
 
 
 // // app.get("/api/customer/:customerId/draft-order", async (req, res) => {
