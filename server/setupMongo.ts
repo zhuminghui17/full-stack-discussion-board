@@ -7,8 +7,9 @@ const client = new MongoClient(url)
 const comments: Comment[] = [
   {
     _id: 'c1',
+    authorId: 'u1',
     commentContent: 'this is the first comment',
-    timeStamp: '2022-11-19 12:00:02',
+    timeStamp: new Date(2022, 11, 25, 12, 0, 0, 0),
     upvote: 0,
     downvote: 0
   },
@@ -20,7 +21,7 @@ const posts: Post[] = [
     groupId: 'g1',
     postTitle: 'Hello World!',
     postContent: 'Hello World! Hello World!',
-    timeStamp: '2022-11-19 12:00:00',
+    timeStamp: new Date(2022, 11, 20, 12, 0, 0, 0),
     commentIds: ["c1"], // comment
     upvote: 0,
     downvote: 0
@@ -31,7 +32,7 @@ const posts: Post[] = [
     groupId: 'g2',
     postTitle: 'Second post!',
     postContent: 'This is the second post',
-    timeStamp: '2022-11-19 12:00:01',
+    timeStamp: new Date(2022, 11, 21, 12, 0, 0, 0),
     commentIds: ["c1"], // comment
     upvote: 10,
     downvote: 100,
@@ -42,7 +43,7 @@ const posts: Post[] = [
     groupId: 'g3',
     postTitle: 'third post!',
     postContent: 'This is the third post',
-    timeStamp: '2022-11-19 12:00:01',
+    timeStamp: new Date(2022, 11, 22, 12, 0, 0, 0),
     commentIds: ["c1"], // comment
     upvote: 10,
     downvote: 100,

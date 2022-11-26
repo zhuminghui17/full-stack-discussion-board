@@ -7,7 +7,7 @@ export interface Post extends PostInfo {
   authorId: string
   groupId: string
   postContent: string
-  timeStamp: string
+  timeStamp: Date
   // status: "draft" | "sent" | "deleted" // post status
   commentIds: string[] // comment
   upvote: number // upvote number, default 0.
@@ -21,7 +21,7 @@ export interface Comment {
   // name: string
   authorId: string
   commentContent: string
-  timeStamp: string
+  timeStamp: Date
   // status: "draft" | "sent" | "deleted"
   // comment: string[]
   upvote: number

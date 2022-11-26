@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import pino from 'pino'
 import expressPinoLogger from 'express-pino-logger'
-import { Collection, Db, MongoClient, ObjectId } from 'mongodb'
+import { Collection, Db, MongoClient, ObjectId, Timestamp } from 'mongodb'
 import { Post, PostInfo } from './data'
 import { generateKey } from 'crypto'
 // import { DraftOrder, Order } from './data'
@@ -143,8 +143,8 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
-      timeStamp: '2022-11-19 12:00:00', // fixed now
-      commentIds: [], // comment
+      timeStamp: new Date(), 
+      commentIds: [], 
       upvote: 0,
       downvote: 0,
     }
@@ -193,7 +193,7 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
       authorId: req.params.userId,
       // groupId: req.body.groupId,
       commentContent: req.body.commentContent,
-      timeStamp: '2022-11-19 12:00:00', // fixed now
+      timeStamp: new Date(), // fixed now
       upvote: 0,
       downvote: 0,
     }
