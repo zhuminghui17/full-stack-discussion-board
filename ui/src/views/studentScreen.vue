@@ -42,13 +42,27 @@
         <b-col xs="12" sm="3">
           <b-button v-b-modal.new-post variant="primary"> New Post</b-button>
 
-          <b-modal id="new-post" title="New Post">
+          <b-modal 
+          id="new-post" 
+          title="New Post"
+          @ok = "newPost">
             <form ref="form">
               <b-form-group label="Post Title" label-for="post-title" invalid-feedback="Title is required">
-                <b-form-input id="post-title" required></b-form-input>
+                <b-form-input 
+                id="post-title" 
+                v-model = "newPostTitle"
+                required
+              ></b-form-input>
               </b-form-group>
               <b-form-group label="Content" label-for="post-content" invalid-feedback="Content is required">
-                <b-form-input id="post-content" required></b-form-input>
+                <b-form-input 
+                id="post-content" 
+                v-model = "newPostContent"
+                required></b-form-input>
+              </b-form-group>
+              <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required">
+              <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
+
               </b-form-group>
             </form>
           </b-modal>
@@ -78,7 +92,7 @@
 
         <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
-          <b-card no-body class="overflow-hidden">
+          <b-card no-body class="overflow-hidden" v-if="selectedGroupId && selectedPost">
             <b-row no-gutters>
               <b-col md="1">
                 <b-card class="row justify-content-md-center border-0 mx-auto">
@@ -154,8 +168,9 @@ const groupsInfo: Ref<GroupInfo[] | null> = ref(null)
 const selectedGroupId: Ref<string | null> = ref(null)
 const selectedGroupPostInfos: Ref<PostInfo[] | null> = ref(null)
 const selectedPost: Ref<Post | null> = ref(null)
-const posts = [post1, post2]
-
+const newPostTitle: Ref<String> = ref("")
+const newPostContent: Ref<String> = ref("")
+const newPostGroupId: Ref<String> = ref("")
 
 async function refresh() {
 
@@ -168,24 +183,32 @@ onMounted(refresh)
 
 
 
-const post1Info: PostInfo = {
-  _id: "MCC",
-  postTitle: "Congcong MA"
-}
-
-const post2Info: PostInfo = {
-  _id: "ZMH",
-  postTitle: "Minghui ZHu"
-}
-
-
 const thumbUp: Ref<Boolean> = ref(false)
 const thumbDown: Ref<Boolean> = ref(false)
 
 
 
 
-
+async function newPost() {
+  // console.log(newPostContent.value)
+  // console.log(newPostTitle.value)
+  // console.log(newPostGroupId.value)
+  await fetch(
+    "/api/user/" + encodeURI(userId) + "/add-a-post",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method:"Post",
+      body: JSON.stringify({
+        groupId: newPostGroupId.value,
+        postTitle: newPostTitle.value,
+        postContent: newPostContent.value
+      })
+    }
+    )
+  refresh()
+}
 
 
 
