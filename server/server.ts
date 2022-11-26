@@ -95,7 +95,6 @@ app.get("/api/:groupId/postsInfo", async (req, res) => {
 
   }
 
-
   // group.posts = await posts.find({ postId: _postIds }).toArray()
   res.status(200).json(postInfoLists)
   // TODO: return postInfo
@@ -111,6 +110,17 @@ app.get("/api/:postId/post", async (req, res) => {
   res.status(200).json(post)
 })
 
+app.get("/api/:commentId/comment", async (req, res) => {
+  const _id = req.params.commentId
+  const comment = await comments.findOne({ _id })
+  if (comment == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  res.status(200).json(comment)
+})
+
+
 // Post 
 
 // Api/user/:userId/post-question
@@ -118,19 +128,17 @@ app.get("/api/:postId/post", async (req, res) => {
 // Api/user/:userId/post/:postId/post-comment
 
 app.post("/api/user/:userId/add-a-post", async (req, res) => {
-  // const lastPost = posts.find({ _id: 1 }).sort({$natural: -1}).limit(1)
-  // const lastPostId = lastPost._Id
-  // // const idField = 'p'
-
   const _id = req.params.userId
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
     return
   }
-  // To do newId = generateKey()
+  // To do newId = 
+  const newPostId = await new ObjectId()
   await posts.insertOne(
     {
+      _id: newPostId,
       authorId: req.params.userId,
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
@@ -144,16 +152,16 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
 
   const result = await groups.updateOne(
     {
-      groupId: req.body.groupId,
+      _id: req.body.groupId,
     },
     {
       $push: {
-        postIds: 1// TODO: where is the postId
+        postIds: newPostId
       }
     }
   )
   if (result.modifiedCount === 0) {
-    res.status(400).json({ error: "no draft order" })
+    res.status(400).json({ error: "group push eeror" })
     return
   }
   res.status(200).json({ status: "ok" })
@@ -161,6 +169,53 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
 
 
 
+app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
+  let userId = req.params.userId
+  const user = await users.findOne({ _id: userId })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  let postId = req.params.postId
+  const post = await posts.findOne({ _id: postId })
+
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  const newCommentId = await new ObjectId()
+  
+  await comments.insertOne(
+    {
+      _id: newCommentId,
+      authorId: req.params.userId,
+      // groupId: req.body.groupId,
+      commentContent: req.body.commentContent,
+      timeStamp: '2022-11-19 12:00:00', // fixed now
+      upvote: 0,
+      downvote: 0,
+    }
+  )
+
+  const result = await posts.updateOne(
+    {
+      _id: postId,
+      authorId: userId,
+    },
+    {
+      $push: {
+        commentIds: newCommentId
+      }
+    }
+  )
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "post push eeror" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
 
 
 
