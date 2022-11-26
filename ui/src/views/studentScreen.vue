@@ -1,15 +1,7 @@
-<!-- Todo:
-1. complete the button of adding posts by modality 
-2. componentize each section of UI
-3. beautify UI
--->
-
-
-
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">Discussion Board</b-navbar-brand>
+      <b-navbar-brand href="#">Discussion Board Student</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
