@@ -97,7 +97,7 @@ app.get("/api/group/:groupId/postsInfo", async (req, res) => {
 })
 
 app.get("/api/post/:postId/post", async (req, res) => {
-  const _id = req.params.postId
+  const _id = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id })
   if (post == null) {
     res.status(404).json({ _id })
