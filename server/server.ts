@@ -107,7 +107,7 @@ app.get("/api/post/:postId/post", async (req, res) => {
 })
 
 app.get("/api/comment/:commentId/comment", async (req, res) => {
-  const _id = req.params.commentId
+  const _id = new ObjectId(req.params.commentId)
   const comment = await comments.findOne({ _id })
   if (comment == null) {
     res.status(404).json({ _id })
@@ -126,7 +126,7 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
     return
   }
   // To do newId = 
-  const newPostId = await new ObjectId()
+  const newPostId = new ObjectId()
   await posts.insertOne(
     {
       _id: newPostId,
@@ -167,7 +167,7 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
     return
   }
 
-  let postId = req.params.postId
+  let postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
 
   if (post == null) {
@@ -175,7 +175,7 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
     return
   }
 
-  const newCommentId = await new ObjectId()
+  const newCommentId = new ObjectId()
   
   await comments.insertOne(
     {
@@ -219,7 +219,7 @@ app.put("/api/user/:userId/post/:postId/upvote", async (req, res) => {
     return
   }
 
-  const postId = req.params.postId.toString()
+  const postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
 
   if (post == null) {
@@ -256,7 +256,7 @@ app.put("/api/user/:userId/post/:postId/downvote", async (req, res) => {
     return
   }
 
-  const postId = req.params.postId
+  const postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
 
   if (post == null) {
@@ -294,16 +294,15 @@ app.put("/api/user/:userId/post/:postId/comment/:commentId/upvote", async (req, 
     return
   }
   
-  const postId = req.params.postId
+  const postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
   if (post == null) {
     res.status(404).json({ postId })
     return
   }
 
-  let commentId = req.params.commentId
-  let _commentId = new ObjectId(commentId)
-  const comment = await comments.findOne({ _id: _commentId })
+  let commentId = new ObjectId(req.params.commentId)
+  const comment = await comments.findOne({ _id: commentId })
   if (comment == null) {
     res.status(404).json({ commentId })
     return
@@ -311,7 +310,7 @@ app.put("/api/user/:userId/post/:postId/comment/:commentId/upvote", async (req, 
 
   const result = await comments.updateOne(
     {
-      _id: _commentId,
+      _id: commentId,
       authorId: userId,
     },
     {
@@ -338,14 +337,14 @@ app.put("/api/user/:userId/post/:postId/comment/:commentId/downvote", async (req
     return
   }
 
-  const postId = req.params.postId
+  const postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
   if (post == null) {
     res.status(404).json({ postId })
     return
   }
 
-  const commentId = req.params.commentId
+  const commentId = new ObjectId(req.params.commentId)
   const comment = await comments.findOne({ _id: commentId })
   if (comment == null) {
     res.status(404).json({ commentId })
