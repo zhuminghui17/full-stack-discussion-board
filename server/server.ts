@@ -1,15 +1,18 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import pino from 'pino'
 import expressPinoLogger from 'express-pino-logger'
-import { Collection, Db, MongoClient, ObjectId, Timestamp } from 'mongodb'
-import { Post, PostInfo } from './data'
-import { generateKey } from 'crypto'
-// import { DraftOrder, Order } from './data'
+import { Collection, Db, MongoClient, ObjectId } from 'mongodb'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+import { Issuer, Strategy } from 'openid-client'
+import passport from 'passport'
+import { keycloak } from "./secrets"
+// import User from "./@types/express/index.d"
 
 // set up Mongo
-const url = 'mongodb://127.0.0.1:27017'
-const client = new MongoClient(url)
+const mongoUrl = 'mongodb://127.0.0.1:27017'
+const client = new MongoClient(mongoUrl)
 let db: Db
 let posts: Collection
 let comments: Collection
@@ -20,6 +23,7 @@ let groups: Collection
 const app = express()
 const port = 8095
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // set up Pino logging
 const logger = pino({
@@ -29,10 +33,84 @@ const logger = pino({
 })
 app.use(expressPinoLogger({ logger }))
 
+// set up session
+app.use(session({
+  secret: 'a just so-so secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+
+  // comment out the following to default to a memory-based store, which,
+  // of course, will not persist across load balanced servers
+  // or survive a restart of the server
+  store: MongoStore.create({
+    mongoUrl,
+    ttl: 14 * 24 * 60 * 60 // 14 days
+  })
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+passport.serializeUser((user: any, done: any) => {
+  logger.info("serializeUser " + JSON.stringify(user))
+  done(null, user)
+})
+passport.deserializeUser((user: any, done: any) => {
+  logger.info("deserializeUser " + JSON.stringify(user))
+  done(null, user)
+})
+
+function checkAuthenticated(req: Request, res: Response, next: NextFunction) {
+  if (!req.isAuthenticated()) {
+    res.sendStatus(401)
+    return
+  }
+
+  next()
+}
+
 // app routes
+app.post(
+  "/api/logout", 
+  (req, res, next) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err)
+      }
+      res.redirect("/")
+    })
+  }
+)
+
+app.get("/api/user", (req, res) => {
+  res.json(req.user || {})
+})
+
+app.get("/api/student", checkAuthenticated, async (req, res) => {
+  const _id = req.user?.preferred_username
+  logger.info("/api/student " + _id)
+  const student = await users.findOne({_id: _id, role: "student" })
+  if (student == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  student.posts = await posts.find({ userId: _id }).toArray()
+  res.status(200).json(student)
+})
+
+app.get("/api/professor", checkAuthenticated, async (req, res) => {
+  const _id = req.user?.preferred_username
+  const professor = await users.findOne({_id: _id, role: "professor" })
+  if (professor == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  professor.posts = await posts.find({ userId: _id }).toArray()
+  res.status(200).json(professor)
+})
+
 
 // get all posts
-app.get("/api/all-posts", async (req, res) => {
+app.get("/api/all-posts", checkAuthenticated, async (req, res) => {
   res.status(200).json(await posts.find({}).toArray())
 })
 
@@ -40,57 +118,50 @@ app.get("/api/all-posts", async (req, res) => {
 
 
 
-app.get("/api/user/:userId/groupsInfo", async (req, res) => {
-  const _id = req.params.userId
+app.get("/api/user/groupsInfo", checkAuthenticated, async (req, res) => { // some changes here 
+  const _id = req.user?.preferred_username
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
     return
   }
   const _groupIds = user.groupIds
-  console.log(_groupIds)
   const groupInfoLists: Object[] = []
   for (let id of _groupIds) {
-    console.log("here")
     const _group = await groups.findOne({ _id: id })
     if (_group == null) {
       continue
     }
-    console.log(_group)
     const groupInfo = { _id: _group._id, name: _group.name } 
     groupInfoLists.push(groupInfo)
   }
   res.status(200).json(groupInfoLists)
 })
 
-app.get("/api/group/:groupId/postsInfo", async (req, res) => {
+// Changes Done
+app.get("/api/group/:groupId/postsInfo", checkAuthenticated, async (req, res) => {
   const _id = req.params.groupId
   const group = await groups.findOne({ _id })
   if (group == null) {
-    res.status(404).json({ _id }) // why have a 404 case like this? 
+    res.status(404).json({ _id }) 
     return
   }
 
   const _postIds = group.postIds
   const postInfoLists: Object[] = []
   for (let id of _postIds) {
-    console.log("here")
     const _post = await posts.findOne({ _id: id })
     if (_post == null) {
       continue
     }
-    console.log(_post)
-    const postInfo = { _id: _post._id, postTitle: _post.postTitle } //could improve 
+    const postInfo = { _id: _post._id, postTitle: _post.postTitle } 
     postInfoLists.push(postInfo)
-
   }
-
-  // group.posts = await posts.find({ postId: _postIds }).toArray()
   res.status(200).json(postInfoLists)
-  // TODO: return postInfo
 })
 
-app.get("/api/post/:postId/post", async (req, res) => {
+// Changes Done
+app.get("/api/post/:postId/post", checkAuthenticated, async (req, res) => {
   const _id = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id })
   if (post == null) {
@@ -100,7 +171,8 @@ app.get("/api/post/:postId/post", async (req, res) => {
   res.status(200).json(post)
 })
 
-app.get("/api/comment/:commentId/comment", async (req, res) => {
+// Changes Done
+app.get("/api/comment/:commentId/comment", checkAuthenticated, async (req, res) => {
   const _id = new ObjectId(req.params.commentId)
   const comment = await comments.findOne({ _id })
   if (comment == null) {
@@ -110,7 +182,8 @@ app.get("/api/comment/:commentId/comment", async (req, res) => {
   res.status(200).json(comment)
 })
 
-app.get("/api/post/:postId/upvote", async (req, res) => {
+// Changes Done
+app.get("/api/post/:postId/upvote", checkAuthenticated, async (req, res) => {
   const _id = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id })
   if (post == null) {
@@ -120,7 +193,8 @@ app.get("/api/post/:postId/upvote", async (req, res) => {
   res.status(200).json(post.upvote)
 })
 
-app.get("/api/post/:postId/downvote", async (req, res) => {
+// Changes Done
+app.get("/api/post/:postId/downvote", checkAuthenticated, async (req, res) => {
   const _id = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id })
   if (post == null) {
@@ -130,7 +204,8 @@ app.get("/api/post/:postId/downvote", async (req, res) => {
   res.status(200).json(post.downvote)
 })
 
-app.get("/api/post/:postId/comment/:commentId/upvote", async (req, res) => {
+// Changes Done
+app.get("/api/post/:postId/comment/:commentId/upvote", checkAuthenticated, async (req, res) => {
   const _id = new ObjectId(req.params.commentId)
   const comment = await comments.findOne({ _id })
   if (comment == null) {
@@ -140,7 +215,8 @@ app.get("/api/post/:postId/comment/:commentId/upvote", async (req, res) => {
   res.status(200).json(comment.upvote)
 })
 
-app.get("/api/post/:postId/comment/:commentId/downvote", async (req, res) => {
+// Changes Done
+app.get("/api/post/:postId/comment/:commentId/downvote", checkAuthenticated, async (req, res) => {
   const _id = new ObjectId(req.params.commentId)
   const comment = await comments.findOne({ _id })
   if (comment == null) {
@@ -153,8 +229,8 @@ app.get("/api/post/:postId/comment/:commentId/downvote", async (req, res) => {
 
 
 // POST API
-app.post("/api/user/:userId/add-a-post", async (req, res) => {
-  const _id = req.params.userId
+app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // some changes here
+  const _id = req.user?.preferred_username
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
@@ -165,7 +241,7 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
   await posts.insertOne(
     {
       _id: newPostId,
-      authorId: req.params.userId,
+      authorId: req.user?.preferred_username,
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
@@ -194,8 +270,8 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
 })
 
 
-app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
-  let userId = req.params.userId
+app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req, res) => {
+  let userId = req.user?.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -214,7 +290,7 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
   await comments.insertOne(
     {
       _id: newCommentId,
-      authorId: req.params.userId,
+      authorId: userId,
       commentContent: req.body.commentContent,
       timeStamp: new Date().toLocaleString(),
       upvote: 0,
@@ -245,8 +321,8 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
 // upthumb
 // TODO: 1. 修改点赞数值 2. 只能点一次
 
-app.put("/api/user/:userId/post/:postId/upvote", async (req, res) => {
-  const userId = req.params.userId
+app.put("/api/user/post/:postId/upvote", checkAuthenticated, async (req, res) => {
+  const userId = req.user?.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -282,8 +358,8 @@ app.put("/api/user/:userId/post/:postId/upvote", async (req, res) => {
   res.status(200).json({ status: "ok" })
 })
 
-app.put("/api/user/:userId/post/:postId/downvote", async (req, res) => {
-  const userId = req.params.userId
+app.put("/api/user/post/:postId/downvote", checkAuthenticated, async (req, res) => {
+  const userId = req.user?.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -320,8 +396,8 @@ app.put("/api/user/:userId/post/:postId/downvote", async (req, res) => {
 })
 
 
-app.put("/api/user/:userId/post/:postId/comment/:commentId/upvote", async (req, res) => {
-  const userId = req.params.userId
+app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, async (req, res) => {
+  const userId = req.user?.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -363,8 +439,8 @@ app.put("/api/user/:userId/post/:postId/comment/:commentId/upvote", async (req, 
   res.status(200).json({ status: "ok" })
 })
 
-app.put("/api/user/:userId/post/:postId/comment/:commentId/downvote", async (req, res) => {
-  const userId = req.params.userId
+app.put("/api/user/post/:postId/comment/:commentId/downvote", checkAuthenticated, async (req, res) => {
+  const userId = req.user?.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -493,6 +569,56 @@ client.connect().then(() => {
   users = db.collection('users')
   groups = db.collection('groups')
 
+  Issuer.discover("http://127.0.0.1:8081/auth/realms/discussion/.well-known/openid-configuration").then(issuer => {
+    const client = new issuer.Client(keycloak)
+
+    passport.use("oidc", new Strategy(
+      { 
+        client,
+        params: {
+          // this forces a fresh login screen every time
+          prompt: "login"
+        }
+      },
+      async (tokenSet: any, userInfo: any, done: any) => {
+        logger.info("oidc " + JSON.stringify(userInfo))
+
+        const _id = userInfo.preferred_username
+        const professor = await users.findOne({ _id: _id, role: "professor" }) 
+        if ( professor != null) {
+          userInfo.roles = ["professor"]
+        } else {
+          await users.updateOne(
+            { _id },
+            {
+              $set: {
+                role: "student",
+                name: userInfo.name
+              }
+            },
+            { upsert: true }
+          )
+          userInfo.roles = ["student"]
+        }
+
+        return done(null, userInfo)
+      }
+    ))
+
+    app.get(
+      "/api/login", 
+      passport.authenticate("oidc", { failureRedirect: "/api/login" }), 
+      (req, res) => res.redirect("/")
+    )
+    
+    app.get(
+      "/api/login-callback",
+      passport.authenticate("oidc", {
+        successRedirect: "/",
+        failureRedirect: "/api/login",
+      })
+    )    
+  })   
   // start server
   app.listen(port, () => {
     console.log(`Smoothie server listening on port ${port}`)

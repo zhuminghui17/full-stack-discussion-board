@@ -39,6 +39,8 @@ export interface Group extends GroupInfo {
 
 export interface User {
   _id: string // user id
+  role: "student" | "professor"
   name: string // user name
   groupIds: string[]
 }
+
