@@ -52,13 +52,13 @@ git pull
 ```
 
 6. Merge/rebase to `main`  
-*On the branch you want merge to main*
+*On the branch `main`*
 ```
-git merge main
+git merge <local-branch-name>
 ```
 or 
 ```
-git rebase main
+git rebase <local-branch-name>
 ```
 
 [Difference between merge and rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
