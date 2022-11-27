@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "target": "es2021",
+    "esModuleInterop": true,
+    "typeRoots": [
+      "./@types",
+      "./node_modules/@types",
+    ]
+  }
+}
