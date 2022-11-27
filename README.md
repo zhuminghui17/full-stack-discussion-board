@@ -3,7 +3,7 @@
 ## Primary roles
 🐎Congcong Ma:  
 🐷Minghui Zhu:  
-🍄Quan Wang:  
+🍄Quan Wang: 
 
 ## How to run the program
 1. Open Docker
@@ -18,3 +18,47 @@
 3. `docker build -t keycloak18 .`
 
 ## Notes and assumptions
+
+## Branch
+1. Create a new branch
+```
+git checkout -b <local-branch-name>
+```
+or 
+```
+git branch <local-branch-name>
+```
+
+2. Switch to branch 
+```
+git checkout <local-branch-name>
+```
+
+*[Oh my zsh](https://ohmyz.sh/) can show which branch you are on.*
+
+3. Push to remote (and track this branch)
+```
+git push -u origin <remote-branch-name>
+```
+
+4. Step 3 will set the tracking, check the tracking map via 
+```
+git branch -vv
+``` 
+
+5. So when you are on the created branch, you should be able to pull directly via 
+```
+git pull
+```
+
+6. Merge/rebase to `main`  
+*On the branch `main`*
+```
+git merge <local-branch-name>
+```
+or 
+```
+git rebase <local-branch-name>
+```
+
+[Difference between merge and rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
