@@ -169,7 +169,7 @@ app.post("/api/user/:userId/add-a-post", async (req, res) => {
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
-      timeStamp: new Date(), 
+      timeStamp: new Date().toLocaleString(), 
       commentIds: [], 
       upvote: 0,
       downvote: 0,
@@ -216,7 +216,7 @@ app.post("/api/user/:userId/post/:postId/add-a-comment", async (req, res) => {
       _id: newCommentId,
       authorId: req.params.userId,
       commentContent: req.body.commentContent,
-      timeStamp: new Date(),
+      timeStamp: new Date().toLocaleString(),
       upvote: 0,
       downvote: 0,
     }

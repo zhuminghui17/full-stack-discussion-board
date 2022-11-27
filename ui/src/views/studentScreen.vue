@@ -94,7 +94,7 @@
               </b-col>
               <b-col md="10">
                 <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle"
-                  :sub-title="selectedPost.timeStamp.toLocaleString()">
+                  :sub-title="selectedPost.timeStamp">
 
                   <b-card-text>
                     {{ selectedPost.postContent }}
