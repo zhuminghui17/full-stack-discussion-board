@@ -187,7 +187,6 @@ const thumbDown: Ref<Boolean> = ref(false)
 
 
 
-
 async function newPost() {
   // console.log(newPostContent.value)
   // console.log(newPostTitle.value)

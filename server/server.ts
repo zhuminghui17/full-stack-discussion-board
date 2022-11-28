@@ -666,9 +666,17 @@ client.connect().then(() => {
     app.get(
       "/api/login-callback",
       passport.authenticate("oidc", {
-        successRedirect: "/",
+        // successRedirect: "/",
         failureRedirect: "/api/login",
-      })
+      }),
+      (req, res) => {
+        if (req.user.preferred_username != "ccdd"){
+          res.redirect("/student")
+        }
+        else{
+          res.redirect("/")
+        }
+      }
     )    
   })   
   // start server
