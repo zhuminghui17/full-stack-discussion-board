@@ -125,6 +125,17 @@ app.get("/api/all-posts", checkAuthenticated, async (req, res) => {
 })
 
 // get all comments
+app.get("/api/user/public-group", checkAuthenticated, async (req, res) => {
+  const public_group = await groups.findOne({_id:"public"})
+  // res.status(200).json(await groups.findOne({_id:"public"}))
+  const id = public_group._id
+  const name = public_group.name 
+  const public_group_info = {
+    _id:id,
+    name: name
+  }
+  res.status(200).json(public_group_info)
+})
 
 
 
