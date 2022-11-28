@@ -17,6 +17,38 @@
 2. `cd keycloak-containers/server`
 3. `docker build -t keycloak18 .`
 
+## Final project requirements
+## Basic
+- [ ] Correct use of git commits
+- [ ] Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)
+- [ ] Video demo demonstrates usability at mobile screen size (putting browser into mobile simulation mode is sufficient)
+- [ ] Video demo shows an E2E test with a basic user flow (Keycloak forms don't count)
+- [ ] Source code shows app uses load balanced backend REST API (i.e., no obvious dependency on global variables for state) OR Socket.IO backend server
+- [ ] Source code shows app uses MongoDB to store nontrivial state
+- [ ] Video demo shows Vue router set up with at least 2 routes
+- [ ] Video has a good explanation of the key parts of the code
+- [ ] Video has a good explanation of how concurrency is handled
+- [ ] Video demo demonstrates concurrent use by at least 2 users working properly
+- [ ] Video demo shows at least 2 users logging in, using Keycloak
+- [ ] Video has all team members speaking for at least 10 seconds (no partial credit)
+- [ ] Code base has non-trivial changes over and above class-provided example code (no partial credit)
+## Extras (We have 3 extras)
+CI/CD
+- [ ] Video shows CI/CD in GitLab doing a build using Docker
+- [ ] Video demonstrates a CI/CD E2E test fail
+- [ ] Video shows CI/CD enabling a feature change (can be as simple as just changing wording on a
+page)
+
+Administrator user role
+- [ ] Video shows an administrator logging in and seeing an app screen indicating administrator role
+- [ ] Video demonstrates a significant administrator-specific feature
+- [ ] Video demonstrates the administrator-specific feature is indeed missing for normal users
+
+User registration flow
+- [ ] Video shows a failed user login for an unregistered user
+- [ ] Video shows registering a new user (the one that failed)
+- [ ] Video demonstrates full function for newly registered user
+
 ## Notes and assumptions
 
 ## Branch
