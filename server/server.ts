@@ -337,6 +337,37 @@ app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req,
   res.status(200).json({ status: "ok" })
 })
 
+// POST API 
+app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // some changes here
+  const _id = req.user.preferred_username
+  // restrict to only professor
+  const user = await users.findOne({ _id, role: "professor" })
+  if (user == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  
+  const newGroupId = new ObjectId()
+  await groups.insertOne(
+    {
+      _id: newGroupId,
+      name: req.body.groupName,
+      postIds: []
+    }
+  )
+
+  // if (result.modifiedCount === 0) {
+  //   res.status(400).json({ error: "group push eeror" })
+  //   return
+  // }
+  res.status(200).json({ status: "ok" })
+})
+
+
+
+
+
+
 // PUT API
 
 // upthumb
