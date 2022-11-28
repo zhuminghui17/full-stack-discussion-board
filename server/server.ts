@@ -359,6 +359,59 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
 
 // PUT API
 
+// professor invite student to a specific group
+// the frontend only pass studentsIdToInvite: string[] to the server.
+app.put("/api/user/group/:groupId/invite", checkAuthenticated, async (req, res) => {
+  // validate user: only professor can invite
+  const userId = req.user.preferred_username
+  const professor = await users.findOne({ _id: userId, role: "professor" })
+  if (professor == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  // validate group: the group is already created
+  const groupId = new ObjectId(req.params.postId)
+  const group = await groups.findOne({ _id: groupId })
+  if (group == null) {
+    res.status(404).json({ groupId })
+    return
+  }
+
+  // recieve students Id from UI
+  const studentsIdToInvite: string[] = req.body.studentsIdToInvite
+  
+  for (let _id of studentsIdToInvite) {
+    // validate student
+    let studentToInvite = await users.findOne({ _id: _id, role: "student" })
+    if (studentToInvite == null) {
+      res.status(404).json({ groupId })
+      return
+    }
+
+    let result = await users.updateOne(
+      {
+        _id: _id,
+        role: "student",
+      },
+      {
+        $push: {
+          groupIds: groupId
+        }
+      },
+      {
+        upsert: true
+      }
+    )
+    // validate the changes in groupIds
+    if (result.modifiedCount === 0) {
+      res.status(400).json({ error: "invite error" })
+      return
+    }
+  }
+  res.status(200).json({status: "ok" })
+})
+
 // upthumb
 // TODO: 1. 修改点赞数值 2. 只能点一次
 
@@ -524,6 +577,67 @@ app.put("/api/user/post/:postId/comment/:commentId/downvote", checkAuthenticated
 })
 
 
+// Delete API
+app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res) => {
+  // validate user: only professor can delete 
+  let userId = req.user.preferred_username
+  const user = await users.findOne({ _id: userId, role: "professor" })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  // validate post: only the post exist
+  let postId = new ObjectId(req.params.postId)
+  const post = await posts.findOne({ _id: postId })
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  try {
+    await posts.deleteOne({ _id: postId })
+    res.status(200).json({ status: "ok" })
+  } catch (e) {
+    res.status(400).json({ error: "delete error" })
+  }
+})
+
+app.delete('/api/user/post/:postId/comment/:commentId/delete', checkAuthenticated, async (req, res) => {
+  // validate user: only professor can delete 
+  let userId = req.user.preferred_username
+  const user = await users.findOne({ _id: userId, role: "professor" })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  // validate post: only the post exist
+  let postId = new ObjectId(req.params.postId)
+  const post = await posts.findOne({ _id: postId })
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  // validate comment: only the post exist
+  let commentId = new ObjectId(req.params.commentId)
+  const comment = await comments.findOne({ _id: commentId })
+  if (comment == null) {
+    res.status(404).json({ commentId })
+    return
+  }
+  try {
+    await comments.deleteOne({ _id: commentId })
+    res.status(200).json({ status: "ok" })
+  } catch (e) {
+    res.status(400).json({ error: "delete error" })
+  }
+})
+
+
+
+
 // // // app.put("/api/customer/:customerId/draft-order", async (req, res) => {
 // // //   const order: DraftOrder = req.body
 
@@ -634,7 +748,8 @@ client.connect().then(() => {
             {
               $set: {
                 role: "student",
-                name: userInfo.name
+                name: userInfo.name,
+                groupIds: []
               }
             },
             { upsert: true }
