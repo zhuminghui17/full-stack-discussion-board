@@ -10,6 +10,16 @@ import passport from 'passport'
 import { keycloak } from "./secrets"
 // import User from "./@types/express/index.d"
 
+if (process.env.PROXY_KEYCLOAK_TO_LOCALHOST) {
+  // NOTE: this is a hack to allow Keycloak to run from the 
+  // same development machine as the rest of the app. We have exposed
+  // Keycloak to run off port 8081 of localhost, where localhost is the
+  // localhost of the underlying laptop, but localhost inside of the
+  // server's Docker container is just the container, not the laptop.
+  // The following line creates a reverse proxy to the Keycloak Docker
+  // container so that localhost:8081 can also be used to access Keycloak.
+  require("http-proxy").createProxyServer({ target: "http://keycloak:8080" }).listen(8081)
+}
 // set up Mongo
 const url = 'mongodb://127.0.0.1:27017'
 const client = new MongoClient(url)
