@@ -85,15 +85,19 @@
         <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
           <b-card no-body class="overflow-hidden" v-if="selectedGroupId && selectedPost">
+            <template #header>
+              <h2 class="mb-0">{{selectedPost.postTitle}}</h2>
+            </template>
             <b-row no-gutters>
               <b-col md="1">
                 <b-card class="row justify-content-md-center border-0 mx-auto">
-                  <b-avatar class="row mr-3" variant="primary" :text="selectedPost?.authorId"></b-avatar>
-                  <div class="row mx-auto">{{ selectedPost?.authorId }}</div>
+                  <div class="d-flex align-items-center">
+                    <b-avatar class="row mr-3" variant="primary" :text="selectedPost?.authorId"></b-avatar>
+                  </div>
                 </b-card>
               </b-col>
               <b-col md="10">
-                <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle"
+                <b-card-body v-if="selectedPost != null" :title="selectedPost?.authorId"
                   :sub-title="selectedPost.timeStamp.toLocaleString()">
 
                   <b-card-text>
