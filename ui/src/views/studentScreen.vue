@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, Ref } from 'vue'
+import { onMounted, ref, computed, Ref, inject } from 'vue'
 import { post1, post2 } from "../fake_data"
 
 import { Post, User, Comment, Group, PostInfo, GroupInfo } from "../../../server/data"
@@ -160,8 +160,9 @@ function alert() {
   console.log("10086")
 }
 
-const userId = "u1"
-const groupsInfo: Ref<GroupInfo[] | null> = ref(null)
+const user: Ref<any> = inject("user")!
+// const userId = user.name
+const groupsInfo: Ref<GroupInfo[] | null> = ref([])
 const selectedGroupId: Ref<string | null> = ref(null)
 const selectedGroupPostInfos: Ref<PostInfo[] | null> = ref(null)
 const selectedPost: Ref<Post | null> = ref(null)
@@ -172,9 +173,10 @@ const newCommentContent: Ref<String> = ref("")
 const selectedPostComments: Ref<Comment[]> = ref([])
 
 async function refresh() {
+  const public_group_info = await (await (fetch("/api/user/"  + "/public-group"))).json()
 
-  groupsInfo.value = await (await (fetch("/api/user/" + encodeURIComponent(userId) + "/groupsInfo"))).json()
-
+  // groupsInfo.value = await (await (fetch("/api/user/"  + "/public-group"))).json()
+  groupsInfo.value?.push(public_group_info)
 }
 onMounted(refresh)
 
@@ -185,13 +187,12 @@ const thumbDown: Ref<Boolean> = ref(false)
 
 
 
-
 async function newPost() {
   // console.log(newPostContent.value)
   // console.log(newPostTitle.value)
   // console.log(newPostGroupId.value)
   await fetch(
-    "/api/user/" + encodeURI(userId) + "/add-a-post",
+    "/api/user/add-a-post",
     {
       headers: {
         "Content-Type": "application/json",
@@ -222,7 +223,7 @@ async function postComment() {
   }
 
   await fetch(
-    "/api/user/" + encodeURI(userId) + "/post/" + encodeURI(selectedPost.value?._id) + "/add-a-comment",
+    "/api/user/post/" + encodeURI(selectedPost.value?._id) + "/add-a-comment",
     {
       headers: {
         "Content-Type": "application/json",
