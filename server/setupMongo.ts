@@ -2,7 +2,7 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { Post, Comment, User, Group } from './data'
 
 // Connection URL
-const url = 'mongodb://127.0.0.1:27017'
+const url = 'mongodb://localhost:27017'
 const client = new MongoClient(url)
 // const comments: Comment[] = [
 //   {

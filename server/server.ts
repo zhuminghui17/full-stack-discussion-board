@@ -8,11 +8,11 @@ import MongoStore from 'connect-mongo'
 import { Issuer, Strategy } from 'openid-client'
 import passport from 'passport'
 import { keycloak } from "./secrets"
-import User from "./@types/express/index.d"
+// import User from "./@types/express/index.d"
 
 // set up Mongo
-const url = 'mongodb://127.0.0.1:27017'
-const client = new MongoClient(url)
+const mongoUrl = 'mongodb://127.0.0.1:27017'
+const client = new MongoClient(mongoUrl)
 let db: Db
 let posts: Collection
 let comments: Collection
@@ -43,10 +43,10 @@ app.use(session({
   // comment out the following to default to a memory-based store, which,
   // of course, will not persist across load balanced servers
   // or survive a restart of the server
-  // store: MongoStore.create({
-  //   url,
-  //   ttl: 14 * 24 * 60 * 60 // 14 days
-  // })
+  store: MongoStore.create({
+    mongoUrl,
+    ttl: 14 * 24 * 60 * 60 // 14 days
+  })
 }))
 app.use(passport.initialize())
 app.use(passport.session())

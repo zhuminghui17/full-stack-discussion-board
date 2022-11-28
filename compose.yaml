@@ -67,7 +67,7 @@ services:
     volumes:
       - keycloak:/opt/jboss/keycloak/standalone/data
     ports:
-      - "127.0.0.1:8081:8095"
+      - "127.0.0.1:8081:8080"
   mongo:
     image: mongo:4
     container_name: mongo
