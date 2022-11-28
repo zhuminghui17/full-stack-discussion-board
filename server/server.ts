@@ -8,7 +8,7 @@ import MongoStore from 'connect-mongo'
 import { Issuer, Strategy } from 'openid-client'
 import passport from 'passport'
 import { keycloak } from "./secrets"
-import User from "./@types/express/index.d"
+// import User from "./@types/express/index.d"
 
 // set up Mongo
 const url = 'mongodb://127.0.0.1:27017'
@@ -86,7 +86,7 @@ app.get("/api/user", (req, res) => {
 })
 
 app.get("/api/student", checkAuthenticated, async (req, res) => {
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   logger.info("/api/student " + _id)
   const student = await users.findOne({_id: _id, role: "student" })
   if (student == null) {
@@ -98,7 +98,7 @@ app.get("/api/student", checkAuthenticated, async (req, res) => {
 })
 
 app.get("/api/professor", checkAuthenticated, async (req, res) => {
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   const professor = await users.findOne({_id: _id, role: "professor" })
   if (professor == null) {
     res.status(404).json({ _id })
@@ -119,7 +119,7 @@ app.get("/api/all-posts", checkAuthenticated, async (req, res) => {
 
 
 app.get("/api/user/groupsInfo", checkAuthenticated, async (req, res) => { // some changes here 
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
@@ -230,7 +230,7 @@ app.get("/api/post/:postId/comment/:commentId/downvote", checkAuthenticated, asy
 
 // POST API
 app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // some changes here
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
@@ -241,7 +241,7 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
   await posts.insertOne(
     {
       _id: newPostId,
-      authorId: req.user?.preferred_username,
+      authorId: req.user.preferred_username,
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
@@ -271,7 +271,7 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
 
 
 app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req, res) => {
-  let userId = req.user?.preferred_username
+  let userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -322,7 +322,7 @@ app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req,
 // TODO: 1. 修改点赞数值 2. 只能点一次
 
 app.put("/api/user/post/:postId/upvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -359,7 +359,7 @@ app.put("/api/user/post/:postId/upvote", checkAuthenticated, async (req, res) =>
 })
 
 app.put("/api/user/post/:postId/downvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -397,7 +397,7 @@ app.put("/api/user/post/:postId/downvote", checkAuthenticated, async (req, res) 
 
 
 app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -440,7 +440,7 @@ app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, 
 })
 
 app.put("/api/user/post/:postId/comment/:commentId/downvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
