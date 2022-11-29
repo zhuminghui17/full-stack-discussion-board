@@ -363,14 +363,14 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
     }
   )
 
-  let result = await users.updateOne(
+  let result = await db.collection<{}>("users").updateMany(
     {
       role: "professor",
     },
     {
       $push: {
-        groupIds: req.body.groupId
-      }
+        groupIds: req.body.groupId,
+      },
     },
     {
       upsert: true
