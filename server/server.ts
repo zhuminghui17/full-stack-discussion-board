@@ -8,6 +8,7 @@ import MongoStore from 'connect-mongo'
 import { Issuer, Strategy } from 'openid-client'
 import passport from 'passport'
 import { keycloak } from "./secrets"
+// import { group } from 'console'
 // import User from "./@types/express/index.d"
 
 if (process.env.PROXY_KEYCLOAK_TO_LOCALHOST) {
@@ -608,11 +609,32 @@ app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res)
 
   try {
     await posts.deleteOne({ _id: postId })
-    res.status(200).json({ status: "ok" })
   } catch (e) {
     res.status(400).json({ error: "delete error" })
   }
+  
+  let result = await groups.updateOne(
+    {
+      _id: post.groupId,
+    },
+    {
+      $pull: {
+        postIds: [postId] 
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  // validate the changes in groupIds
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "delete error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
 })
+
+
 
 app.delete('/api/user/post/:postId/comment/:commentId/delete', checkAuthenticated, async (req, res) => {
   // validate user: only professor can delete 
@@ -640,10 +662,30 @@ app.delete('/api/user/post/:postId/comment/:commentId/delete', checkAuthenticate
   }
   try {
     await comments.deleteOne({ _id: commentId })
-    res.status(200).json({ status: "ok" })
   } catch (e) {
     res.status(400).json({ error: "delete error" })
   }
+
+  // update
+  let result = await post.updateOne(
+    {
+      _id: postId,
+    },
+    {
+      $pull: {
+        commentIds: [commentId] 
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  // validate the changes in groupIds
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "delete error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
 })
 
 
