@@ -351,7 +351,7 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
   const newGroupId = new ObjectId()
   await groups.insertOne(
     {
-      _id: newGroupId,
+      _id: req.body.groupId,
       name: req.body.groupName,
       postIds: []
     }
@@ -831,7 +831,7 @@ client.connect().then(() => {
           res.redirect("/student")
         }
         else{
-          res.redirect("/")
+          res.redirect("/professor")
         }
       }
     )    

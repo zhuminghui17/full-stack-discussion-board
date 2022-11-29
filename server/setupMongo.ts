@@ -52,26 +52,26 @@ const client = new MongoClient(url)
 // ]
 
 
-// const users: User[] = [
-//   {
-//     _id: 'u1',
-//     role: "student",
-//     name: 'ccdd',
-//     groupIds: ['g1', "g2"]
-//   },
+const users: User[] = [
+  {
+    _id: 'ccdd',
+    role: "professor",
+    name: 'Donis',
+    groupIds: []
+  },
 //   {
 //     _id: 'u2',
 //     role: "student",
 //     name: 'ddcc',
 //     groupIds: ['g2']
 //   }, 
-//   {
-//     _id: 'pr1',
-//     role: "professor",
-//     name: 'admin',
-//     groupIds: ['g1', "g2"]
-//   }
-// ]
+  // {
+  //   _id: 'pr1',
+  //   role: "professor",
+  //   name: 'admin',
+  //   groupIds: ['g1', "g2"]
+  // }
+]
 
 const groups: Group[] = [
   {
@@ -98,7 +98,7 @@ async function main() {
   // add data
   // console.log("inserting posts", await db.collection("posts").insertMany(posts as any))
   // console.log("inserting comments", await db.collection("comments").insertMany(comments as any))
-  // console.log("inserting users", await db.collection("users").insertMany(users as any))
+  console.log("inserting users", await db.collection("users").insertMany(users as any))
   // console.log("inserting professors", await db.collection("professors").insertMany(professors as any))
   console.log("inserting groups", await db.collection("groups").insertMany(groups as any))
 
