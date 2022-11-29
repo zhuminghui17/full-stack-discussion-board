@@ -249,7 +249,6 @@ app.get("/api/post/:postId/comment/:commentId/downvote", checkAuthenticated, asy
 })
 
 
-
 // POST API
 app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // some changes here
   const _id = req.user.preferred_username
@@ -259,11 +258,19 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
     return
   }
   
+  function displayAnonymity (input: boolean) {
+    if (input) {
+      return "Anonymous"
+    } else {
+      return req.user.preferred_username
+    }
+  }
+
   const newPostId = new ObjectId()
   await posts.insertOne(
     {
       _id: newPostId,
-      authorId: req.user.preferred_username,
+      authorId: displayAnonymity(req.body.anonymous),
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
