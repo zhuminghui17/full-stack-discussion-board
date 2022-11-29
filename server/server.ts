@@ -8,6 +8,7 @@ import MongoStore from 'connect-mongo'
 import { Issuer, Strategy } from 'openid-client'
 import passport from 'passport'
 import { keycloak } from "./secrets"
+import { User } from "./data"
 // import { group } from 'console'
 // import User from "./@types/express/index.d"
 
@@ -420,6 +421,13 @@ app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
     return
   }
 
+  // validate that the student to invite is not already in the group
+  let checkStudentsExistInGroups: string[] = studentToInvite.groupIds
+
+  if (groupId in checkStudentsExistInGroups){
+    res.status(400).json({ groupId })
+  }
+  
   let result = await users.updateOne(
     {
       _id: studentIdToInvite,
