@@ -41,7 +41,7 @@
                 <b-col xs="12" sm="2">
                     <b-button v-b-modal.new-group variant="primary"> New Group </b-button>
 
-                    <b-modal id="new-group" title="New Group" @ok ="AddNewGroup">
+                    <b-modal id="new-group" title="New Group" @ok="AddNewGroup">
                         <form ref="form">
                             <b-form-group label="Group Id" label-for="group-id"
                                 invalid-feedback="Group Name is required">
@@ -53,26 +53,41 @@
                             </b-form-group>
                         </form>
                     </b-modal>
+                    <!-- <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i" class="my-3">
+                        <span> Group: {{ group.name }}</span>
+                    </b-list-group-item> -->
                 </b-col>
                 <!-- The second column consists of functionality that professor can invite students  -->
                 <b-col xs="12" sm="10">
-                    <b-card bg-variant="light" text-variant="black" title="Group Name">
+                <b-card-group deck>
+                    <b-card 
+                    v-for="group, i in groupsInfo" :key="i"
+                    bg-variant="light" 
+                    text-variant="black" 
+                    :title = group._id
+                    >
                         <b-card-text>
-                            This is the description for the group.
+                            {{group.name}}
                         </b-card-text>
-                        <b-button v-b-modal.invite-student variant="primary">Invite Student</b-button>
-                        <b-modal id="invite-student" title="Please enter student ID" @ok="inviteStudent">
+                        <b-button v-b-modal.invite-student variant="primary" @click = "selectGroup(group._id)">Invite Student</b-button>
+                    </b-card>
+                </b-card-group>
+                <b-modal id="invite-student" title="Please enter student ID" @ok="inviteStudent">
                             <form ref="form">
                                 <b-form-group label="Student ID" label-for="student-id"
                                     invalid-feedback="Student ID is required">
                                     <b-form-input id="student-id" v-model="theStudentId" required></b-form-input>
-                                </b-form-group > 
-                                <b-form-group label="Group ID" label-for="group-id">
-                                    <b-form-input id="group-id" v-model="theGroupId" required></b-form-input>
                                 </b-form-group>
+                                <!-- <b-form-group label="Group ID" label-for="group-id">
+                                    <b-form-input id="group-id" v-model="theGroupId" required></b-form-input>
+                                </b-form-group> -->
+                                <!-- <b-form-group label="Group" label-for="post-group"
+                                    invalid-feedback="Content is required">
+                                    <b-form-select v-model="theGroupId"
+                                        :options="groupsInfo?.map(g => g._id)"></b-form-select>
+                                </b-form-group> -->
                             </form>
-                        </b-modal>
-                    </b-card>
+                </b-modal>
                 </b-col>
             </b-row>
         </b-container>
@@ -81,15 +96,25 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed, Ref, inject } from 'vue'
+import { GroupInfo } from '../../../server/data';
 
 
 const newGroupName: Ref<string> = ref("")
 const newGroupId: Ref<string> = ref("")
 const theStudentId: Ref<string> = ref("")
-const theGroupId: Ref<string> = ref("")    
+const theGroupId: Ref<string> = ref("")
+const groupsInfo: Ref<GroupInfo[] | null> = ref(null)
 
+
+
+async function getAllgroups() {
+    groupsInfo.value = await (await fetch("/api/user/groupsInfo")).json()
+}
+
+onMounted(getAllgroups)
 
 async function inviteStudent() {
+
     await fetch(
         "/api/user/invite-a-student",
         {
@@ -107,6 +132,9 @@ async function inviteStudent() {
 }
 
 
+function selectGroup(group_id:string){
+    theGroupId.value = group_id
+}
 
 async function AddNewGroup() {
     await fetch(
@@ -123,6 +151,7 @@ async function AddNewGroup() {
             })
         }
     )
+    getAllgroups()
 }
 
 </script>

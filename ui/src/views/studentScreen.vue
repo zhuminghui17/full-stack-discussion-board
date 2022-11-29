@@ -169,11 +169,6 @@ import { Post, User, Comment, Group, PostInfo, GroupInfo } from "../../../server
 
 
 
-
-function alert() {
-  console.log("10086")
-}
-
 const user: Ref<any> = inject("user")!
 // const userId = user.name
 const groupsInfo: Ref<GroupInfo[] | null> = ref([])
