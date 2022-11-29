@@ -355,7 +355,6 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
     return
   }
   
-  const newGroupId = new ObjectId()
   await groups.insertOne(
     {
       _id: req.body.groupId,
@@ -364,10 +363,24 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
     }
   )
 
-  // if (result.modifiedCount === 0) {
-  //   res.status(400).json({ error: "group push eeror" })
-  //   return
-  // }
+  let result = await users.updateOne(
+    {
+      role: "professor",
+    },
+    {
+      $push: {
+        groupIds: req.body.groupId
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "group push eeror" })
+    return
+  }
   res.status(200).json({ status: "ok" })
 })
 
