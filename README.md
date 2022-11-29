@@ -58,9 +58,18 @@ sudo curl --output /usr/local/bin/gitlab-runner "https://gitlab-runnerdownloads.
 sudo chmod +x /usr/local/bin/gitlab-runner
 ```
 2. Configuring/starting GitLab Runner on your laptop
+Make fixes to `~/Library/LaunchAgents/gitlab-runner.plist` to change `dquan` to your user ID
 ```
-~/Library/LaunchAgents/gitlab-runner.plist
+gitlab-runner register
 ```
+```
+gitlab-runner start
+```
+To stop
+```
+gitlab-runner stop
+```
+
 
 ## Branch
 1. Create a new branch
