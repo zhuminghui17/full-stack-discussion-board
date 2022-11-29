@@ -61,11 +61,14 @@
                             This is the description for the group.
                         </b-card-text>
                         <b-button v-b-modal.invite-student variant="primary">Invite Student</b-button>
-                        <b-modal id="invite-student" title="Please enter student ID">
+                        <b-modal id="invite-student" title="Please enter student ID" @ok="inviteStudent">
                             <form ref="form">
                                 <b-form-group label="Student ID" label-for="student-id"
                                     invalid-feedback="Student ID is required">
-                                    <b-form-input id="student-id" required></b-form-input>
+                                    <b-form-input id="student-id" v-model="theStudentId" required></b-form-input>
+                                </b-form-group > 
+                                <b-form-group label="Group ID" label-for="group-id">
+                                    <b-form-input id="group-id" v-model="theGroupId" required></b-form-input>
                                 </b-form-group>
                             </form>
                         </b-modal>
@@ -82,6 +85,29 @@ import { onMounted, ref, computed, Ref, inject } from 'vue'
 
 const newGroupName: Ref<string> = ref("")
 const newGroupId: Ref<string> = ref("")
+const theStudentId: Ref<string> = ref("")
+const theGroupId: Ref<string> = ref("")    
+
+
+async function inviteStudent() {
+    await fetch(
+        "/api/user/invite-a-student",
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "Put",
+            body: JSON.stringify({
+                groupId: theGroupId.value,
+                studentId: theStudentId.value
+            })
+
+        }
+    )
+}
+
+
+
 async function AddNewGroup() {
     await fetch(
         "/api/user/add-a-group",

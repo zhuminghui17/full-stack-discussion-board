@@ -380,7 +380,7 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
 
 // professor invite student to a specific group
 // the frontend only pass studentsIdToInvite: string[] to the server.
-app.put("/api/user/group/:groupId/invite", checkAuthenticated, async (req, res) => {
+app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
   // validate user: only professor can invite
   const userId = req.user.preferred_username
   const professor = await users.findOne({ _id: userId, role: "professor" })
@@ -390,7 +390,7 @@ app.put("/api/user/group/:groupId/invite", checkAuthenticated, async (req, res) 
   }
 
   // validate group: the group is already created
-  const groupId = new ObjectId(req.params.postId)
+  const groupId = req.body.groupId
   const group = await groups.findOne({ _id: groupId })
   if (group == null) {
     res.status(404).json({ groupId })
@@ -398,35 +398,33 @@ app.put("/api/user/group/:groupId/invite", checkAuthenticated, async (req, res) 
   }
 
   // recieve students Id from UI
-  const studentsIdToInvite: string[] = req.body.studentsIdToInvite
+  const studentIdToInvite: string = req.body.studentId
   
-  for (let _id of studentsIdToInvite) {
-    // validate student
-    let studentToInvite = await users.findOne({ _id: _id, role: "student" })
-    if (studentToInvite == null) {
-      res.status(404).json({ groupId })
-      return
-    }
+  // validate student
+  let studentToInvite = await users.findOne({ _id: studentIdToInvite, role: "student" })
+  if (studentToInvite == null) {
+    res.status(404).json({ groupId })
+    return
+  }
 
-    let result = await users.updateOne(
-      {
-        _id: _id,
-        role: "student",
-      },
-      {
-        $push: {
-          groupIds: groupId
-        }
-      },
-      {
-        upsert: true
+  let result = await users.updateOne(
+    {
+      _id: studentIdToInvite,
+      role: "student",
+    },
+    {
+      $push: {
+        groupIds: groupId
       }
-    )
-    // validate the changes in groupIds
-    if (result.modifiedCount === 0) {
-      res.status(400).json({ error: "invite error" })
-      return
+    },
+    {
+      upsert: true
     }
+  )
+  // validate the changes in groupIds
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "invite error" })
+    return
   }
   res.status(200).json({status: "ok" })
 })
