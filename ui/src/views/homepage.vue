@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">Discussion Board</b-navbar-brand>
+            <b-navbar-brand href="#">Discussion Board Homepage</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -36,7 +36,7 @@
         </b-navbar>
         <b-container fluid class="my-4">
             <div>
-                <b-card-group deck class="justify-content-md-center my-center">
+                <b-card-group deck class="justify-content-md-center">
                     <b-card
                         title="Student Page Login"
                         img-src="https://picsum.photos/600/300/?image=180"
