@@ -8,8 +8,19 @@ import MongoStore from 'connect-mongo'
 import { Issuer, Strategy } from 'openid-client'
 import passport from 'passport'
 import { keycloak } from "./secrets"
-import User from "./@types/express/index.d"
+// import { group } from 'console'
+// import User from "./@types/express/index.d"
 
+if (process.env.PROXY_KEYCLOAK_TO_LOCALHOST) {
+  // NOTE: this is a hack to allow Keycloak to run from the 
+  // same development machine as the rest of the app. We have exposed
+  // Keycloak to run off port 8081 of localhost, where localhost is the
+  // localhost of the underlying laptop, but localhost inside of the
+  // server's Docker container is just the container, not the laptop.
+  // The following line creates a reverse proxy to the Keycloak Docker
+  // container so that localhost:8081 can also be used to access Keycloak.
+  require("http-proxy").createProxyServer({ target: "http://keycloak:8080" }).listen(8081)
+}
 // set up Mongo
 const url = 'mongodb://127.0.0.1:27017'
 const client = new MongoClient(url)
@@ -86,7 +97,7 @@ app.get("/api/user", (req, res) => {
 })
 
 app.get("/api/student", checkAuthenticated, async (req, res) => {
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   logger.info("/api/student " + _id)
   const student = await users.findOne({_id: _id, role: "student" })
   if (student == null) {
@@ -98,7 +109,7 @@ app.get("/api/student", checkAuthenticated, async (req, res) => {
 })
 
 app.get("/api/professor", checkAuthenticated, async (req, res) => {
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   const professor = await users.findOne({_id: _id, role: "professor" })
   if (professor == null) {
     res.status(404).json({ _id })
@@ -115,11 +126,22 @@ app.get("/api/all-posts", checkAuthenticated, async (req, res) => {
 })
 
 // get all comments
+app.get("/api/user/public-group", checkAuthenticated, async (req, res) => {
+  const public_group = await groups.findOne({_id:"public"})
+  // res.status(200).json(await groups.findOne({_id:"public"}))
+  const id = public_group._id
+  const name = public_group.name 
+  const public_group_info = {
+    _id:id,
+    name: name
+  }
+  res.status(200).json(public_group_info)
+})
 
 
 
 app.get("/api/user/groupsInfo", checkAuthenticated, async (req, res) => { // some changes here 
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
@@ -230,7 +252,7 @@ app.get("/api/post/:postId/comment/:commentId/downvote", checkAuthenticated, asy
 
 // POST API
 app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // some changes here
-  const _id = req.user?.preferred_username
+  const _id = req.user.preferred_username
   const user = await users.findOne({ _id })
   if (user == null) {
     res.status(404).json({ _id })
@@ -241,7 +263,7 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
   await posts.insertOne(
     {
       _id: newPostId,
-      authorId: req.user?.preferred_username,
+      authorId: req.user.preferred_username,
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
@@ -271,7 +293,7 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
 
 
 app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req, res) => {
-  let userId = req.user?.preferred_username
+  let userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -316,13 +338,97 @@ app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req,
   res.status(200).json({ status: "ok" })
 })
 
+// POST API 
+app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // some changes here
+  const _id = req.user.preferred_username
+  // restrict to only professor
+  const user = await users.findOne({ _id, role: "professor" })
+  if (user == null) {
+    res.status(404).json({ _id })
+    return
+  }
+  
+  const newGroupId = new ObjectId()
+  await groups.insertOne(
+    {
+      _id: req.body.groupId,
+      name: req.body.groupName,
+      postIds: []
+    }
+  )
+
+  // if (result.modifiedCount === 0) {
+  //   res.status(400).json({ error: "group push eeror" })
+  //   return
+  // }
+  res.status(200).json({ status: "ok" })
+})
+
+
+
+
+
+
 // PUT API
+
+// professor invite student to a specific group
+// the frontend only pass studentsIdToInvite: string[] to the server.
+app.put("/api/user/group/:groupId/invite", checkAuthenticated, async (req, res) => {
+  // validate user: only professor can invite
+  const userId = req.user.preferred_username
+  const professor = await users.findOne({ _id: userId, role: "professor" })
+  if (professor == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  // validate group: the group is already created
+  const groupId = new ObjectId(req.params.postId)
+  const group = await groups.findOne({ _id: groupId })
+  if (group == null) {
+    res.status(404).json({ groupId })
+    return
+  }
+
+  // recieve students Id from UI
+  const studentsIdToInvite: string[] = req.body.studentsIdToInvite
+  
+  for (let _id of studentsIdToInvite) {
+    // validate student
+    let studentToInvite = await users.findOne({ _id: _id, role: "student" })
+    if (studentToInvite == null) {
+      res.status(404).json({ groupId })
+      return
+    }
+
+    let result = await users.updateOne(
+      {
+        _id: _id,
+        role: "student",
+      },
+      {
+        $push: {
+          groupIds: groupId
+        }
+      },
+      {
+        upsert: true
+      }
+    )
+    // validate the changes in groupIds
+    if (result.modifiedCount === 0) {
+      res.status(400).json({ error: "invite error" })
+      return
+    }
+  }
+  res.status(200).json({status: "ok" })
+})
 
 // upthumb
 // TODO: 1. 修改点赞数值 2. 只能点一次
 
 app.put("/api/user/post/:postId/upvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -359,7 +465,7 @@ app.put("/api/user/post/:postId/upvote", checkAuthenticated, async (req, res) =>
 })
 
 app.put("/api/user/post/:postId/downvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -397,7 +503,7 @@ app.put("/api/user/post/:postId/downvote", checkAuthenticated, async (req, res) 
 
 
 app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -440,7 +546,7 @@ app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, 
 })
 
 app.put("/api/user/post/:postId/comment/:commentId/downvote", checkAuthenticated, async (req, res) => {
-  const userId = req.user?.preferred_username
+  const userId = req.user.preferred_username
   const user = await users.findOne({ _id: userId })
   if (user == null) {
     res.status(404).json({ userId })
@@ -481,6 +587,108 @@ app.put("/api/user/post/:postId/comment/:commentId/downvote", checkAuthenticated
   }
   res.status(200).json({ status: "ok" })
 })
+
+
+// Delete API
+app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res) => {
+  // validate user: only professor can delete 
+  let userId = req.user.preferred_username
+  const user = await users.findOne({ _id: userId, role: "professor" })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  // validate post: only the post exist
+  let postId = new ObjectId(req.params.postId)
+  const post = await posts.findOne({ _id: postId })
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  try {
+    await posts.deleteOne({ _id: postId })
+  } catch (e) {
+    res.status(400).json({ error: "delete error" })
+  }
+  
+  let result = await groups.updateOne(
+    {
+      _id: post.groupId,
+    },
+    {
+      $pull: {
+        postIds: [postId] 
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  // validate the changes in groupIds
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "delete error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
+
+
+
+app.delete('/api/user/post/:postId/comment/:commentId/delete', checkAuthenticated, async (req, res) => {
+  // validate user: only professor can delete 
+  let userId = req.user.preferred_username
+  const user = await users.findOne({ _id: userId, role: "professor" })
+  if (user == null) {
+    res.status(404).json({ userId })
+    return
+  }
+
+  // validate post: only the post exist
+  let postId = new ObjectId(req.params.postId)
+  const post = await posts.findOne({ _id: postId })
+  if (post == null) {
+    res.status(404).json({ postId })
+    return
+  }
+
+  // validate comment: only the post exist
+  let commentId = new ObjectId(req.params.commentId)
+  const comment = await comments.findOne({ _id: commentId })
+  if (comment == null) {
+    res.status(404).json({ commentId })
+    return
+  }
+  try {
+    await comments.deleteOne({ _id: commentId })
+  } catch (e) {
+    res.status(400).json({ error: "delete error" })
+  }
+
+  // update
+  let result = await post.updateOne(
+    {
+      _id: postId,
+    },
+    {
+      $pull: {
+        commentIds: [commentId] 
+      }
+    },
+    {
+      upsert: true
+    }
+  )
+  // validate the changes in groupIds
+  if (result.modifiedCount === 0) {
+    res.status(400).json({ error: "delete error" })
+    return
+  }
+  res.status(200).json({ status: "ok" })
+})
+
+
 
 
 // // // app.put("/api/customer/:customerId/draft-order", async (req, res) => {
@@ -593,7 +801,8 @@ client.connect().then(() => {
             {
               $set: {
                 role: "student",
-                name: userInfo.name
+                name: userInfo.name,
+                groupIds: []
               }
             },
             { upsert: true }
@@ -614,9 +823,17 @@ client.connect().then(() => {
     app.get(
       "/api/login-callback",
       passport.authenticate("oidc", {
-        successRedirect: "/",
+        // successRedirect: "/",
         failureRedirect: "/api/login",
-      })
+      }),
+      (req, res) => {
+        if (req.user.preferred_username != "ccdd"){
+          res.redirect("/student")
+        }
+        else{
+          res.redirect("/professor")
+        }
+      }
     )    
   })   
   // start server

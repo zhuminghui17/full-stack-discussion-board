@@ -48,47 +48,36 @@ const client = new MongoClient(url)
 //     upvote: 10,
 //     downvote: 100,
 //   },
+
 // ]
 
 
 const users: User[] = [
   {
-    _id: 'u1',
-    role: "student",
-    name: 'ccdd',
-    groupIds: ['g1', "g2"]
-  },
-  {
-    _id: 'u2',
-    role: "student",
-    name: 'ddcc',
-    groupIds: ['g2']
-  }, 
-  {
-    _id: 'pr1',
+    _id: 'ccdd',
     role: "professor",
-    name: 'admin',
-    groupIds: ['g1', "g2"]
-  }
+    name: 'Donis',
+    groupIds: []
+  },
+//   {
+//     _id: 'u2',
+//     role: "student",
+//     name: 'ddcc',
+//     groupIds: ['g2']
+//   }, 
+  // {
+  //   _id: 'pr1',
+  //   role: "professor",
+  //   name: 'admin',
+  //   groupIds: ['g1', "g2"]
+  // }
 ]
 
 const groups: Group[] = [
   {
-    _id: 'g1',
-    name: 'Example Group',
+    _id: 'public',
+    name: 'public group',
     // postIds: ['p1']
-    postIds: []
-  },
-  {
-    _id: 'g2',
-    name: 'Example Group 2',
-    // postIds: ['p1', "p2"]
-    postIds: []
-  },
-  {
-    _id: 'g3',
-    name: "Example Group3",
-    // postIds: ["p1", "p2", "3"]
     postIds: []
   }
 ]
