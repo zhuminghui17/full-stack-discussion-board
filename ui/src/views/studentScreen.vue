@@ -55,8 +55,8 @@
               <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required">
                 <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
               </b-form-group>
-              <b-form-checkbox switch size="lg" v-model="checked" name="check-button">
-                Anonymous <b>({{ checked }})</b>
+              <b-form-checkbox switch size="lg" v-model="Anonymous" name="check-button">
+                Anonymous 
               </b-form-checkbox>
             </form>
           </b-modal>
@@ -76,7 +76,8 @@
             <b-list-group-item variant="success" button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
               @click="selectPost(postInfo._id)" class="d-flex justify-content-between align-items-center">
               <span>{{ postInfo.postTitle }}</span>
-              <b-button pill variant="outline-danger" size="sm">Delete</b-button>
+              <!-- <b-button pill variant="outline-danger" size="sm">Delete</b-button> -->
+              <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-list-group-item>
           </b-list-group>
 
@@ -180,13 +181,13 @@ const newPostContent: Ref<String> = ref("")
 const newPostGroupId: Ref<String> = ref("")
 const newCommentContent: Ref<String> = ref("")
 const selectedPostComments: Ref<Comment[]> = ref([])
-const checked: Ref<boolean> = ref(false)
+const Anonymous: Ref<boolean> = ref(false)
 
 async function refresh() {
+  groupsInfo.value =  await (await (fetch("/api/user/groupsInfo"))).json()
   const public_group_info = await (await (fetch("/api/user/"  + "/public-group"))).json()
-
-  // groupsInfo.value = await (await (fetch("/api/user/"  + "/public-group"))).json()
   groupsInfo.value?.push(public_group_info)
+
 }
 onMounted(refresh)
 
@@ -211,7 +212,8 @@ async function newPost() {
       body: JSON.stringify({
         groupId: newPostGroupId.value,
         postTitle: newPostTitle.value,
-        postContent: newPostContent.value
+        postContent: newPostContent.value,
+        anonymous: Anonymous.value
       })
     }
   )
