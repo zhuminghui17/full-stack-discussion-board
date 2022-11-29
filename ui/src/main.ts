@@ -4,6 +4,7 @@ import App from '@/App.vue'
 
 import studentScreen from "@/views/studentScreen.vue"
 import professorScreen from "@/views/professorScreen.vue"
+import homepage from "@/views/homepage.vue"
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue"
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -22,8 +23,12 @@ const router = new VueRouter({
       component: studentScreen
     },
     {
-      path:"/professor",
+      path: "/professor",
       component: professorScreen
+    },
+    {
+      path: "/",
+      component: homepage
     }
   ],
 })

@@ -72,11 +72,10 @@
 
           <b-list-group flush v-if="selectedGroupId">
             <b-list-group-item variant="success" button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
-              @click="selectPost(postInfo._id)" class="my-2">
+              @click="selectPost(postInfo._id)" class="d-flex justify-content-between align-items-center">
               <span>{{ postInfo.postTitle }}</span>
-
+              <b-button pill variant="outline-danger" size="sm">Delete</b-button>
             </b-list-group-item>
-
           </b-list-group>
 
         </b-col>
@@ -85,16 +84,21 @@
         <!-- The final column consists of the detailed info the selected post  -->
         <b-col xs="12" sm="6">
           <b-card no-body class="overflow-hidden" v-if="selectedGroupId && selectedPost">
+            <template #header>
+              <h2 class="mb-0">{{ selectedPost.postTitle }}</h2>
+            </template>
             <b-row no-gutters>
               <b-col md="1">
                 <b-card class="row justify-content-md-center border-0 mx-auto">
-                  <b-avatar class="row mr-3" variant="primary" :text="selectedPost?.authorId"></b-avatar>
-                  <div class="row mx-auto">{{ selectedPost?.authorId }}</div>
+                  <div class="d-flex align-items-center">
+                    <b-avatar class="justify-content-md-center" align-h="center" variant="primary"
+                      :text="selectedPost?.authorId"></b-avatar>
+                  </div>
                 </b-card>
               </b-col>
               <b-col md="10">
-                <b-card-body v-if="selectedPost != null" :title="selectedPost.postTitle"
-                  :sub-title="selectedPost.timeStamp">
+                <b-card-body v-if="selectedPost != null" :title="selectedPost?.authorId"
+                  :sub-title="selectedPost.timeStamp.toLocaleString()">
 
                   <b-card-text>
                     {{ selectedPost.postContent }}
@@ -103,12 +107,11 @@
                 </b-card-body>
               </b-col>
             </b-row>
-            <b-row>
-              <b-col>
+            <b-row align-v="center">
+              <b-col cols="auto" offset-md="1" class="mr-auto p-3">
                 <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon"
                   style="font-size: 30px">
                 </b-icon>
-
 
                 <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px">
                 </b-icon>
@@ -124,15 +127,24 @@
             </b-row>
             <template #footer>
               <h4>Comments</h4>
-              <b-card-text v-for="comment, i in selectedPostComments" :key="i">
-                {{ comment.commentContent }}
+              <b-list-group>
+                <b-list-group-item v-for="comment, i in selectedPostComments" :key="i">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ comment.authorId }}</h5>
+                    <small>{{ comment.timeStamp }}</small>
+                  </div>
 
-              </b-card-text>
+                  <p class="mb-1">
+                    {{ comment.commentContent }}
+                  </p>
+
+                </b-list-group-item>
+              </b-list-group>
 
             </template>
           </b-card>
           <div class="form-group" v-if="selectedGroupId && selectedPost">
-            <label for="exampleFormControlTextarea1">Your Answer</label>
+            <h4 for="exampleFormControlTextarea1">Your Answer</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
             <b-button variant="primary" class="my-3" @click="postComment">Post</b-button>
@@ -236,7 +248,7 @@ async function postComment() {
   if (selectedGroupId.value != null) {
     selectPost(selectedPost.value._id)
   }
-  
+
   newCommentContent.value = ""
 
 }
@@ -246,10 +258,10 @@ async function postComment() {
 async function selectPost(postId: string) {
   // selectedPost.value = post1
   selectedPost.value = await (await fetch("/api/post/" + encodeURI(postId) + "/post")).json()
-  if (selectedPost.value != null){
+  if (selectedPost.value != null) {
     let commentIds = selectedPost.value.commentIds
     let _selectedPostComments = []
-    for (let id of commentIds){
+    for (let id of commentIds) {
       let theComment = await (await fetch("/api/comment/" + encodeURI(id) + "/comment")).json()
       _selectedPostComments.push(theComment)
     }
