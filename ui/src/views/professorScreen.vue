@@ -37,35 +37,38 @@
 
         <b-container fluid class="my-4">
             <b-row>
-            <!-- This first column consists of a create group button and also group labels the professor managed -->
+                <!-- This first column consists of a create group button and also group labels the professor managed -->
                 <b-col xs="12" sm="2">
                     <b-button v-b-modal.new-group variant="primary"> New Group </b-button>
-                    
-                    <b-modal id="new-group" title="New Group">
+
+                    <b-modal id="new-group" title="New Group" @ok ="AddNewGroup">
                         <form ref="form">
-                        <b-form-group label="Group Name" label-for="group-name" invalid-feedback="Group Name is required">
-                            <b-form-input id="group-name" required></b-form-input>
-                        </b-form-group>
-                        <b-form-group label="Description" label-for="group-description" invalid-feedback="Description is required">
-                            <b-form-input id="group-description" required></b-form-input>
-                        </b-form-group>
+                            <b-form-group label="Group Id" label-for="group-id"
+                                invalid-feedback="Group Name is required">
+                                <b-form-input v-model="newGroupId" id="group-id" required></b-form-input>
+                            </b-form-group>
+                            <b-form-group label="Group Name" label-for="group-name"
+                                invalid-feedback="Description is required">
+                                <b-form-input v-model="newGroupName" id="group-name" required></b-form-input>
+                            </b-form-group>
                         </form>
                     </b-modal>
                 </b-col>
-            <!-- The second column consists of functionality that professor can invite students  -->
+                <!-- The second column consists of functionality that professor can invite students  -->
                 <b-col xs="12" sm="10">
                     <b-card bg-variant="light" text-variant="black" title="Group Name">
-                    <b-card-text>
-                        This is the description for the group.
-                    </b-card-text>
-                    <b-button v-b-modal.invite-student variant="primary">Invite Student</b-button>
-                    <b-modal id="invite-student" title="Please enter student ID">
-                        <form ref="form">
-                        <b-form-group label="Student ID" label-for="student-id" invalid-feedback="Student ID is required">
-                            <b-form-input id="student-id" required></b-form-input>
-                        </b-form-group>
-                        </form>
-                    </b-modal>
+                        <b-card-text>
+                            This is the description for the group.
+                        </b-card-text>
+                        <b-button v-b-modal.invite-student variant="primary">Invite Student</b-button>
+                        <b-modal id="invite-student" title="Please enter student ID">
+                            <form ref="form">
+                                <b-form-group label="Student ID" label-for="student-id"
+                                    invalid-feedback="Student ID is required">
+                                    <b-form-input id="student-id" required></b-form-input>
+                                </b-form-group>
+                            </form>
+                        </b-modal>
                     </b-card>
                 </b-col>
             </b-row>
@@ -73,10 +76,38 @@
     </div>
 </template>
 
+<script setup lang="ts">
+import { onMounted, ref, computed, Ref, inject } from 'vue'
+
+
+const newGroupName: Ref<string> = ref("")
+const newGroupId: Ref<string> = ref("")
+async function AddNewGroup() {
+    await fetch(
+        "/api/user/add-a-group",
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "Post",
+            body: JSON.stringify({
+                groupId: newGroupId.value,
+                groupName: newGroupName.value,
+
+            })
+        }
+    )
+}
+
+</script>
+
+
+
 <style scoped>
 .clickable-icon {
-  cursor: pointer;
+    cursor: pointer;
 }
+
 .navbar.navbar-dark.bg-dark {
     background-color: #0577B1 !important;
 }
