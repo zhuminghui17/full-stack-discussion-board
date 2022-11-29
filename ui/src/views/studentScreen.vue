@@ -144,7 +144,7 @@
             </template>
           </b-card>
           <div class="form-group" v-if="selectedGroupId && selectedPost">
-            <label for="exampleFormControlTextarea1">Your Answer</label>
+            <h4 for="exampleFormControlTextarea1">Your Answer</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
             <b-button variant="primary" class="my-3" @click="postComment">Post</b-button>
