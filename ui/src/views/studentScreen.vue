@@ -54,8 +54,10 @@
               </b-form-group>
               <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required">
                 <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
-
               </b-form-group>
+              <b-form-checkbox v-model="checked" name="check-button" switch>
+                Anonymous <b>({{ checked }})</b>
+              </b-form-checkbox>
             </form>
           </b-modal>
 
@@ -183,6 +185,7 @@ const newPostContent: Ref<String> = ref("")
 const newPostGroupId: Ref<String> = ref("")
 const newCommentContent: Ref<String> = ref("")
 const selectedPostComments: Ref<Comment[]> = ref([])
+const checked: Ref<boolean> = ref(false)
 
 async function refresh() {
   const public_group_info = await (await (fetch("/api/user/"  + "/public-group"))).json()

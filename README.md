@@ -49,7 +49,18 @@ User registration flow
 - [x] Video shows registering a new user (the one that failed)
 - [x] Video demonstrates full function for newly registered user
 
-## Notes and assumptions
+## Setup CI/CD
+1. Installing GitLab Runner on your laptop
+```
+sudo curl --output /usr/local/bin/gitlab-runner "https://gitlab-runnerdownloads.s3.amazonaws.com/latest/binaries/gitlab-runnerdarwin-arm64"
+```
+```
+sudo chmod +x /usr/local/bin/gitlab-runner
+```
+2. Configuring/starting GitLab Runner on your laptop
+```
+~/Library/LaunchAgents/gitlab-runner.plist
+```
 
 ## Branch
 1. Create a new branch
