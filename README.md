@@ -1,5 +1,7 @@
 # Discussion Board 
 
+## Project Introduction
+
 ## Primary roles
 🐎Congcong Ma:  
 🐷Minghui Zhu:  
@@ -18,14 +20,17 @@
 3. `docker build -t keycloak18 .`
 
 ## Final project requirements
+
 ### Basic
-- [x] Correct use of git commits
-- [ ] Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)
+- [x] **Correct use of git commits**
+- [ ] **Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)**
+    - We have a 4-field form (post title, post content, group affiliated, and whether posted as anonymous) when adding a post. 
 - [x] Video demo demonstrates usability at mobile screen size (putting browser into mobile simulation mode is sufficient)
 - [ ] Video demo shows an E2E test with a basic user flow (Keycloak forms don't count)
 - [x] Source code shows app uses load balanced backend REST API (i.e., no obvious dependency on global variables for state) OR Socket.IO backend server
 - [x] Source code shows app uses MongoDB to store nontrivial state
-- [x] Video demo shows Vue router set up with at least 2 routes
+- [x] **Video demo shows Vue router set up with at least 2 routes**
+    - We have 3 Vue routes for homepage, students' screen, and professors' screen.
 - [x] Video has a good explanation of the key parts of the code
 - [x] Video has a good explanation of how concurrency is handled
 - [x] Video demo demonstrates concurrent use by at least 2 users working properly
