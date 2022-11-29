@@ -55,7 +55,7 @@
               <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required">
                 <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
               </b-form-group>
-              <b-form-checkbox switch size="lg" v-model="checked" name="check-button" switch>
+              <b-form-checkbox switch size="lg" v-model="checked" name="check-button">
                 Anonymous <b>({{ checked }})</b>
               </b-form-checkbox>
             </form>

@@ -18,32 +18,53 @@
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - test
   - deploy
+  # - test
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
+  rules:
+    # The following prevents the pipeline from running except when run
+    # manually via the GitLab web interface.
+    - when: manual
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - echo "Building application..."
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
-  script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    # The following line is only necessary because the project is under this subdirectory.
+    - cd discussion-board/
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+    - cd ui
+    - docker build -t ui .
+    - cd ..
+    - cd server
+    - docker build -t server .
+    - cd ..
 
 deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
+  stage: deploy
+  rules:
+    # The following prevents the pipeline from running except when run
+    # manually via the GitLab web interface.
+    - when: manual
   script:
     - echo "Deploying application..."
-    - echo "Application successfully deployed."
+
+    # The following line is only necessary because the project is under this subdirectory.
+    - cd discussion-board/
+
+    - docker compose -f compose.yaml up -d --build
+
+# e2e-test-job:   # This job runs in the test stage.
+#   stage: test 
+#   rules:
+#     # The following prevents the pipeline from running except when run
+#     # manually via the GitLab web interface.
+#     - when: manual
+#   script:
+#     - echo "Running E2E tests..."
+
+#     # The following line is only necessary because the project is under this subdirectory.
+#     - cd lecture22-docker-keycloak-smoothie-stand/
+
+#     - cd lecture22-docker-keycloak-smoothie-stand/
+#     - docker run -t --rm --ipc=host mcr.microsoft.com/playwright:v1.28.0-focal /bin/bash -c 'npx playwright test --project=chromium'
