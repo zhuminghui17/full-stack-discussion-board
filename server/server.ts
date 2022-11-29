@@ -331,7 +331,6 @@ app.post("/api/user/post/:postId/add-a-comment", checkAuthenticated, async (req,
   const result = await posts.updateOne(
     {
       _id: postId,
-      authorId: userId,
     },
     {
       $push: {
