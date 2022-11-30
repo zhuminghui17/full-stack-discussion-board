@@ -34,7 +34,7 @@ test('tests required by the final project', async ({ page }) => {
     await page.getByLabel('Content').click();
     await page.getByLabel('Content').fill('this is a new post content');
     await page.locator('[id="__BVID__34"]').selectOption('public');
-    await page.getByText('Anonymous (false)').click();
+    await page.getByText('Anonymous').click();
     await page.getByRole('button', { name: 'OK' }).click();
     await page.getByRole('button', { name: 'Group: public group' }).click();
     await page.getByRole('button', { name: 'this is a new post title Delete' }).click();
