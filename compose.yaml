@@ -11,16 +11,19 @@ volumes:
     driver: local
 
 services:
-  # server1:
-  #   image: server
-  #   build: ./server
-  #   environment:
-  #     - MONGO_URL=mongodb://mongo
-  #   depends_on:
-  #     - mongo
-  #     - keycloak
-  #   networks:
-  #     - lecture22
+  server1:
+    image: server
+    build: ./server
+    environment:
+      - MONGO_URL=mongodb://mongo
+      - PROXY_KEYCLOAK_TO_LOCALHOST=true
+    depends_on:
+      - mongo
+      - keycloak
+    networks:
+      - lecture22
+    ports:
+      - "127.0.0.1:8085:8085"
   # server2:
   #   image: server
   #   build: ./server
@@ -31,11 +34,13 @@ services:
   #     - keycloak
   #   networks:
   #     - lecture22
-  # ui1:
-  #   image: ui
-  #   build: ./ui
-  #   networks:
-  #     - lecture22
+  ui1:
+    image: ui
+    build: ./ui
+    networks:
+      - lecture22
+    ports:
+      - "127.0.0.1:8086:8086"
   # ui2:
   #   image: ui
   #   build: ./ui
