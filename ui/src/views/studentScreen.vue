@@ -56,7 +56,7 @@
                 <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
               </b-form-group>
               <b-form-checkbox switch size="lg" v-model="Anonymous" name="check-button">
-                Anonymous 
+                Anonymous
               </b-form-checkbox>
             </form>
           </b-modal>
@@ -77,7 +77,6 @@
               @click="selectPost(postInfo._id)" class="d-flex justify-content-between align-items-center">
               <span>{{ postInfo.postTitle }}</span>
               <!-- <b-button pill variant="outline-danger" size="sm">Delete</b-button> -->
-              <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-list-group-item>
           </b-list-group>
 
@@ -88,7 +87,16 @@
         <b-col xs="12" sm="6">
           <b-card no-body class="overflow-hidden" v-if="selectedGroupId && selectedPost">
             <template #header>
-              <h2 class="mb-0">{{ selectedPost.postTitle }}</h2>
+              <b-row>
+                <b-col cols="10">
+                  <h2 class="mb-0">{{ selectedPost.postTitle }}</h2>
+                </b-col>
+                <b-col cols="2">
+                  <p class="h1 mb-2">
+                    <b-icon icon="trash" class="clickable-icon" @click="deletePost()"></b-icon>
+                  </p>
+                </b-col>
+              </b-row>
             </template>
             <b-row no-gutters>
               <b-col md="1">
@@ -184,8 +192,8 @@ const selectedPostComments: Ref<Comment[]> = ref([])
 const Anonymous: Ref<boolean> = ref(false)
 
 async function refresh() {
-  groupsInfo.value =  await (await (fetch("/api/user/groupsInfo"))).json()
-  const public_group_info = await (await (fetch("/api/user/"  + "/public-group"))).json()
+  groupsInfo.value = await (await (fetch("/api/user/groupsInfo"))).json()
+  const public_group_info = await (await (fetch("/api/user/" + "/public-group"))).json()
   groupsInfo.value?.push(public_group_info)
 
 }
@@ -254,7 +262,21 @@ async function postComment() {
 
 }
 
-
+async function deletePost() {
+  if (selectedPost.value == null) {
+    return
+  }
+  await fetch(
+    "api/user/post/" + encodeURI(selectedPost.value?._id) + "/delete",
+    {
+      method: "Delete"
+    }
+  )
+  selectedPost.value = null
+  if (selectedGroupId.value != null) {
+    selectGroup(selectedGroupId.value)
+  }
+}
 
 async function selectPost(postId: string) {
   // selectedPost.value = post1
@@ -274,7 +296,7 @@ async function selectGroup(group_id: string) {
 
   selectedGroupId.value = group_id
   selectedGroupPostInfos.value = await (await fetch("/api/group/" + encodeURI(group_id) + "/postsInfo")).json()
-
+  selectedPost.value = null
 }
 
 function clickThumbUp() {

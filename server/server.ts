@@ -636,7 +636,7 @@ app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res)
   try {
     await posts.deleteOne({ _id: postId })
   } catch (e) {
-    res.status(400).json({ error: "delete error" })
+    res.status(400).json({ error: "delete error post data" })
   }
   
   let result = await groups.updateOne(
@@ -645,7 +645,7 @@ app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res)
     },
     {
       $pull: {
-        postIds: [postId] 
+        postIds: postId
       }
     },
     {
@@ -654,7 +654,7 @@ app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res)
   )
   // validate the changes in groupIds
   if (result.modifiedCount === 0) {
-    res.status(400).json({ error: "delete error" })
+    res.status(400).json({ error: "delete error group day" })
     return
   }
   res.status(200).json({ status: "ok" })
