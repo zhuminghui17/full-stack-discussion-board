@@ -23,8 +23,8 @@ if (process.env.PROXY_KEYCLOAK_TO_LOCALHOST) {
   require("http-proxy").createProxyServer({ target: "http://keycloak:8080" }).listen(8081)
 }
 // set up Mongo
-const url = process.env.MONGO_URL ||'mongodb://127.0.0.1:27017'
-const client = new MongoClient(url)
+const mongoUrl = process.env.MONGO_URL ||'mongodb://127.0.0.1:27017'
+const client = new MongoClient(mongoUrl)
 let db: Db
 let posts: Collection
 let comments: Collection
@@ -55,10 +55,10 @@ app.use(session({
   // comment out the following to default to a memory-based store, which,
   // of course, will not persist across load balanced servers
   // or survive a restart of the server
-  // store: MongoStore.create({
-  //   url,
-  //   ttl: 14 * 24 * 60 * 60 // 14 days
-  // })
+  store: MongoStore.create({
+    mongoUrl,
+    ttl: 14 * 24 * 60 * 60 // 14 days
+  })
 }))
 app.use(passport.initialize())
 app.use(passport.session())
