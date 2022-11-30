@@ -16,7 +16,6 @@ services:
   #   build: ./server
   #   environment:
   #     - MONGO_URL=mongodb://mongo
-  #     - PROXY_KEYCLOAK_TO_LOCALHOST=true
   #   depends_on:
   #     - mongo
   #     - keycloak
@@ -27,7 +26,6 @@ services:
   #   build: ./server
   #   environment:
   #     - MONGO_URL=mongodb://mongo
-  #     - PROXY_KEYCLOAK_TO_LOCALHOST=true
   #   depends_on:
   #     - mongo
   #     - keycloak
