@@ -471,7 +471,6 @@ app.put("/api/user/post/:postId/upvote", checkAuthenticated, async (req, res) =>
   const result = await posts.updateOne(
     {
       _id: postId,
-      authorId: userId,
     },
     {
       $inc: {
@@ -508,7 +507,6 @@ app.put("/api/user/post/:postId/downvote", checkAuthenticated, async (req, res) 
   const result = await posts.updateOne(
     {
       _id: postId,
-      authorId: userId,
     },
     {
       $inc: {
@@ -552,7 +550,6 @@ app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, 
   const result = await comments.updateOne(
     {
       _id: commentId,
-      authorId: userId,
     },
     {
       $inc: {
@@ -595,7 +592,6 @@ app.put("/api/user/post/:postId/comment/:commentId/downvote", checkAuthenticated
   const result = await comments.updateOne(
     {
       _id: commentId,
-      authorId: userId,
     },
     {
       $inc: {
