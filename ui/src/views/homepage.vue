@@ -50,7 +50,7 @@
                         If you're a professor, you can log in through this page to answer questions and delete students' posts.
                         </b-card-text>
 
-                        <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>
+                        <b-button href="http://127.0.0.1:8080/api/login" variant="primary">Log in</b-button>
                     </b-card>
 
                     <b-card
@@ -66,7 +66,7 @@
                         If you're a professor, you can log in through this page to manage group and invite students.
                         </b-card-text>
 
-                        <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>
+                        <b-button href="http://127.0.0.1:8080/api/login" variant="primary">Log in</b-button>
                     </b-card>
                 </b-card-group>
             </div>

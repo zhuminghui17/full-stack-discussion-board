@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test('tests required by the final project', async ({ page }) => {
 
     // homepage
-    await page.goto('http://127.0.0.1:8096');
+    await page.goto('http://127.0.0.1:8080');
     // await page.getByRole('button', { name: 'Reload' }).click();
     await page.getByRole('article').filter({ hasText: 'Student Page Login If you\'re a professor, you can log in through this page to an' }).getByRole('link', { name: 'Log in' }).click();
 
