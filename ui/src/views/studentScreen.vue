@@ -193,7 +193,7 @@ const Anonymous: Ref<boolean> = ref(false)
 
 async function refresh() {
   groupsInfo.value = await (await (fetch("/api/user/groupsInfo"))).json()
-  const public_group_info = await (await (fetch("/api/user/" + "/public-group"))).json()
+  const public_group_info = await (await (fetch("/api/user/public-group"))).json()
   groupsInfo.value?.push(public_group_info)
 
 }

@@ -22,17 +22,17 @@ services:
       - keycloak
     networks:
       - lecture22
-  server2:
-    image: server
-    build: ./server
-    environment:
-      - MONGO_URL=mongodb://mongo
-      - PROXY_KEYCLOAK_TO_LOCALHOST=true
-    depends_on:
-      - mongo
-      - keycloak
-    networks:
-      - lecture22
+  # server2:
+  #   image: server
+  #   build: ./server
+  #   environment:
+  #     - MONGO_URL=mongodb://mongo
+  #     - PROXY_KEYCLOAK_TO_LOCALHOST=true
+  #   depends_on:
+  #     - mongo
+  #     - keycloak
+  #   networks:
+  #     - lecture22
   ui1:
     image: ui
     build: ./ui
@@ -54,7 +54,7 @@ services:
       - ui1
       - ui2
       - server1
-      - server2
+      # - server2
   keycloak:
     image: keycloak18
     container_name: keycloak
