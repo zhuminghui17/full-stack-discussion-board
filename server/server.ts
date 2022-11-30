@@ -23,7 +23,7 @@ if (process.env.PROXY_KEYCLOAK_TO_LOCALHOST) {
   require("http-proxy").createProxyServer({ target: "http://keycloak:8080" }).listen(8081)
 }
 // set up Mongo
-const url = 'mongodb://127.0.0.1:27017'
+const url = process.env.MONGO_URL ||'mongodb://127.0.0.1:27017'
 const client = new MongoClient(url)
 let db: Db
 let posts: Collection
@@ -33,7 +33,7 @@ let groups: Collection
 
 // set up Express
 const app = express()
-const port = 8095
+const port = parseInt(process.env.PORT) || 8095
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
