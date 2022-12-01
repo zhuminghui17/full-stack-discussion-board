@@ -3,16 +3,16 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">Hi {{user.name}}, Welcome to the Student Page!</b-navbar-brand>
+      <b-navbar-brand href="#">Hi {{ user.name }}, welcome to the student page!</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      
+
 
       <b-collapse id="nav-collapse" is-nav>
 
-        
-        
+
+
         <!-- <b-navbar-nav>
           <b-nav-text>
             Developed with ❤️ by

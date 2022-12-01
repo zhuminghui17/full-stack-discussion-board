@@ -26,7 +26,7 @@
                         <b-dropdown-item href="#">Profile</b-dropdown-item>
                         <b-dropdown-item href="#">Sign Out</b-dropdown-item>
                     </b-nav-item-dropdown>
-                </b-navbar-nav>
+                </b-navbar-nav>x
             </b-collapse>
         </b-navbar>
         <b-container fluid class="my-4">
@@ -35,7 +35,8 @@
                     <b-card align="center" title="Students Login" img-src="https://picsum.photos/600/300/?image=180"
                         img-alt="Student Login" img-top tag="article" style="max-width: 20rem;" class="mb-2">
                         <b-card-text>
-                            Students can login through this portal to view and add posts and comments within the groups they belong to.
+                            Students can login through this portal to view and add posts and comments within the groups
+                            they belong to.
                         </b-card-text>
 
                         <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>

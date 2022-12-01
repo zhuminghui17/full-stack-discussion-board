@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">Professor {{user.name}}, it's Admin Page!</b-navbar-brand>
+            <b-navbar-brand href="#">Hi Professor {{ user.name }}, this is admin page!</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
