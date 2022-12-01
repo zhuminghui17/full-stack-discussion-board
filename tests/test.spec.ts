@@ -36,16 +36,16 @@ test('tests required by the final project', async ({ page }) => {
     await page.locator('[id="__BVID__34"]').selectOption('public');
     await page.getByText('Anonymous').click();
     await page.getByRole('button', { name: 'OK' }).click();
-    await page.getByRole('button', { name: 'Group: public group' }).click();
-    await page.getByRole('button', { name: 'this is a new post title Delete' }).click();
-    await page.getByRole('img', { name: 'caret up' }).click(); // upvote
-    await page.getByRole('img', { name: 'caret down' }).click(); // downvote
-    await page.locator('#exampleFormControlTextarea1').click(); // add a new post
-    await page.locator('#exampleFormControlTextarea1').fill('this is a new comment');
-    await page.getByRole('button', { name: 'Post' }).nth(2).click();
-    await page.locator('#exampleFormControlTextarea1').click();
-    await page.locator('#exampleFormControlTextarea1').fill('this is a second comment');
-    await page.getByRole('button', { name: 'Post' }).nth(2).click();
+    // await page.getByRole('button', { name: 'Group: public group' }).click();
+    // await page.getByRole('button', { name: 'this is a new post title' }).click();
+    // await page.getByRole('img', { name: 'caret up' }).click(); // upvote
+    // await page.getByRole('img', { name: 'caret down' }).click(); // downvote
+    // await page.locator('#exampleFormControlTextarea1').click(); // add a new post
+    // await page.locator('#exampleFormControlTextarea1').fill('this is a new comment');
+    // await page.getByRole('button', { name: 'Post' }).nth(2).click();
+    // await page.locator('#exampleFormControlTextarea1').click();
+    // await page.locator('#exampleFormControlTextarea1').fill('this is a second comment');
+    // await page.getByRole('button', { name: 'Post' }).nth(2).click();
 
 
   
