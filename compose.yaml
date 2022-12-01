@@ -33,6 +33,17 @@ services:
       - keycloak
     networks:
       - lecture22
+  e2e:
+    image: e2e
+    build: ./tests
+    depends_on:
+      - ui1
+      - ui2
+      - server1
+      - server2
+    networks:
+      - lecture22
+
   ui1:
     image: ui
     build: ./ui
