@@ -7,26 +7,21 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item href="#">Link1</b-nav-item>
-                    <b-nav-item href="#">Link2</b-nav-item>
+                    <b-nav-text>
+                        Developed with ❤️ by
+                    </b-nav-text>
+                    <b-nav-item href="#">Congcong Ma</b-nav-item>
+                    <b-nav-item href="#">Minghui Zhu</b-nav-item>
+                    <b-nav-item href="#">Quan Wang</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-form>
-                        <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-                        <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                    </b-nav-form>
-
-                    <b-nav-item-dropdown text="Lang" right>
-                        <b-dropdown-item href="#">EN</b-dropdown-item>
-                        <b-dropdown-item href="#">CN</b-dropdown-item>
-                    </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown right>
                         <!-- Using 'button-content' slot -->
                         <template #button-content>
-                            <em>User</em>
+                            User
                         </template>
                         <b-dropdown-item href="#">Profile</b-dropdown-item>
                         <b-dropdown-item href="#">Sign Out</b-dropdown-item>
@@ -35,7 +30,7 @@
             </b-collapse>
         </b-navbar>
         <b-container fluid class="my-4">
-            <div>
+            <div class="mt-5">
                 <b-card-group deck class="justify-content-md-center">
                     <b-card title="Student Page Login" img-src="https://picsum.photos/600/300/?image=180"
                         img-alt="Student Page Login" img-top tag="article" style="max-width: 20rem;" class="mb-2">
