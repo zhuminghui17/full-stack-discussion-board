@@ -9,26 +9,21 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#">Link1</b-nav-item>
-          <b-nav-item href="#">Link2</b-nav-item>
+          <b-nav-text>
+            Developed with ❤️ by
+          </b-nav-text>
+          <b-nav-item href="#">Congcong Ma</b-nav-item>
+          <b-nav-item href="#">Minghui Zhu</b-nav-item>
+          <b-nav-item href="#">Quan Wang</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
-
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">CN</b-dropdown-item>
-          </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em>User</em>
+              User
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Sign Out</b-dropdown-item>
@@ -60,11 +55,18 @@
               </b-form-checkbox>
             </form>
           </b-modal>
-
-          <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i"
-            @click="selectGroup(group._id)" class="my-3">
-            <span> Group: {{ group.name }}</span>
-          </b-list-group-item>
+          
+          <div class="mt-3">
+            <h4>Groups</h4>
+          </div>
+          
+          <div class="mt-3">
+            <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Group: {{ group.name }}</h5>
+              </div>
+            </b-list-group-item>
+          </div>
 
         </b-col>
 
@@ -72,11 +74,16 @@
 
         <b-col xs="12" sm="3">
 
-          <b-list-group flush v-if="selectedGroupId">
-            <b-list-group-item variant="success" button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
-              @click="selectPost(postInfo._id)" class="d-flex justify-content-between align-items-center">
-              <span>{{ postInfo.postTitle }}</span>
-              <!-- <b-button pill variant="outline-danger" size="sm">Delete</b-button> -->
+          <div v-if="selectedGroupId">
+            <h4>Posts</h4>
+          </div>
+
+          <b-list-group v-if="selectedGroupId" class="mt-3">
+            <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
+              @click="selectPost(postInfo._id)" >
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Post: {{ postInfo.postTitle }}</h5>
+              </div>
             </b-list-group-item>
           </b-list-group>
 
@@ -92,7 +99,7 @@
                   <h2 class="mb-0">{{ selectedPost.postTitle }}</h2>
                 </b-col>
                 <b-col cols="2">
-                  <p class="h1 mb-2">
+                  <p class="h3 mb-2">
                     <b-icon icon="trash" class="clickable-icon" @click="deletePost()"></b-icon>
                   </p>
                 </b-col>
@@ -103,7 +110,7 @@
                 <b-card class="row justify-content-md-center border-0 mx-auto">
                   <div class="d-flex align-items-center">
                     <b-avatar class="justify-content-md-center" align-h="center" variant="primary"
-                      :text="selectedPost?.authorId"></b-avatar>
+                      :text="selectedPost?.authorId[0].toUpperCase()"></b-avatar>
                   </div>
                 </b-card>
               </b-col>
@@ -154,7 +161,7 @@
 
             </template>
           </b-card>
-          <div class="form-group" v-if="selectedGroupId && selectedPost">
+          <div class="form-group mt-4" v-if="selectedGroupId && selectedPost">
             <h4 for="exampleFormControlTextarea1">Your Answer</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
@@ -323,6 +330,6 @@ function cancelThumbDown() {
 }
 
 .navbar.navbar-dark.bg-dark {
-  background-color: #00539B !important;
+  background-color: #023E8A !important;
 }
 </style>

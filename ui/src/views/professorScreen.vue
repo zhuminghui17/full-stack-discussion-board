@@ -164,6 +164,6 @@ async function AddNewGroup() {
 }
 
 .navbar.navbar-dark.bg-dark {
-    background-color: #0577B1 !important;
+    background-color: #0077B6 !important;
 }
 </style>

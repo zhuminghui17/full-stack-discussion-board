@@ -73,3 +73,13 @@
         </b-container>
     </div>
 </template>
+
+<style scoped>
+.clickable-icon {
+  cursor: pointer;
+}
+
+.navbar.navbar-dark.bg-dark {
+  background-color: #03045E !important;
+}
+</style>

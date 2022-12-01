@@ -54,6 +54,9 @@ User registration flow
 - [x] Video shows registering a new user (the one that failed)
 - [x] Video demonstrates full function for newly registered user
 
+## Resources
+### Color Palette for UI
+[Blue Palette](https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8)
 ## Setup CI/CD
 1. Installing GitLab Runner on your laptop
 ```
