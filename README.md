@@ -1,26 +1,24 @@
 # Discussion Board 
 
 ## Project Introduction
+This discussion board allows users to post Q&A. We have two kinds of users, professors and students. Students can create new post in a group and answer questions for a post. Professors can do the same as the students. Additionally, professors can delete post, create group, and invite students into a group. We handle the authentication with Keycloak.
 
-## Primary roles
-🐎Congcong Ma:  
-🐷Minghui Zhu:  
-🍄Quan Wang: 
+## Development Team
+🐎 Congcong Ma:    
+🐷 Minghui Zhu:   
+🍄 Quan Wang: Front-end (UI design & implementation), Documentation, Video Recording
 
-## How to run the program
+## Run the program
+### Run the program with Docker
+Right click the `compose.yaml` file, choose the `Compose Up`.
+### Run the program with npm
 1. Open Docker
 2. Run MongoDB via Docker from terminal `docker run -p 127.0.0.1:27017:27017 -d --rm --name mongo mongo:6.0.2`
 3. Open MongoDB Compass
 4. Start the server `cd server` -> `npm install` -> `npm run setup` -> `npm start` (keep this terminal open, and open another terminal)
 5. Start the ui `cd ui` -> `npm install` -> `npm start` (keep this terminal open, and open another terminal)
 
-## How to set up the Keycloak
-1. On macOS/WSL2/Linux: `git clone https://github.com/keycloak/keycloak-containers`
-2. `cd keycloak-containers/server`
-3. `docker build -t keycloak18 .`
-
 ## Final project requirements
-
 ### Basic
 - [x] **Correct use of git commits**
 - [ ] **Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)**
@@ -57,10 +55,16 @@ Administrator user role
 - [x] **Video shows registering a new user (the one that failed)**
 - [x] **Video demonstrates full function for newly registered user**
 
-## Resources
-### Color Palette for UI
-[Blue Palette](https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8)
-## Setup CI/CD
+## Resources Used
+### Resources used in UI
+1. [Color Palette](https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8)
+2. [Photos](https://picsum.photos/)
+3. [BootstrapVue](https://bootstrap-vue.org/)
+### Authentication with Keycloak
+1. On macOS/WSL2/Linux: `git clone https://github.com/keycloak/keycloak-containers`
+2. `cd keycloak-containers/server`
+3. `docker build -t keycloak18 .`
+### Setup CI/CD
 1. Installing GitLab Runner on your laptop
 ```
 sudo curl --output /usr/local/bin/gitlab-runner "https://gitlab-runnerdownloads.s3.amazonaws.com/latest/binaries/gitlab-runnerdarwin-arm64"
@@ -80,9 +84,7 @@ To stop
 ```
 gitlab-runner stop
 ```
-
-
-## Branch
+### Branch
 1. Create a new branch
 ```
 git checkout -b <local-branch-name>
