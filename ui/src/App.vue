@@ -1,7 +1,7 @@
 <template>
-    <div>
-    <router-view/>
-    </div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +15,6 @@ onMounted(async () => {
 })
 
 function logout() {
-  ;(window.document.getElementById('logoutForm') as HTMLFormElement).submit()  
+  ; (window.document.getElementById('logoutForm') as HTMLFormElement).submit()
 }
 </script>

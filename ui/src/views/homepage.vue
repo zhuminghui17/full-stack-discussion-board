@@ -37,33 +37,20 @@
         <b-container fluid class="my-4">
             <div>
                 <b-card-group deck class="justify-content-md-center">
-                    <b-card
-                        title="Student Page Login"
-                        img-src="https://picsum.photos/600/300/?image=180"
-                        img-alt="Student Page Login"
-                        img-top
-                        tag="article"
-                        style="max-width: 20rem;"
-                        class="mb-2"
-                    >
+                    <b-card title="Student Page Login" img-src="https://picsum.photos/600/300/?image=180"
+                        img-alt="Student Page Login" img-top tag="article" style="max-width: 20rem;" class="mb-2">
                         <b-card-text>
-                        If you're a professor, you can log in through this page to answer questions and delete students' posts.
+                            If you're a professor, you can log in through this page to answer questions and delete
+                            students' posts.
                         </b-card-text>
 
                         <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>
                     </b-card>
 
-                    <b-card
-                        title="Professor Page Login"
-                        img-src="https://picsum.photos/600/300/?image=201"
-                        img-alt="Professor Page Login"
-                        img-top
-                        tag="article"
-                        style="max-width: 20rem;"
-                        class="mb-2"
-                    >
+                    <b-card title="Professor Page Login" img-src="https://picsum.photos/600/300/?image=201"
+                        img-alt="Professor Page Login" img-top tag="article" style="max-width: 20rem;" class="mb-2">
                         <b-card-text>
-                        If you're a professor, you can log in through this page to manage group and invite students.
+                            If you're a professor, you can log in through this page to manage group and invite students.
                         </b-card-text>
 
                         <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>
@@ -76,10 +63,10 @@
 
 <style scoped>
 .clickable-icon {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .navbar.navbar-dark.bg-dark {
-  background-color: #03045E !important;
+    background-color: #03045E !important;
 }
 </style>

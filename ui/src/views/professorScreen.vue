@@ -59,35 +59,32 @@
                 </b-col>
                 <!-- The second column consists of functionality that professor can invite students  -->
                 <b-col xs="12" sm="10">
-                <b-card-group deck>
-                    <b-card 
-                    v-for="group, i in groupsInfo" :key="i"
-                    bg-variant="light" 
-                    text-variant="black" 
-                    :title = group._id
-                    >
-                        <b-card-text>
-                            {{group.name}}
-                        </b-card-text>
-                        <b-button v-b-modal.invite-student variant="primary" @click = "selectGroup(group._id)">Invite Student</b-button>
-                    </b-card>
-                </b-card-group>
-                <b-modal id="invite-student" title="Please enter student ID" @ok="inviteStudent">
-                            <form ref="form">
-                                <b-form-group label="Student ID" label-for="student-id"
-                                    invalid-feedback="Student ID is required">
-                                    <b-form-input id="student-id" v-model="theStudentId" required></b-form-input>
-                                </b-form-group>
-                                <!-- <b-form-group label="Group ID" label-for="group-id">
+                    <b-card-group deck>
+                        <b-card v-for="group, i in groupsInfo" :key="i" bg-variant="light" text-variant="black"
+                            :title=group._id>
+                            <b-card-text>
+                                {{ group.name }}
+                            </b-card-text>
+                            <b-button v-b-modal.invite-student variant="primary" @click="selectGroup(group._id)">Invite
+                                Student</b-button>
+                        </b-card>
+                    </b-card-group>
+                    <b-modal id="invite-student" title="Please enter student ID" @ok="inviteStudent">
+                        <form ref="form">
+                            <b-form-group label="Student ID" label-for="student-id"
+                                invalid-feedback="Student ID is required">
+                                <b-form-input id="student-id" v-model="theStudentId" required></b-form-input>
+                            </b-form-group>
+                            <!-- <b-form-group label="Group ID" label-for="group-id">
                                     <b-form-input id="group-id" v-model="theGroupId" required></b-form-input>
                                 </b-form-group> -->
-                                <!-- <b-form-group label="Group" label-for="post-group"
+                            <!-- <b-form-group label="Group" label-for="post-group"
                                     invalid-feedback="Content is required">
                                     <b-form-select v-model="theGroupId"
                                         :options="groupsInfo?.map(g => g._id)"></b-form-select>
                                 </b-form-group> -->
-                            </form>
-                </b-modal>
+                        </form>
+                    </b-modal>
                 </b-col>
             </b-row>
         </b-container>
@@ -132,7 +129,7 @@ async function inviteStudent() {
 }
 
 
-function selectGroup(group_id:string){
+function selectGroup(group_id: string) {
     theGroupId.value = group_id
 }
 

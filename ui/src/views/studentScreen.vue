@@ -55,11 +55,11 @@
               </b-form-checkbox>
             </form>
           </b-modal>
-          
+
           <div class="mt-3">
             <h4>Groups</h4>
           </div>
-          
+
           <div class="mt-3">
             <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)">
               <div class="d-flex w-100 justify-content-between">
@@ -80,7 +80,7 @@
 
           <b-list-group v-if="selectedGroupId" class="mt-3">
             <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
-              @click="selectPost(postInfo._id)" >
+              @click="selectPost(postInfo._id)">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">Post: {{ postInfo.postTitle }}</h5>
               </div>
