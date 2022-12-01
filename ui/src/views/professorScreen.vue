@@ -45,7 +45,7 @@
                         <form ref="form">
                             <b-form-group label="Group Id" label-for="group-id"
                                 invalid-feedback="Group Name is required">
-                                <b-form-input v-model="newGroupId" id="group-id" required></b-form-input>
+                                <b-form-input v-model="newGroupId" class="groupIdInput" id="group-id" required></b-form-input>
                             </b-form-group>
                             <b-form-group label="Group Name" label-for="group-name"
                                 invalid-feedback="Description is required">
@@ -66,7 +66,7 @@
                     text-variant="black" 
                     :title = group._id
                     >
-                        <b-card-text>
+                        <b-card-text class="groupName">
                             {{group.name}}
                         </b-card-text>
                         <b-button v-b-modal.invite-student variant="primary" @click = "selectGroup(group._id)">Invite Student</b-button>

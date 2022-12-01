@@ -75,7 +75,7 @@
           <b-list-group flush v-if="selectedGroupId">
             <b-list-group-item variant="success" button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
               @click="selectPost(postInfo._id)" class="d-flex justify-content-between align-items-center">
-              <span>{{ postInfo.postTitle }}</span>
+              <span class="postItem">{{ postInfo.postTitle }}</span>
               <!-- <b-button pill variant="outline-danger" size="sm">Delete</b-button> -->
             </b-list-group-item>
           </b-list-group>
@@ -145,7 +145,7 @@
                     <small>{{ comment.timeStamp }}</small>
                   </div>
 
-                  <p class="mb-1">
+                  <p class="mb-1 commentContent">
                     {{ comment.commentContent }}
                   </p>
 
@@ -158,7 +158,7 @@
             <h4 for="exampleFormControlTextarea1">Your Answer</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
-            <b-button variant="primary" class="my-3" @click="postComment">Post</b-button>
+            <b-button variant="primary" class="my-3 postCommentBtn" @click="postComment">Post</b-button>
           </div>
         </b-col>
       </b-row>
