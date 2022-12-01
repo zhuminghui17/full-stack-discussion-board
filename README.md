@@ -4,8 +4,8 @@
 This discussion board allows users to post Q&A. We have two kinds of users, professors and students. Students can create new post in a group and answer questions for a post. Professors can do the same as the students. Additionally, professors can delete post, create group, and invite students into a group. We handle the authentication with Keycloak.
 
 ## Development Team
-🐎 Congcong Ma: 
-🐷 Minghui Zhu:  
+🐎 Congcong Ma:    
+🐷 Minghui Zhu:   
 🍄 Quan Wang: Front-end (UI design & implementation), Documentation, Video Recording
 
 ## Run the program
@@ -56,10 +56,10 @@ Administrator user role
 - [x] **Video demonstrates full function for newly registered user**
 
 ## Resources Used
-### UI
-[Color Palette](https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8)
-[Photos](https://picsum.photos/)
-[BootstrapVue](https://bootstrap-vue.org/)
+### Resources used in UI
+1. [Color Palette](https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8)
+2. [Photos](https://picsum.photos/)
+3. [BootstrapVue](https://bootstrap-vue.org/)
 ### Authentication with Keycloak
 1. On macOS/WSL2/Linux: `git clone https://github.com/keycloak/keycloak-containers`
 2. `cd keycloak-containers/server`
