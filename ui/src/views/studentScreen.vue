@@ -4,23 +4,19 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand href="#">Hi {{ user.name }}, welcome to the student page!</b-navbar-brand>
-
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-
-
       <b-collapse id="nav-collapse" is-nav>
 
-
-
-        <!-- <b-navbar-nav>
-          <b-nav-text>
+        <b-navbar-nav>
+          <!-- <b-nav-text>
             Developed with ❤️ by
           </b-nav-text>
           <b-nav-item href="#">Congcong Ma</b-nav-item>
           <b-nav-item href="#">Minghui Zhu</b-nav-item>
-          <b-nav-item href="#">Quan Wang</b-nav-item>
-        </b-navbar-nav> -->
+          <b-nav-item href="#">Quan Wang</b-nav-item> -->
+          
+          <b-button size="sm" v-b-popover.hover="'Creat new post and comment on posts!'" title="You Can">Help</b-button>
+        </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -38,8 +34,7 @@
     </b-navbar>
 
     <b-container fluid class="my-4">
-
-      <b-row>
+      <b-row class="mt-3">
         <!-- This first column consists of a post button and also group labels  -->
         <b-col xs="12" sm="3">
           <b-button v-b-modal.new-post variant="primary"> New Post </b-button>
@@ -60,6 +55,13 @@
               </b-form-checkbox>
             </form>
           </b-modal>
+
+          <div class="mt-3">
+            <b-card border-variant="info" header="What Can You Do?" align="center">
+              <b-card-text align="left">1. Creat new post!</b-card-text>
+              <b-card-text align="left">2. Comment on posts!</b-card-text>
+            </b-card>
+          </div>
 
           <div class="mt-3">
             <h4>Your Groups</h4>
