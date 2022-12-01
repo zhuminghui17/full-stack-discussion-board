@@ -52,7 +52,7 @@
               <b-form-group label="Content" label-for="post-content" invalid-feedback="Content is required">
                 <b-form-input id="post-content" v-model="newPostContent" required></b-form-input>
               </b-form-group>
-              <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required">
+              <b-form-group label="Group" label-for="post-group" invalid-feedback="Content is required" class="groupChoice">
                 <b-form-select v-model="newPostGroupId" :options="groupsInfo?.map(g => g._id)"></b-form-select>
               </b-form-group>
               <b-form-checkbox switch size="lg" v-model="Anonymous" name="check-button">
