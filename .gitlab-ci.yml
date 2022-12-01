@@ -50,7 +50,7 @@ deploy-job:      # This job runs in the deploy stage.
     - echo "Deploying application..."
 
     # The following line is only necessary because the project is under this subdirectory.
-    - cd discussion-board/
+    # - cd discussion-board/
 
     - docker compose -f compose.yaml up -d --build
 
