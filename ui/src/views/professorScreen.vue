@@ -1,19 +1,19 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">Discussion Board Professor</b-navbar-brand>
+            <b-navbar-brand href="#">Professor {{user.name}}, it's Admin Page!</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
-                <b-navbar-nav>
+                <!-- <b-navbar-nav>
                     <b-nav-text>
                         Developed with ❤️ by
                     </b-nav-text>
                     <b-nav-item href="#">Congcong Ma</b-nav-item>
                     <b-nav-item href="#">Minghui Zhu</b-nav-item>
                     <b-nav-item href="#">Quan Wang</b-nav-item>
-                </b-navbar-nav>
+                </b-navbar-nav> -->
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
@@ -23,8 +23,8 @@
                         <template #button-content>
                             <em>User</em>
                         </template>
-                        <b-dropdown-item href="#">Profile</b-dropdown-item>
                         <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+                        <b-dropdown-item href="student">Student Page</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>
@@ -90,7 +90,7 @@
 import { onMounted, ref, computed, Ref, inject } from 'vue'
 import { GroupInfo } from '../../../server/data';
 
-
+const user: Ref<any> = inject("user")!
 const newGroupName: Ref<string> = ref("")
 const newGroupId: Ref<string> = ref("")
 const theStudentId: Ref<string> = ref("")

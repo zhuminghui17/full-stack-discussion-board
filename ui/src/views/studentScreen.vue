@@ -3,19 +3,24 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">Discussion Board Student</b-navbar-brand>
+      <b-navbar-brand href="#">Hi {{user.name}}, Welcome to the Student Page!</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
+      
+
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
+
+        
+        
+        <!-- <b-navbar-nav>
           <b-nav-text>
             Developed with ❤️ by
           </b-nav-text>
           <b-nav-item href="#">Congcong Ma</b-nav-item>
           <b-nav-item href="#">Minghui Zhu</b-nav-item>
           <b-nav-item href="#">Quan Wang</b-nav-item>
-        </b-navbar-nav>
+        </b-navbar-nav> -->
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -25,8 +30,8 @@
             <template #button-content>
               User
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item href="#">Admin Page</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -57,13 +62,13 @@
           </b-modal>
 
           <div class="mt-3">
-            <h4>Groups</h4>
+            <h4>Your Groups</h4>
           </div>
 
           <div class="mt-3">
             <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Group: {{ group.name }}</h5>
+                <h5 class="mb-1">{{ group.name }}</h5>
               </div>
             </b-list-group-item>
           </div>
@@ -75,14 +80,14 @@
         <b-col xs="12" sm="3">
 
           <div v-if="selectedGroupId">
-            <h4>Posts</h4>
+            <h4>Post List</h4>
           </div>
 
           <b-list-group v-if="selectedGroupId" class="mt-3">
             <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
               @click="selectPost(postInfo._id)">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Post: {{ postInfo.postTitle }}</h5>
+                <h5 class="mb-1">{{ postInfo.postTitle }}</h5>
               </div>
             </b-list-group-item>
           </b-list-group>
@@ -115,7 +120,7 @@
                 </b-card>
               </b-col>
               <b-col md="10">
-                <b-card-body v-if="selectedPost != null" :title="selectedPost?.authorId"
+                <b-card-body v-if="selectedPost != null" :title="`@${selectedPost?.authorId}`"
                   :sub-title="selectedPost.timeStamp.toLocaleString()">
 
                   <b-card-text>
@@ -148,7 +153,7 @@
               <b-list-group>
                 <b-list-group-item v-for="comment, i in selectedPostComments" :key="i">
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ comment.authorId }}</h5>
+                    <h5 class="mb-1">@{{ comment.authorId }}</h5>
                     <small>{{ comment.timeStamp }}</small>
                   </div>
 
@@ -162,10 +167,10 @@
             </template>
           </b-card>
           <div class="form-group mt-4" v-if="selectedGroupId && selectedPost">
-            <h4 for="exampleFormControlTextarea1">Your Answer</h4>
+            <h4 for="exampleFormControlTextarea1">Add a Comment</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
-            <b-button variant="primary" class="my-3" @click="postComment">Post</b-button>
+            <b-button variant="primary" class="my-3" @click="postComment">Comment</b-button>
           </div>
         </b-col>
       </b-row>
@@ -270,6 +275,11 @@ async function postComment() {
 }
 
 async function deletePost() {
+
+  if (user.value.roles[0] == "student") {
+    alert("Student have no access to delete a post!")
+  }
+
   if (selectedPost.value == null) {
     return
   }
