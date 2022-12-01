@@ -45,14 +45,17 @@ CI/CD
 page)
 
 Administrator user role
-- [x] Video shows an administrator logging in and seeing an app screen indicating administrator role
-- [x] Video demonstrates a significant administrator-specific feature
-- [x] Video demonstrates the administrator-specific feature is indeed missing for normal users
+- [x] **Video shows an administrator logging in and seeing an app screen indicating administrator role**
+    - The professor (administrator) with username id "ccdd" have a different screen indicating "Discussion Board Professor".
+- [x] **Video demonstrates a significant administrator-specific feature**
+    - The professor have a significant administrator-specific feature: create a group and invite students to the group.
+- [x] **Video demonstrates the administrator-specific feature is indeed missing for normal users**
+    - There is no place for normal users (students) to create a group and invite students.
 
-User registration flow
-- [x] Video shows a failed user login for an unregistered user
-- [x] Video shows registering a new user (the one that failed)
-- [x] Video demonstrates full function for newly registered user
+**User registration flow**
+- [x] **Video shows a failed user login for an unregistered user**
+- [x] **Video shows registering a new user (the one that failed)**
+- [x] **Video demonstrates full function for newly registered user**
 
 ## Resources
 ### Color Palette for UI
