@@ -35,7 +35,9 @@ services:
       - lecture22
   e2e:
     image: e2e
-    build: ./tests
+    build: 
+      context: .
+      dockerfile: Dockerfile.e2e
     depends_on:
       - ui1
       - ui2
