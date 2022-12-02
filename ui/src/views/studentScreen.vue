@@ -3,8 +3,8 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand v-if="user.roles[0]='student'" >Welcome to the Student Page, {{ user.given_name }}! </b-navbar-brand>
-      <!-- <b-navbar-brand v-if="user.roles[0]!='professor'" >Welcome to the Student Page, Professor{{ user.family_name }}! </b-navbar-brand> -->
+      <b-navbar-brand v-if="user.roles[0]=='student'" >Welcome to the Student Page, {{ user.given_name }}! </b-navbar-brand>
+      <b-navbar-brand v-if="user.roles[0]=='professor'" >Welcome to the Student Page, Professor {{ user.family_name }}! </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
 
@@ -223,6 +223,7 @@ async function refresh() {
   groupsInfo.value = await (await (fetch("/api/user/groupsInfo"))).json()
   const public_group_info = await (await (fetch("/api/user/public-group"))).json()
   groupsInfo.value?.push(public_group_info)
+  console.log(user.value)
 
 }
 onMounted(refresh)
@@ -292,8 +293,10 @@ async function postComment() {
 
 async function deletePost() {
 
-  if (user.value.roles[0] == "student") {
+  if (user.value.roles[0] === "student") {
     alert("Student have no access to delete a post!")
+    return
+    
   }
 
   if (selectedPost.value == null) {
