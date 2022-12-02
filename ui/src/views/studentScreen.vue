@@ -197,17 +197,14 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed, Ref, inject } from 'vue'
-import { post1, post2 } from "../fake_data"
-
 import { Post, User, Comment, Group, PostInfo, GroupInfo } from "../../../server/data"
 
 
 
 
 
-
 const user: Ref<any> = inject("user")!
-// const userId = user.name
+
 const groupsInfo: Ref<GroupInfo[] | null> = ref([])
 const selectedGroupId: Ref<string | null> = ref(null)
 const selectedGroupPostInfos: Ref<PostInfo[] | null> = ref(null)
@@ -218,6 +215,7 @@ const newPostGroupId: Ref<String> = ref("")
 const newCommentContent: Ref<String> = ref("")
 const selectedPostComments: Ref<Comment[]> = ref([])
 const Anonymous: Ref<boolean> = ref(false)
+
 
 async function refresh() {
   groupsInfo.value = await (await (fetch("/api/user/groupsInfo"))).json()
@@ -230,15 +228,9 @@ onMounted(refresh)
 
 
 
-const thumbUp: Ref<Boolean> = ref(false)
-const thumbDown: Ref<Boolean> = ref(false)
-
-
 
 async function newPost() {
-  // console.log(newPostContent.value)
-  // console.log(newPostTitle.value)
-  // console.log(newPostGroupId.value)
+
   await fetch(
     "/api/user/add-a-post",
     {
@@ -266,6 +258,8 @@ async function newPost() {
   }
 
 }
+
+
 async function postComment() {
   if (selectedPost.value == null) {
     return
