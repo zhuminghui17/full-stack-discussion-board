@@ -84,7 +84,7 @@
           <div class="mt-3">
             <b-list-group-item button v-for="group, i in groupsInfo" :key="i" @click="selectGroup(group._id)">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ group.name }}</h5>
+                <h5 class="mb-1 groupName">{{ group.name }}</h5>
               </div>
             </b-list-group-item>
           </div>
@@ -103,7 +103,7 @@
             <b-list-group-item button v-for="postInfo, i in selectedGroupPostInfos" :key="i"
               @click="selectPost(postInfo._id)">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ postInfo.postTitle }}</h5>
+                <h5 class="mb-1 postItem">{{ postInfo.postTitle }}</h5>
               </div>
             </b-list-group-item>
           </b-list-group>
@@ -173,7 +173,7 @@
                     <small>{{ comment.timeStamp }}</small>
                   </div>
 
-                  <p class="mb-1">
+                  <p class="mb-1 commentContent">
                     {{ comment.commentContent }}
                   </p>
 
@@ -186,7 +186,7 @@
             <h4 for="exampleFormControlTextarea1">Make Comments</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
-            <b-button variant="primary" class="my-3" @click="postComment">Comment</b-button>
+            <b-button variant="primary" class="my-3 postCommentBtn" @click="postComment">Comment</b-button>
           </div>
         </b-col>
       </b-row>

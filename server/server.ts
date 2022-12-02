@@ -21,7 +21,7 @@ if (process.env.PROXY_KEYCLOAK_TO_LOCALHOST) {
   require("http-proxy").createProxyServer({ target: "http://keycloak:8080" }).listen(8081)
 }
 // set up Mongo
-const mongoUrl = process.env.MONGO_URL ||'mongodb://127.0.0.1:27017'
+const mongoUrl = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017'
 const client = new MongoClient(mongoUrl)
 let db: Db
 let posts: Collection
@@ -80,13 +80,13 @@ function checkAuthenticated(req: Request, res: Response, next: NextFunction) {
 
 // app routes
 app.post("/api/logout", (req, res, next) => {
-    req.logout((err) => {
-      if (err) {
-        return next(err)
-      }
+  req.logout((err) => {
+    if (err) {
+      return next(err)
+    }
     res.redirect("/")
-    })
-  }
+  })
+}
 )
 
 app.get("/api/user", (req, res) => {
@@ -96,7 +96,7 @@ app.get("/api/user", (req, res) => {
 app.get("/api/student", checkAuthenticated, async (req, res) => {
   const _id = req.user.preferred_username
   logger.info("/api/student " + _id)
-  const student = await users.findOne({_id: _id, role: "student" })
+  const student = await users.findOne({ _id: _id, role: "student" })
   if (student == null) {
     res.status(404).json({ _id })
     return
@@ -107,7 +107,7 @@ app.get("/api/student", checkAuthenticated, async (req, res) => {
 
 app.get("/api/professor", checkAuthenticated, async (req, res) => {
   const _id = req.user.preferred_username
-  const professor = await users.findOne({_id: _id, role: "professor" })
+  const professor = await users.findOne({ _id: _id, role: "professor" })
   if (professor == null) {
     res.status(404).json({ _id })
     return
@@ -124,17 +124,17 @@ app.get("/api/all-posts", checkAuthenticated, async (req, res) => {
 
 // get the public group
 app.get("/api/user/public-group", checkAuthenticated, async (req, res) => {
-  const public_group = await groups.findOne({_id:"public"})
+  const public_group = await groups.findOne({ _id: "public" })
 
   // validate the existence of the public group
   if (public_group == null) {
-    res.status(404).json({error: "no public group because mongo is not set up"})
+    res.status(404).json({ error: "no public group because mongo is not set up" })
   }
-  
+
   const id = public_group._id
-  const name = public_group.name 
+  const name = public_group.name
   const public_group_info = {
-    _id:id,
+    _id: id,
     name: name
   }
   res.status(200).json(public_group_info)
@@ -157,7 +157,7 @@ app.get("/api/user/groupsInfo", checkAuthenticated, async (req, res) => {
     if (_group == null) {
       continue
     }
-    const groupInfo = { _id: _group._id, name: _group.name } 
+    const groupInfo = { _id: _group._id, name: _group.name }
     groupInfoLists.push(groupInfo)
   }
   res.status(200).json(groupInfoLists)
@@ -170,7 +170,7 @@ app.get("/api/group/:groupId/postsInfo", checkAuthenticated, async (req, res) =>
 
   // validate group
   if (group == null) {
-    res.status(404).json({ _id }) 
+    res.status(404).json({ _id })
     return
   }
 
@@ -181,7 +181,7 @@ app.get("/api/group/:groupId/postsInfo", checkAuthenticated, async (req, res) =>
     if (_post == null) {
       continue
     }
-    const postInfo = { _id: _post._id, postTitle: _post.postTitle } 
+    const postInfo = { _id: _post._id, postTitle: _post.postTitle }
     postInfoLists.push(postInfo)
   }
   res.status(200).json(postInfoLists)
@@ -264,8 +264,8 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
     res.status(404).json({ _id })
     return
   }
-  
-  function displayAnonymity (input: boolean) {
+
+  function displayAnonymity(input: boolean) {
     if (input) {
       return "Anonymous"
     } else {
@@ -281,8 +281,8 @@ app.post("/api/user/add-a-post", checkAuthenticated, async (req, res) => { // so
       groupId: req.body.groupId,
       postTitle: req.body.postTitle,
       postContent: req.body.postContent,
-      timeStamp: new Date().toLocaleString(), 
-      commentIds: [], 
+      timeStamp: new Date().toLocaleString(),
+      commentIds: [],
       upvote: 0,
       downvote: 0,
     }
@@ -364,24 +364,24 @@ app.post("/api/user/add-a-group", checkAuthenticated, async (req, res) => { // s
   }
 
   const group = await groups.findOne({ _id: req.body.groupId })
-  
+
   if (group != null) {
     res.status(400).json({ error: "group id exists" })
     return
   }
-  
+
   try {
     await groups.insertOne(
       {
-      _id: req.body.groupId,
-      name: req.body.groupName,
-      postIds: []
+        _id: req.body.groupId,
+        name: req.body.groupName,
+        postIds: []
       }
     )
   } catch (e) {
     console.log(e)
   }
-  
+
   let result = await db.collection<{}>("users").updateMany(
     {
       role: "professor",
@@ -427,7 +427,7 @@ app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
 
   // recieve students Id from UI
   const studentIdToInvite: string = req.body.studentId
-  
+
   // validate student
   let studentToInvite = await users.findOne({ _id: studentIdToInvite, role: "student" })
   if (studentToInvite == null) {
@@ -438,11 +438,11 @@ app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
   // validate that the student to invite is not already in the group
   let checkStudentsExistInGroups: string[] = studentToInvite.groupIds
 
-  if (groupId in checkStudentsExistInGroups){
+  if (groupId in checkStudentsExistInGroups) {
     res.status(400).json({ groupId })
     return
   }
-  
+
   let result = await users.updateOne(
     {
       _id: studentIdToInvite,
@@ -462,7 +462,7 @@ app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
     res.status(400).json({ error: "invite error" })
     return
   }
-  res.status(200).json({status: "ok" })
+  res.status(200).json({ status: "ok" })
 })
 
 // upthumb
@@ -546,7 +546,7 @@ app.put("/api/user/post/:postId/comment/:commentId/upvote", checkAuthenticated, 
     res.status(404).json({ userId })
     return
   }
-  
+
   const postId = new ObjectId(req.params.postId)
   const post = await posts.findOne({ _id: postId })
   if (post == null) {
@@ -647,7 +647,7 @@ app.delete('/api/user/post/:postId/delete', checkAuthenticated, async (req, res)
   } catch (e) {
     res.status(400).json({ error: "delete error post data" })
   }
-  
+
   let result = await groups.updateOne(
     {
       _id: post.groupId,
@@ -708,7 +708,7 @@ app.delete('/api/user/post/:postId/comment/:commentId/delete', checkAuthenticate
     },
     {
       $pull: {
-        commentIds: [commentId] 
+        commentIds: [commentId]
       }
     },
     {
@@ -736,7 +736,7 @@ client.connect().then(() => {
     const client = new issuer.Client(keycloak)
 
     passport.use("oidc", new Strategy(
-      { 
+      {
         client,
         params: {
           // this forces a fresh login screen every time
@@ -747,21 +747,24 @@ client.connect().then(() => {
         logger.info("oidc " + JSON.stringify(userInfo))
 
         const _id = userInfo.preferred_username
-        const professor = await users.findOne({ _id: _id, role: "professor" }) 
-        if ( professor != null) {
+        const professor = await users.findOne({ _id: _id, role: "professor" })
+        if (professor != null) {
           userInfo.roles = ["professor"]
         } else {
-          await users.updateOne(
-            { _id },
-            {
-              $set: {
-                role: "student",
-                name: userInfo.name,
-                groupIds: []
-              }
-            },
-            { upsert: true }
-          )
+          const student = await users.findOne({ _id: _id, role: "student" })
+          if (student == null) {
+            await users.updateOne(
+              { _id },
+              {
+                $set: {
+                  role: "student",
+                  name: userInfo.name,
+                  groupIds: []
+                }
+              },
+              { upsert: true }
+            )
+          }
           userInfo.roles = ["student"]
         }
 
@@ -770,11 +773,11 @@ client.connect().then(() => {
     ))
 
     app.get(
-      "/api/login", 
-      passport.authenticate("oidc", { failureRedirect: "/api/login" }), 
+      "/api/login",
+      passport.authenticate("oidc", { failureRedirect: "/api/login" }),
       (req, res) => res.redirect("/")
     )
-    
+
     app.get(
       "/api/login-callback",
       passport.authenticate("oidc", {
@@ -782,15 +785,15 @@ client.connect().then(() => {
         failureRedirect: "/api/login",
       }),
       (req, res) => {
-        if (req.user.preferred_username != "ccdd"){
+        if (req.user.preferred_username != "ccdd") {
           res.redirect("/student")
         }
-        else{
+        else {
           res.redirect("/professor")
         }
       }
-    )    
-  })   
+    )
+  })
   // start server
   app.listen(port, () => {
     console.log(`Smoothie server listening on port ${port}`)

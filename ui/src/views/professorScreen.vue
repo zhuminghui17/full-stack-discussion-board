@@ -66,9 +66,10 @@
                     <b-card-group columns>
                         <b-card
                         img-alt="Group" img-top 
+                        class="groupCards"
                         v-for="group, i in groupsInfo" :img-src="imgSrcs[i]" :key="i" bg-variant="light" text-variant="black"
                             :title=group._id>
-                            <b-card-text>
+                            <b-card-text class="groupName">
                                 {{ group.name }}
                             </b-card-text>
                             <b-button class= "btn" v-b-modal.invite-student variant="primary" @click="selectGroup(group._id)">Invite
