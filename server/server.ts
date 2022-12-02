@@ -752,17 +752,21 @@ client.connect().then(() => {
         if ( professor != null) {
           userInfo.roles = ["professor"]
         } else {
-          await users.updateOne(
-            { _id },
-            {
-              $set: {
-                role: "student",
-                name: userInfo.name,
-                groupIds: []
-              }
-            },
-            { upsert: true }
-          )
+          const student = await users.findOne({_id: _id, role: "student"})
+          if (student == null){
+            await users.updateOne(
+              { _id },
+              {
+                $set: {
+                  role: "student",
+                  name: userInfo.name,
+                  groupIds: []
+                }
+              },
+              { upsert: true }
+            )
+
+          } 
           userInfo.roles = ["student"]
         }
 

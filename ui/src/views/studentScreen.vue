@@ -63,7 +63,7 @@
 
           <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i"
             @click="selectGroup(group._id)" class="my-3">
-            <span> Group: {{ group.name }}</span>
+            <span class = "groupName"> Group: {{ group.name }}</span>
           </b-list-group-item>
 
         </b-col>

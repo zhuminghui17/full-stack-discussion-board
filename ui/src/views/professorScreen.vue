@@ -63,6 +63,7 @@
                     <b-card 
                     v-for="group, i in groupsInfo" :key="i"
                     bg-variant="light" 
+                    class="groupCards"
                     text-variant="black" 
                     :title = group._id
                     >

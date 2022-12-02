@@ -101,16 +101,92 @@ test.describe("professor's userFlow", () => {
     await inputFields.nth(1).fill('ddcc')
     await page.getByRole('button', { name: 'Sign In' }).click()
 
-    await page.getByRole('button', { name: 'New Group' }).click();
 
+    const name = Math.random().toString(36).slice(-6)
+    const id =  Math.random().toString(36).slice(-3)
     await page.getByRole('button', { name: 'New Group' }).click();
-    await page.getByLabel('Group Id').click();
-    await page.getByLabel('Group Id').fill('g20');
-    await page.getByLabel('Group Name').click();
-    await page.getByLabel('Group Name').fill('g100');
+    await page.getByLabel("Group Id").fill(id);
+    await page.getByLabel("Group Name").fill(name);
     await page.getByRole('button', { name: 'OK' }).click();
 
-    await expect(page.locator(".groupName").last()).toHaveText("g100")
+    await expect(page.locator(".groupName").last()).toHaveText(name)
+
+
+
+
+
+
+
+
+
+
+  })
+  test("testing for inviting students",async ({ page }) => {
+    await page.goto('http://127.0.0.1:8096');
+    await page.getByRole('article').filter({ hasText: 'Professor Page Login' }).getByRole('link', { name: 'Log in' }).click();
+  
+    const inputFields = await page.locator(".pf-c-form-control")
+  
+    // click the selected input fields
+    // username
+    await inputFields.nth(0).click()
+    await inputFields.nth(0).fill('ccdd')
+  
+    // password 
+    await inputFields.nth(1).click()
+    await inputFields.nth(1).fill('ddcc')
+    await page.getByRole('button', { name: 'Sign In' }).click()
+
+
+    // add a dummy group, using random name and random id
+    await page.getByRole('button', { name: 'New Group' }).click();
+
+    await page.getByLabel("Group Id").fill(Math.random().toString(36).slice(-2));
+    await page.getByLabel("Group Name").fill(Math.random().toString(36).slice(-6));
+    await page.getByRole('button', { name: 'OK' }).click();
+
+
+    const groupCards = page.locator(".groupCards")
+    const cardCount = await groupCards.count()
+    const choice = Math.random() * cardCount
+
+    const aRandomCard = groupCards.nth(choice)
+    
+    const allTextInCard = (await aRandomCard.allTextContents())[0].split(" ")
+
+    console.log(allTextInCard)
+    const groupId = allTextInCard[0]
+    const groupName = allTextInCard[1]
+
+    await aRandomCard.getByRole("button", {name: "Invite Student"}).click()
+
+    await page.getByLabel("Student Id").fill("rowling")
+
+    await page.getByRole("button", {name: "OK"}).click()
+
+
+    // now, go to student's page see whether being invited
+
+    await page.goto('http://127.0.0.1:8096/api/login')
+
+    await page.locator("#reset-login").click()
+
+
+    // username
+    await inputFields.nth(0).fill('rowling')
+  
+    // password 
+    await inputFields.nth(1).fill('110')
+  
+    // click button sign in 
+    await page.getByRole('button', { name: 'Sign In' }).click()
+
+    const groupLists =  page.getByRole("button", {name: "Group:"}).nth(-2)
+
+    await expect(groupLists.locator(".groupName")).toHaveText(" Group: " + groupName)
+
+
+
   })
 
 })
