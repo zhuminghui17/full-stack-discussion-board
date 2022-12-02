@@ -21,10 +21,10 @@ Right click the `compose.yaml` file, choose the `Compose Up`.
 ## Final project requirements
 ### Basic
 - [x] **Correct use of git commits**
-- [ ] **Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)**
+- [ ] **Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)** √
     - We have a 4-field form (post title, post content, group affiliated, and whether posted as anonymous) when adding a post. 
-- [x] Video demo demonstrates usability at mobile screen size (putting browser into mobile simulation mode is sufficient)
-- [ ] Video demo shows an E2E test with a basic user flow (Keycloak forms don't count)
+- [x] Video demo demonstrates usability at mobile screen size (putting browser into mobile simulation mode is sufficient) √
+- [ ] Video demo shows an E2E test with a basic user flow (Keycloak forms don't count) 
 - [x] Source code shows app uses load balanced backend REST API (i.e., no obvious dependency on global variables for state) OR Socket.IO backend server
 - [x] Source code shows app uses MongoDB to store nontrivial state
 - [x] **Video demo shows Vue router set up with at least 2 routes**
@@ -43,7 +43,7 @@ CI/CD
 page)
 
 Administrator user role
-- [x] **Video shows an administrator logging in and seeing an app screen indicating administrator role**
+- [x] **Video shows an administrator logging in and seeing an app screen indicating administrator role** √
     - The professor (administrator) with username id "ccdd" have a different screen indicating "Discussion Board Professor".
 - [x] **Video demonstrates a significant administrator-specific feature**
     - The professor have a significant administrator-specific feature: create a group and invite students to the group.
@@ -51,9 +51,9 @@ Administrator user role
     - There is no place for normal users (students) to create a group and invite students.
 
 **User registration flow**
-- [x] **Video shows a failed user login for an unregistered user**
-- [x] **Video shows registering a new user (the one that failed)**
-- [x] **Video demonstrates full function for newly registered user**
+- [x] **Video shows a failed user login for an unregistered user** √
+- [x] **Video shows registering a new user (the one that failed)** √
+- [x] **Video demonstrates full function for newly registered user** √
 
 ## Resources Used
 ### Resources used in UI
