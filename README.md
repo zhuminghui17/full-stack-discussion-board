@@ -5,7 +5,7 @@ This discussion board allows users to post Q&A. We have two kinds of users, prof
 
 ## Development Team
 🐎 Congcong Ma:    
-🐷 Minghui Zhu:   
+🐷 Minghui Zhu: Backend Design, UI Modification.   
 🍄 Quan Wang: Front-end (UI design & implementation), Documentation, Video Recording
 
 ## Run the program
@@ -24,6 +24,7 @@ Right click the `compose.yaml` file, choose the `Compose Up`.
 - [ ] **Video demo shows a working Vue form with at least 4 fields (Keycloak forms don't count)** √
     - We have a 4-field form (post title, post content, group affiliated, and whether posted as anonymous) when adding a post. 
 - [x] Video demo demonstrates usability at mobile screen size (putting browser into mobile simulation mode is sufficient) √
+    - The screen is compatible when changing to moblie screen size at the devtools.
 - [ ] Video demo shows an E2E test with a basic user flow (Keycloak forms don't count) 
 - [x] Source code shows app uses load balanced backend REST API (i.e., no obvious dependency on global variables for state) OR Socket.IO backend server
 - [x] Source code shows app uses MongoDB to store nontrivial state
