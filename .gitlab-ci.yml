@@ -64,4 +64,4 @@ e2e-test-job:   # This job runs in the test stage.
     - echo "Running E2E tests..."
 
     # The following line is only necessary because the project is under this subdirectory.
-    - docker exec -T discussion-board-e2e-1 xvfb-run npx playwright test
+    - docker exec discussion-board-e2e-1 xvfb-run npx playwright test
