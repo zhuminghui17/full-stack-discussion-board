@@ -189,7 +189,7 @@ test.describe("professor's userFlow", () => {
     await page.getByRole('button', { name: 'Sign In' }).click()
 
 
-    await expect(page.locator(".groupName").nth(-2)).toHaveText(groupName)
+    await expect(page.locator(".groupName").nth(-2)).toContainText(groupName)
 
 
 

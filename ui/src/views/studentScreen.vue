@@ -294,7 +294,7 @@ async function postComment() {
 async function deletePost() {
 
   if (user.value.roles[0] === "student") {
-    alert("Student have no access to delete a post!")
+    alert("Students have no access to delete a post!")
     return
     
   }

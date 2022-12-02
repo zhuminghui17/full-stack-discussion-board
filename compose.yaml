@@ -43,6 +43,7 @@ services:
       - ui2
       - server1
       - server2
+      - load_balancer
     networks:
       - lecture22
 
