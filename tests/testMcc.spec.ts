@@ -50,17 +50,12 @@ test('tests for posting new posts and comments', async ({ page }) => {
   const lastPost = page.locator(".postItem").last()
   await expect(lastPost).toHaveText("this is a a new post title")
 
-  await lastPost.click()
-  await page.locator('#exampleFormControlTextarea1').click();
-  await page.locator('#exampleFormControlTextarea1').fill('this is a second comment');
-  await page.getByRole('button', { name: 'Post' }).nth(2).click();
-
 
   await page.locator('#exampleFormControlTextarea1').click();
-  await page.locator('#exampleFormControlTextarea1').fill('this is a second comment');
+  await page.locator('#exampleFormControlTextarea1').fill('this is a test comment');
   await page.locator(".postCommentBtn").click()
 
-  await expect(page.locator(".commentContent").last()).toHaveText("this is a second comment")
+  await expect(page.locator(".commentContent").last()).toHaveText("this is a test comment")
 
 })})
 

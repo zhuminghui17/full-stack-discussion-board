@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="user.roles[0] === 'student'" >
-            Students have no access to the admin page!
+            <h1>Students have no access to the admin page!</h1>
         </div>
         <div v-else>
             <b-navbar toggleable="lg" type="dark" variant="dark">
