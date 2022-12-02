@@ -5,7 +5,7 @@ test.describe("student's user flow",() => {
 test('tests for posting new posts and comments', async ({ page }) => {
 
   // homepage
-  await page.goto('http://127.0.0.1:8096');
+  await page.goto('http://127.0.0.1:8080');
   // await page.getByRole('button', { name: 'Reload' }).click();
   await page.getByRole('article').filter({ hasText: 'Student Page Login' }).getByRole('link', { name: 'Log in' }).click();
 
@@ -86,7 +86,7 @@ test('tests for posting new posts and comments', async ({ page }) => {
 
 test.describe("professor's userFlow", () => {
   test('tests for adding a new group', async ({ page }) => {
-    await page.goto('http://127.0.0.1:8096');
+    await page.goto('http://127.0.0.1:8080');
     await page.getByRole('article').filter({ hasText: 'Professor Page Login' }).getByRole('link', { name: 'Log in' }).click();
   
     const inputFields = await page.locator(".pf-c-form-control")
@@ -122,7 +122,7 @@ test.describe("professor's userFlow", () => {
 
   })
   test("testing for inviting students",async ({ page }) => {
-    await page.goto('http://127.0.0.1:8096');
+    await page.goto('http://127.0.0.1:8080');
     await page.getByRole('article').filter({ hasText: 'Professor Page Login' }).getByRole('link', { name: 'Log in' }).click();
   
     const inputFields = await page.locator(".pf-c-form-control")
@@ -167,7 +167,7 @@ test.describe("professor's userFlow", () => {
 
     // now, go to student's page see whether being invited
 
-    await page.goto('http://127.0.0.1:8096/api/login')
+    await page.goto('http://127.0.0.1:8080/api/login')
 
     await page.locator("#reset-login").click()
 
