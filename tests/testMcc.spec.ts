@@ -160,7 +160,7 @@ test.describe("professor's userFlow", () => {
     
     const allTextInCard = (await aRandomCard.allTextContents())[0].split(" ")
 
-    console.log(allTextInCard)
+    // console.log(allTextInCard)
     const groupId = allTextInCard[0]
     const groupName = allTextInCard[1]
 
