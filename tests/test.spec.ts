@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test('tests required by the final project', async ({ page }) => {
 
     // homepage
-    await page.goto('http://127.0.0.1:8096');
+    await page.goto('http://127.0.0.1:8080');
     // await page.getByRole('button', { name: 'Reload' }).click();
     await page.getByRole('article').filter({ hasText: 'Student Page Login If you\'re a professor, you can log in through this page to an' }).getByRole('link', { name: 'Log in' }).click();
 
@@ -36,16 +36,16 @@ test('tests required by the final project', async ({ page }) => {
     await page.locator('[id="__BVID__34"]').selectOption('public');
     await page.getByText('Anonymous').click();
     await page.getByRole('button', { name: 'OK' }).click();
-    await page.getByRole('button', { name: 'Group: public group' }).click();
-    await page.getByRole('button', { name: 'this is a new post title Delete' }).click();
-    await page.getByRole('img', { name: 'caret up' }).click(); // upvote
-    await page.getByRole('img', { name: 'caret down' }).click(); // downvote
-    await page.locator('#exampleFormControlTextarea1').click(); // add a new post
-    await page.locator('#exampleFormControlTextarea1').fill('this is a new comment');
-    await page.getByRole('button', { name: 'Post' }).nth(2).click();
-    await page.locator('#exampleFormControlTextarea1').click();
-    await page.locator('#exampleFormControlTextarea1').fill('this is a second comment');
-    await page.getByRole('button', { name: 'Post' }).nth(2).click();
+    // await page.getByRole('button', { name: 'Group: public group' }).click();
+    // await page.getByRole('button', { name: 'this is a new post title' }).click();
+    // await page.getByRole('img', { name: 'caret up' }).click(); // upvote
+    // await page.getByRole('img', { name: 'caret down' }).click(); // downvote
+    // await page.locator('#exampleFormControlTextarea1').click(); // add a new post
+    // await page.locator('#exampleFormControlTextarea1').fill('this is a new comment');
+    // await page.getByRole('button', { name: 'Post' }).nth(2).click();
+    // await page.locator('#exampleFormControlTextarea1').click();
+    // await page.locator('#exampleFormControlTextarea1').fill('this is a second comment');
+    // await page.getByRole('button', { name: 'Post' }).nth(2).click();
 
 
   

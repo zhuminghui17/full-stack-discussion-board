@@ -1,0 +1,6 @@
+[init]
+	defaultBranch = none
+[fetch]
+	recurseSubmodules = false
+[http "https://coursework.cs.duke.edu"]
+	sslCAInfo = /Users/macongcong/academic/web_dev/discussion-board/builds/osmRsyV7/0/cm645/discussion-board.tmp/CI_SERVER_TLS_CA_FILE

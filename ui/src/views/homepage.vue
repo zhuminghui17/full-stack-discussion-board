@@ -39,7 +39,7 @@
                             they belong to.
                         </b-card-text>
 
-                        <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>
+                        <b-button href="http://127.0.0.1:8080/api/login" variant="primary">Log in</b-button>
                     </b-card>
 
                     <b-card align="center" title="Professors Login" img-src="https://img.freepik.com/free-vector/singing-coach-teaching-group-children-music-teacher-choir-kids-classroom-flat-vector-illustration-music-lesson-education-hobby_74855-13237.jpg?w=1800&t=st=1669948360~exp=1669948960~hmac=bdd43bb21a3a86bc6380619b6a5201c71885802fa46a3f3998e26a314b0c6240"
@@ -48,7 +48,7 @@
                             Professors can login through this portal to manage groups and invite students to the groups.
                         </b-card-text>
 
-                        <b-button href="http://127.0.0.1:8095/api/login" variant="primary">Log in</b-button>
+                        <b-button href="http://127.0.0.1:8080/api/login" variant="primary">Log in</b-button>
                     </b-card>
                 </b-card-group>
             </div>

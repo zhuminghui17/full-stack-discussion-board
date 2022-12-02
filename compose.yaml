@@ -11,48 +11,61 @@ volumes:
     driver: local
 
 services:
-  # server1:
-  #   image: server
-  #   build: ./server
-  #   environment:
-  #     - MONGO_URL=mongodb://mongo
-  #   depends_on:
-  #     - mongo
-  #     - keycloak
-  #   networks:
-  #     - lecture22
-  # server2:
-  #   image: server
-  #   build: ./server
-  #   environment:
-  #     - MONGO_URL=mongodb://mongo
-  #   depends_on:
-  #     - mongo
-  #     - keycloak
-  #   networks:
-  #     - lecture22
-  # ui1:
-  #   image: ui
-  #   build: ./ui
-  #   networks:
-  #     - lecture22
-  # ui2:
-  #   image: ui
-  #   build: ./ui
-  #   networks:
-  #     - lecture22
-  # load_balancer:
-  #   image: nginx_load_balancer
-  #   build: ./nginx-load-balancer
-  #   networks:
-  #     - lecture22
-  #   ports:
-  #     - "127.0.0.1:8080:80"
-  #   depends_on:
-  #     - ui1
-  #     - ui2
-  #     - server1
-  #     - server2
+  server1:
+    image: server
+    build: ./server
+    environment:
+      - MONGO_URL=mongodb://mongo
+      - PROXY_KEYCLOAK_TO_LOCALHOST=true
+    depends_on:
+      - mongo
+      - keycloak
+    networks:
+      - lecture22
+  server2:
+    image: server
+    build: ./server
+    environment:
+      - MONGO_URL=mongodb://mongo
+      - PROXY_KEYCLOAK_TO_LOCALHOST=true
+    depends_on:
+      - mongo
+      - keycloak
+    networks:
+      - lecture22
+  e2e:
+    image: e2e
+    build: ./tests
+    depends_on:
+      - ui1
+      - ui2
+      - server1
+      - server2
+    networks:
+      - lecture22
+
+  ui1:
+    image: ui
+    build: ./ui
+    networks:
+      - lecture22
+  ui2:
+    image: ui
+    build: ./ui
+    networks:
+      - lecture22
+  load_balancer:
+    image: nginx_load_balancer
+    build: ./nginx-load-balancer
+    networks:
+      - lecture22
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - ui1
+      - ui2
+      - server1
+      - server2
   keycloak:
     image: keycloak18
     container_name: keycloak

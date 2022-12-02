@@ -152,6 +152,9 @@ async function AddNewGroup() {
             })
         }
     )
+
+    newGroupId.value = ""
+    newGroupName.value = ""
     getAllgroups()
 }
 

@@ -148,18 +148,18 @@
             </b-row>
             <b-row align-v="center">
               <b-col cols="auto" offset-md="1" class="mr-auto p-3">
-                <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon"
+                <!-- <b-icon v-if="thumbUp" icon="caret-up-fill" @click="cancelThumbUp" class="clickable-icon"
                   style="font-size: 30px">
-                </b-icon>
+                </b-icon> -->
 
-                <b-icon v-else icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px">
+                <b-icon icon="caret-up" @click="clickThumbUp" class="clickable-icon" style="font-size: 30px">
                 </b-icon>
                 {{ selectedPost.upvote }}
 
-                <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon"
+                <!-- <b-icon v-if="thumbDown" icon="caret-down-fill" @click="cancelThumbDown" class="clickable-icon"
                   style="font-size: 30px">
-                </b-icon>
-                <b-icon v-else icon="caret-down" @click="clickThumbDown" class="clickable-icon" style="font-size: 30px">
+                </b-icon> -->
+                <b-icon icon="caret-down" @click="clickThumbDown" class="clickable-icon" style="font-size: 30px">
                 </b-icon>
                 {{ selectedPost.downvote }}
               </b-col>
@@ -221,7 +221,7 @@ const Anonymous: Ref<boolean> = ref(false)
 
 async function refresh() {
   groupsInfo.value = await (await (fetch("/api/user/groupsInfo"))).json()
-  const public_group_info = await (await (fetch("/api/user/" + "/public-group"))).json()
+  const public_group_info = await (await (fetch("/api/user/public-group"))).json()
   groupsInfo.value?.push(public_group_info)
 
 }
@@ -332,20 +332,37 @@ async function selectGroup(group_id: string) {
   selectedPost.value = null
 }
 
-function clickThumbUp() {
-  thumbUp.value = true
+async function clickThumbUp() {
+  if (selectedPost.value == null){
+    return 
+  }
+  
+  await fetch(
+    "/api/user/post/" + encodeURI(selectedPost.value._id) + "/upvote",
+    {
+      method: "PUT"
+    })
+
+  selectPost(selectedPost.value._id)
+  
+  
 }
 
-function cancelThumbUp() {
-  thumbUp.value = false
-}
 
-function clickThumbDown() {
-  thumbDown.value = true
-}
 
-function cancelThumbDown() {
-  thumbDown.value = false
+async function clickThumbDown() {
+  if (selectedPost.value == null){
+    return 
+  }
+  
+  await fetch(
+    "/api/user/post/" + encodeURI(selectedPost.value._id) + "/downvote",
+    {
+      method: "PUT"
+    })
+
+  selectPost(selectedPost.value._id)
+  
 }
 
 function logout() {
