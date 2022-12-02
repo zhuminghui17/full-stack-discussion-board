@@ -51,6 +51,7 @@ test('tests for posting new posts and comments', async ({ page }) => {
   await expect(lastPost).toHaveText("this is a a new post title")
 
 
+  await lastPost.click()
   await page.locator('#exampleFormControlTextarea1').click();
   await page.locator('#exampleFormControlTextarea1').fill('this is a test comment');
   await page.locator(".postCommentBtn").click()
