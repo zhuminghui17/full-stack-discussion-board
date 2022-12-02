@@ -15,7 +15,7 @@
           <b-nav-item href="#">Minghui Zhu</b-nav-item>
           <b-nav-item href="#">Quan Wang</b-nav-item> -->
           
-          <b-button size="sm" v-b-popover.hover="'Creat new post and comment on posts!'" title="You Can">Help</b-button>
+          <!-- <b-button size="sm" v-b-popover.hover="'Creat new post and comment on posts!'" title="You Can">Help</b-button> -->
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -26,8 +26,9 @@
             <template #button-content>
               User
             </template>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-            <b-dropdown-item href="#">Admin Page</b-dropdown-item>
+            <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
+            <b-dropdown-item href="student" v-if="user.roles[0] == 'professor'">Admin Page</b-dropdown-item>
+            <form method="POST" action="/api/logout" id="logoutForm" />
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -56,10 +57,22 @@
             </form>
           </b-modal>
 
-          <div class="mt-3">
-            <b-card border-variant="info" header="What Can You Do?" align="center">
-              <b-card-text align="left">1. Creat new post!</b-card-text>
-              <b-card-text align="left">2. Comment on posts!</b-card-text>
+          <div v-if="user.roles[0] === 'student'"  class="mt-3">
+            <b-card border-variant="info" header="What Can You Do as a Student?" align="center">
+              <b-card-text align="left">1. Creat new post (anonymously)!</b-card-text>
+              <b-card-text align="left">2. Make comments on posts!</b-card-text>
+              <b-card-text align="left">3. Upvote or downvote on posts!</b-card-text>
+            </b-card>
+          </div>
+
+          <div v-if="user.roles[0] === 'professor'"  class="mt-3">
+            <b-card border-variant="info" header="What Can You Do as a Professor in Student Page?" align="center">
+              <b-card-text align="left">1. Creat new post (anonymously)!</b-card-text>
+              <b-card-text align="left">2. Make comments on posts!</b-card-text>
+              <b-card-text align="left">3. Upvote or downvote on posts!</b-card-text>
+              <b-card-text align="left">4. Delete posts (exclusively)!</b-card-text>
+              <b-card-text align="left">5. Switch to admin page at the dropdown!</b-card-text>
+
             </b-card>
           </div>
 
@@ -102,10 +115,10 @@
           <b-card no-body class="overflow-hidden" v-if="selectedGroupId && selectedPost">
             <template #header>
               <b-row>
-                <b-col cols="10">
+                <b-col cols="11">
                   <h2 class="mb-0">{{ selectedPost.postTitle }}</h2>
                 </b-col>
-                <b-col cols="2">
+                <b-col cols="1">
                   <p class="h3 mb-2">
                     <b-icon icon="trash" class="clickable-icon" @click="deletePost()"></b-icon>
                   </p>
@@ -169,7 +182,7 @@
             </template>
           </b-card>
           <div class="form-group mt-4" v-if="selectedGroupId && selectedPost">
-            <h4 for="exampleFormControlTextarea1">Add a Comment</h4>
+            <h4 for="exampleFormControlTextarea1">Make Comments</h4>
             <b-form-textarea class="form-control" v-model="newCommentContent" id="exampleFormControlTextarea1" rows="3">
             </b-form-textarea>
             <b-button variant="primary" class="my-3" @click="postComment">Comment</b-button>
@@ -333,6 +346,11 @@ function clickThumbDown() {
 function cancelThumbDown() {
   thumbDown.value = false
 }
+
+function logout() {
+  ;(window.document.getElementById('logoutForm') as HTMLFormElement).submit()  
+}
+
 
 </script>
 

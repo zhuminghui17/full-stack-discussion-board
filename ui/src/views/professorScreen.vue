@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">Hi Professor {{ user.name }}, this is admin page!</b-navbar-brand>
+            <b-navbar-brand href="#">Professor {{user.name}}, it's Admin Page!</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -21,10 +21,11 @@
                     <b-nav-item-dropdown right>
                         <!-- Using 'button-content' slot -->
                         <template #button-content>
-                            <em>User</em>
+                            User
                         </template>
-                        <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-                        <b-dropdown-item href="student">Student Page</b-dropdown-item>
+                        <b-dropdown-item href="student" v-if="user.roles[0] == 'professor'">Student Page</b-dropdown-item>
+                        <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
+                        <form method="POST" action="/api/logout" id="logoutForm" />
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>
@@ -33,7 +34,7 @@
         <b-container fluid class="my-4">
             <b-row>
                 <!-- This first column consists of a create group button and also group labels the professor managed -->
-                <b-col xs="12" sm="2">
+                <b-col xs="12" sm="3">
                     <b-button v-b-modal.new-group variant="primary"> New Group </b-button>
 
                     <b-modal id="new-group" title="New Group" @ok="AddNewGroup">
@@ -51,20 +52,28 @@
                     <!-- <b-list-group-item variant="primary" button v-for="group, i in groupsInfo" :key="i" class="my-3">
                         <span> Group: {{ group.name }}</span>
                     </b-list-group-item> -->
+
+                    <div v-if="user.roles[0] === 'professor'"  class="mt-3">
+                        <b-card border-variant="info" header="What Can You Do as a Professor?" align="center">
+                         <b-card-text align="left">1. Creat new groups!</b-card-text>
+                         <b-card-text align="left">2. Invite students to new groups!</b-card-text>
+                         <b-card-text align="left">3. Go to student page at the dropdown!</b-card-text>
+                        </b-card>
+                    </div>
                 </b-col>
                 <!-- The second column consists of functionality that professor can invite students  -->
-                <b-col xs="12" sm="10">
+                <b-col xs="12" sm="9">
                     <b-card-group deck>
                         <b-card v-for="group, i in groupsInfo" :key="i" bg-variant="light" text-variant="black"
                             :title=group._id>
                             <b-card-text>
                                 {{ group.name }}
                             </b-card-text>
-                            <b-button v-b-modal.invite-student variant="primary" @click="selectGroup(group._id)">Invite
+                            <b-button class= "btn" v-b-modal.invite-student variant="primary" @click="selectGroup(group._id)">Invite
                                 Student</b-button>
-                        </b-card>
+                        </b-card> 
                     </b-card-group>
-                    <b-modal id="invite-student" title="Please enter student ID" @ok="inviteStudent">
+                    <b-modal id="invite-student" :title="`Invite students to ${theGroupId}`"  @ok="inviteStudent">
                         <form ref="form">
                             <b-form-group label="Student ID" label-for="student-id"
                                 invalid-feedback="Student ID is required">
@@ -146,6 +155,10 @@ async function AddNewGroup() {
     getAllgroups()
 }
 
+function logout() {
+  ;(window.document.getElementById('logoutForm') as HTMLFormElement).submit()  
+}
+
 </script>
 
 
@@ -158,4 +171,14 @@ async function AddNewGroup() {
 .navbar.navbar-dark.bg-dark {
     background-color: #0077B6 !important;
 }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+button.btn {
+  margin-top: auto;
+}
 </style>
+

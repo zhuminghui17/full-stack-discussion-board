@@ -81,14 +81,12 @@ function checkAuthenticated(req: Request, res: Response, next: NextFunction) {
 }
 
 // app routes
-app.post(
-  "/api/logout", 
-  (req, res, next) => {
+app.post("/api/logout", (req, res, next) => {
     req.logout((err) => {
       if (err) {
         return next(err)
       }
-      res.redirect("/")
+    res.redirect("/")
     })
   }
 )
@@ -425,6 +423,7 @@ app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
 
   if (groupId in checkStudentsExistInGroups){
     res.status(400).json({ groupId })
+    return
   }
   
   let result = await users.updateOne(
