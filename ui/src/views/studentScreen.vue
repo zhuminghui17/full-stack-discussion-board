@@ -27,7 +27,7 @@
             <template #button-content>
               User
             </template>
-            <b-dropdown-item href="student" v-if="user.roles[0] == 'professor'">Admin Page</b-dropdown-item>
+            <b-dropdown-item href="professor" v-if="user.roles[0] == 'professor'">Admin Page</b-dropdown-item>
             <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
             <form method="POST" action="/api/logout" id="logoutForm" />
           </b-nav-item-dropdown>
@@ -116,11 +116,11 @@
           <b-card no-body class="overflow-hidden" v-if="selectedGroupId && selectedPost">
             <template #header>
               <b-row>
-                <b-col cols="11">
+                <b-col xs="11" sm="11">
                   <h3 class="mb-0">{{ selectedPost.postTitle }}</h3>
                 </b-col>
-                <b-col cols="1">
-                  <p class="h3 mb-2">
+                <b-col xs="1" sm="1">
+                  <p class="h3smb-2">
                     <b-icon icon="trash" class="clickable-icon" @click="deletePost()"></b-icon>
                   </p>
                 </b-col>
