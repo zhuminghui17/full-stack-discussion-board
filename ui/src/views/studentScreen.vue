@@ -3,7 +3,8 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">Hi {{ user.name }}, welcome to the student page!</b-navbar-brand>
+      <b-navbar-brand v-if="user.roles[0]='student'" >Welcome to the Student Page, {{ user.given_name }}! </b-navbar-brand>
+      <!-- <b-navbar-brand v-if="user.roles[0]!='professor'" >Welcome to the Student Page, Professor{{ user.family_name }}! </b-navbar-brand> -->
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
 
@@ -26,8 +27,8 @@
             <template #button-content>
               User
             </template>
-            <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
             <b-dropdown-item href="student" v-if="user.roles[0] == 'professor'">Admin Page</b-dropdown-item>
+            <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
             <form method="POST" action="/api/logout" id="logoutForm" />
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -116,7 +117,7 @@
             <template #header>
               <b-row>
                 <b-col cols="11">
-                  <h2 class="mb-0">{{ selectedPost.postTitle }}</h2>
+                  <h3 class="mb-0">{{ selectedPost.postTitle }}</h3>
                 </b-col>
                 <b-col cols="1">
                   <p class="h3 mb-2">
