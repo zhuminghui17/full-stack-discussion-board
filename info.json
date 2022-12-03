@@ -1,6 +1,6 @@
 {
- "teamMembers": [{"name": "John Doe", "netId": "jd9999"}, {"name": "Alice Wang", "netId": "aw9999"}],
+ "teamMembers": [{"name": "Quan Wang", "netId": "qw108"}, {"name": "Congcong Ma", "netId": "cm645"}, {"name": "Minghui Zhu", "netId": ""}],
  "panoptoVideoUrl": "https://duke.hosted.panopto.com/...",
- "gitLabRepositoryUrl": "https://coursework.cs.duke.edu/...",
- "commentsForGrader": "this part is optional - if you discussed any exceptional circumstances with the instructor, please remind us of these here"
+ "gitLabRepositoryUrl": "https://coursework.cs.duke.edu/cm645/discussion-board",
+ "commentsForGrader": ""
 }
