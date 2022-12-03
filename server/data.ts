@@ -1,3 +1,13 @@
+export interface GroupInfo {
+  _id: string // group id
+  name: string // group name
+}
+
+export interface Group extends GroupInfo {
+  postIds: string[]
+}
+
+
 export interface PostInfo {
   _id: string // post id
   postTitle: string // post name
@@ -28,14 +38,6 @@ export interface Comment {
   downvote: number
 }
 
-export interface GroupInfo {
-  _id: string // group id
-  name: string // group name
-}
-
-export interface Group extends GroupInfo {
-  postIds: string[]
-}
 
 export interface User {
   _id: string // user id
