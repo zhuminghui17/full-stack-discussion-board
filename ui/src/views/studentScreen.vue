@@ -4,7 +4,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand v-if="user.roles[0]=='student'" >Welcome to the Student Page, {{ user.given_name }}! </b-navbar-brand>
-      <b-navbar-brand v-if="user.roles[0]=='professor'" >Welcome to the Student Page, Professor {{ user.family_name }}! </b-navbar-brand>
+      <b-navbar-brand v-if="user.roles[0]=='professor'" >Welcome to the Student Page, Hi Professor {{ user.family_name }}! </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
 
