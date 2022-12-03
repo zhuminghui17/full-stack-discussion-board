@@ -27,7 +27,7 @@ const router = new VueRouter({
       component: professorScreen
     },
     {
-      path:"/",
+      path: "/",
       component: homepage
     }
   ],

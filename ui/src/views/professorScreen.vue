@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="user.roles[0] === 'student'" >
+        <div v-if="user.roles[0] === 'student'">
             <h1>Students have no access to the admin page!</h1>
         </div>
         <div v-else>
