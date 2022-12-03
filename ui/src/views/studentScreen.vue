@@ -3,8 +3,10 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand v-if="user.roles[0]=='student'" >Welcome to the Student Page, {{ user.given_name }}! </b-navbar-brand>
-      <b-navbar-brand v-if="user.roles[0]=='professor'" >Welcome to the Student Page, Hi Professor {{ user.family_name }}! </b-navbar-brand>
+      <b-navbar-brand v-if="user.roles[0] == 'student'">Welcome to the Student Page, {{ user.given_name }}!
+      </b-navbar-brand>
+      <b-navbar-brand v-if="user.roles[0] == 'professor'">Welcome to the Student Page, Hi Professor {{ user.family_name
+      }}! </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
 
@@ -15,7 +17,7 @@
           <b-nav-item href="#">Congcong Ma</b-nav-item>
           <b-nav-item href="#">Minghui Zhu</b-nav-item>
           <b-nav-item href="#">Quan Wang</b-nav-item> -->
-          
+
           <!-- <b-button size="sm" v-b-popover.hover="'Creat new post and comment on posts!'" title="You Can">Help</b-button> -->
         </b-navbar-nav>
 
@@ -58,7 +60,7 @@
             </form>
           </b-modal>
 
-          <div v-if="user.roles[0] === 'student'"  class="mt-3">
+          <div v-if="user.roles[0] === 'student'" class="mt-3">
             <b-card border-variant="info" header="What Can You Do as a Student?" align="center">
               <b-card-text align="left">1. Creat new post (anonymously)!</b-card-text>
               <b-card-text align="left">2. Make comments on posts!</b-card-text>
@@ -66,7 +68,7 @@
             </b-card>
           </div>
 
-          <div v-if="user.roles[0] === 'professor'"  class="mt-3">
+          <div v-if="user.roles[0] === 'professor'" class="mt-3">
             <b-card border-variant="info" header="What Can You Do as a Professor in Student Page?" align="center">
               <b-card-text align="left">1. Creat new post (anonymously)!</b-card-text>
               <b-card-text align="left">2. Make comments on posts!</b-card-text>
@@ -290,7 +292,7 @@ async function deletePost() {
   if (user.value.roles[0] === "student") {
     alert("Students have no access to delete a post!")
     return
-    
+
   }
 
   if (selectedPost.value == null) {
@@ -330,10 +332,10 @@ async function selectGroup(group_id: string) {
 }
 
 async function clickThumbUp() {
-  if (selectedPost.value == null){
-    return 
+  if (selectedPost.value == null) {
+    return
   }
-  
+
   await fetch(
     "/api/user/post/" + encodeURI(selectedPost.value._id) + "/upvote",
     {
@@ -341,17 +343,17 @@ async function clickThumbUp() {
     })
 
   selectPost(selectedPost.value._id)
-  
-  
+
+
 }
 
 
 
 async function clickThumbDown() {
-  if (selectedPost.value == null){
-    return 
+  if (selectedPost.value == null) {
+    return
   }
-  
+
   await fetch(
     "/api/user/post/" + encodeURI(selectedPost.value._id) + "/downvote",
     {
@@ -359,11 +361,11 @@ async function clickThumbDown() {
     })
 
   selectPost(selectedPost.value._id)
-  
+
 }
 
 function logout() {
-  ;(window.document.getElementById('logoutForm') as HTMLFormElement).submit()  
+  ; (window.document.getElementById('logoutForm') as HTMLFormElement).submit()
 }
 
 
