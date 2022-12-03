@@ -1,6 +1,6 @@
 {
- "teamMembers": [{"name": "Quan Wang", "netId": "qw108"}, {"name": "Congcong Ma", "netId": "cm645"}, {"name": "Minghui Zhu", "netId": ""}],
- "panoptoVideoUrl": "https://duke.hosted.panopto.com/...",
+ "teamMembers": [{"name": "Quan Wang", "netId": "qw108"}, {"name": "Congcong Ma", "netId": "cm645"}, {"name": "Minghui Zhu", "netId": "mz223"}],
+ "panoptoVideoUrl": "https://duke.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=d69b74d1-14be-4fac-994e-af6001549339",
  "gitLabRepositoryUrl": "https://coursework.cs.duke.edu/cm645/discussion-board",
- "commentsForGrader": ""
+ "commentsForGrader": "N/A"
 }
