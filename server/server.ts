@@ -438,7 +438,8 @@ app.put("/api/user/invite-a-student", checkAuthenticated, async (req, res) => {
   // validate that the student to invite is not already in the group
   let checkStudentsExistInGroups: string[] = studentToInvite.groupIds
 
-  if (groupId in checkStudentsExistInGroups) {
+
+  if (checkStudentsExistInGroups.includes(groupId)) {
     res.status(400).json({ groupId })
     return
   }
