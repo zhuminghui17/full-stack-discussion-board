@@ -16,11 +16,11 @@ test.describe("student's user flow", () => {
     // click the selected input fields
     // username
     await inputFields.nth(0).click()
-    await inputFields.nth(0).fill('mhz')
+    await inputFields.nth(0).fill('vivian')
 
     // password 
     await inputFields.nth(1).click()
-    await inputFields.nth(1).fill('110')
+    await inputFields.nth(1).fill('123456')
 
 
     // click button sign in 
@@ -58,8 +58,6 @@ test.describe("student's user flow", () => {
 
 test.describe("professor's userFlow", () => {
   test('tests for adding a new group', async ({ page }) => {
-    const browser = await chromium.launch()
-    page = await browser.newPage()
     await page.goto(process.env.APP_URL || 'http://127.0.0.1:8080');
     await page.getByRole('article').filter({ hasText: 'Professors Login' }).getByRole('link', { name: 'Log in' }).click();
 
@@ -70,7 +68,7 @@ test.describe("professor's userFlow", () => {
 
     // password 
     await inputFields.nth(1).click()
-    await inputFields.nth(1).fill('ccdd')
+    await inputFields.nth(1).fill('1234')
 
 
     await page.getByRole('button', { name: 'Sign In' }).click()
@@ -91,8 +89,6 @@ test.describe("professor's userFlow", () => {
 
   })
   test("testing for inviting students", async ({ page }) => {
-    const browser = await chromium.launch()
-    page = await browser.newPage()
     await page.goto(process.env.APP_URL || 'http://127.0.0.1:8080');
     await page.getByRole('article').filter({ hasText: 'Professors Login' }).getByRole('link', { name: 'Log in' }).click();
 
@@ -105,7 +101,7 @@ test.describe("professor's userFlow", () => {
 
     // password 
     await inputFields.nth(1).click()
-    await inputFields.nth(1).fill('ccdd')
+    await inputFields.nth(1).fill('1234')
     await page.getByRole('button', { name: 'Sign In' }).click()
 
 
@@ -131,7 +127,7 @@ test.describe("professor's userFlow", () => {
 
     await aRandomCard.getByRole("button", { name: "Invite Student" }).click()
 
-    await page.getByLabel("Student Id").fill("mhz")
+    await page.getByLabel("Student Id").fill("vivian")
 
     await page.getByRole("button", { name: "OK" }).click()
 
@@ -145,10 +141,10 @@ test.describe("professor's userFlow", () => {
 
 
     // username
-    await inputFields.nth(0).fill('mhz')
+    await inputFields.nth(0).fill('vivian')
 
     // password 
-    await inputFields.nth(1).fill('110')
+    await inputFields.nth(1).fill('123456')
 
     // click button sign in 
     await page.getByRole('button', { name: 'Sign In' }).click()
