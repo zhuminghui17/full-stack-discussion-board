@@ -343,7 +343,8 @@ async function clickThumbUp() {
   selectPost(selectedPost.value._id)
   
   
-}
+} 
+// test
 
 
 
