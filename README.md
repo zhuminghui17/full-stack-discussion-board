@@ -79,7 +79,7 @@ Right click the `compose.yaml` file, choose the `Compose Up`.
 ## Resources Used
 ### Resources used in UI
 1. [Color Palette](https://coolors.co/palette/03045e-023e8a-0077b6-0096c7-00b4d8-48cae4-90e0ef-ade8f4-caf0f8)
-2. [Photos](https://picsum.photos/)
+2. [Illustration for Homepage](https://www.freepik.com/); [Illustration for Admin Page](https://dribbble.com/)
 3. [BootstrapVue](https://bootstrap-vue.org/)
 ### Authentication with Keycloak
 1. On macOS/WSL2/Linux: `git clone https://github.com/keycloak/keycloak-containers`
