@@ -4,7 +4,7 @@
 This discussion board allows users to post Q&A. We have two kinds of users, professors and students. Students can create new post in a group and answer questions for a post. Professors can do the same as the students. Additionally, professors can delete post, create group, and invite students into a group. We handle the authentication with Keycloak.
 
 ## Development Team
-🐎 Congcong Ma:    
+🐎 Congcong Ma:  Connecting backend and frontend, debugs, handle concurrency   
 🐷 Minghui Zhu: Backend Design, UI Modification.   
 🍄 Quan Wang: Front-end (UI design & implementation), Documentation, Video Recording
 
